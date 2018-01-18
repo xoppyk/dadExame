@@ -10,17 +10,16 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
-import VueSocketio from 'vue-socket.io';
+//import VueSocketio from 'vue-socket.io';
 
 Vue.use(VueRouter);
 //Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
-const user = Vue.component('user', require('./components/user.vue'));
+const user = Vue.component('user', require('./components/users/user.vue'));
 
 const routes = [
   { path: '/', redirect: '/users' },
-  { path: '/users', component: user },
-  { path: '/multitictactoe', component: multiplayerGame }
+  { path: '/users', component: user }
 ];
 
 const router = new VueRouter({
