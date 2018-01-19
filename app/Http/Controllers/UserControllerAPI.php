@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Jsonable;
+
 use App\Http\Resources\User as UserResource;
+use Illuminate\Support\Facades\DB;
+
+use App\User;
+use App\StoreUserRequest;
+use Hash;
+
 class UserControllerAPI extends Controller
 {
-    // GET USERS
     public function getUsers(Request $request)
     {
         if ($request->has('page')) {
@@ -16,86 +22,89 @@ class UserControllerAPI extends Controller
             return UserResource::collection(User::all());
         }
     }
-    // GET USER
     public function getUser($id)
     {
         return new UserResource(User::find($id));
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'nickname' => 'required|unique:users',
+                'password' => 'required|min:3|confirmed',
+                'password_confirmation' => 'required|min:3'
+            ]);
+        $user = new User();
+        $user->fill($request->all());
+        $user->password = Hash::make($user->password);
+        $user->save();
+        return response()->json(new UserResource($user), 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        if ($request->input('password') != '') {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$id,
+                'nickname' => 'required|unique:users,nickname,'.$id,
+                'password' => 'required|min:3|confirmed',
+                'password_confirmation' => 'required|min:3'
+            ]);
+        } else {
+            $request->validate([
+                    'name' => 'required',
+                    'email' => 'required|email|unique:users,email,'.$id,
+                    'nickname' => 'required|unique:users,nickname,'.$id
+                ]);
+        }
+        $user->password = Hash::make($request->input('password'));
+        $user->update($request->all());
+        return new UserResource($user);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
+    // Block User
+    public function blockUser(Request $request,$id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->blocked = 1;
+        $user->reason_reactivated = null;
+        $user->reason_blocked = $request->reason;
+        $user->save();
+        return new UserResource($user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
+    //Active User
+    public function activeUser(Request $request,$id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->blocked = 0;
+        $user->reason_blocked = null;
+        $user->reason_reactivated = $request->reason;
+        $user->save();
+        return new UserResource($user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
+
+
+    public function delete($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(null, 204);
+    }
+    public function emailAvailable(Request $request)
+    {
+        $totalEmail = 1;
+        if ($request->has('email') && $request->has('id')) {
+            $totalEmail = DB::table('users')->where('email', '=', $request->email)->where('id', '<>', $request->id)->count();
+        } else if ($request->has('email')) {
+            $totalEmail = DB::table('users')->where('email', '=', $request->email)->count();
+        }
+        return response()->json($totalEmail == 0);
     }
 }

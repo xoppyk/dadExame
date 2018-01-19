@@ -16,10 +16,12 @@ Vue.use(VueRouter);
 //Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 const user = Vue.component('user', require('./components/users/user.vue'));
+const userCreate = Vue.component('userCreate', require('./components/users/userCreate.vue'));
 
 const routes = [
   { path: '/', redirect: '/users' },
-  { path: '/users', component: user }
+  { path: '/users', component: user },
+  { path: '/regist', component: userCreate }
 ];
 
 const router = new VueRouter({
