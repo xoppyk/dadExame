@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\StoreUserRequest;
 use Hash;
+use App\Mail\BlockUser;
 
 class UserControllerAPI extends Controller
 {
@@ -75,6 +76,11 @@ class UserControllerAPI extends Controller
         $user->reason_reactivated = null;
         $user->reason_blocked = $request->reason;
         $user->save();
+
+        if ($request->sendMail) {
+          \Mail::to($user)->send(new BlockUser($user));
+        }
+
         return new UserResource($user);
     }
 

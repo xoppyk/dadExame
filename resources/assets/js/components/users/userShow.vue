@@ -48,8 +48,8 @@
                         <textarea class="form-control"v-model="messageBlock"></textarea>
                       </div>
                     </form>
-                    <div class="checkbox">
-                      <label><input type="checkbox" value="">Send Mail</label>
+                    <div class="checkbox" v-if="!user.blocked">
+                      <label><input v-model="sendMail" type="checkbox" value="">Send Mail</label>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -74,7 +74,8 @@
                     email: this.user.email,
                     nickname: this.user.nickName,
                 }),
-                messageBlock: ''
+                messageBlock: '',
+                sendMail: false
             }
         },
         methods: {
@@ -82,7 +83,10 @@
                 this.$emit('want-edit', this.user);
             },
             blockUser: function(){
-              axios.post('api/users/block/'+this.user.id, {reason : this.messageBlock})
+              axios.post('api/users/block/'+this.user.id, {
+                reason : this.messageBlock,
+                sendMail : this.sendMail
+              })
                   .then(response=>{
                       Object.assign(this.user, response.data.data);
                   });

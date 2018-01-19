@@ -47580,7 +47580,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47668,7 +47668,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 email: this.user.email,
                 nickname: this.user.nickName
             }),
-            messageBlock: ''
+            messageBlock: '',
+            sendMail: false
         };
     },
     methods: {
@@ -47678,7 +47679,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         blockUser: function blockUser() {
             var _this = this;
 
-            axios.post('api/users/block/' + this.user.id, { reason: this.messageBlock }).then(function (response) {
+            axios.post('api/users/block/' + this.user.id, {
+                reason: this.messageBlock,
+                sendMail: this.sendMail
+            }).then(function (response) {
                 Object.assign(_this.user, response.data.data);
             });
         },
@@ -47889,7 +47893,50 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(0)
+                !_vm.user.blocked
+                  ? _c("div", { staticClass: "checkbox" }, [
+                      _c("label", [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sendMail,
+                              expression: "sendMail"
+                            }
+                          ],
+                          attrs: { type: "checkbox", value: "" },
+                          domProps: {
+                            checked: Array.isArray(_vm.sendMail)
+                              ? _vm._i(_vm.sendMail, "") > -1
+                              : _vm.sendMail
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.sendMail,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = "",
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 && (_vm.sendMail = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.sendMail = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
+                              } else {
+                                _vm.sendMail = $$c
+                              }
+                            }
+                          }
+                        }),
+                        _vm._v("Send Mail")
+                      ])
+                    ])
+                  : _vm._e()
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-footer" }, [
@@ -47933,19 +47980,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "checkbox" }, [
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox", value: "" } }),
-        _vm._v("Send Mail")
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
