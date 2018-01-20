@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\StoreUserRequest;
 use Hash;
-use App\Mail\BlockUser;
+use App\Mail\SendMailBlockedUser;
 
 class UserControllerAPI extends Controller
 {
@@ -40,6 +40,9 @@ class UserControllerAPI extends Controller
         $user = new User();
         $user->fill($request->all());
         $user->password = Hash::make($user->password);
+        $user->blocked = 1;
+        $user->reason_blocked = 'Email Not Confirmed';
+
         $user->save();
         return response()->json(new UserResource($user), 201);
     }
@@ -56,6 +59,7 @@ class UserControllerAPI extends Controller
                 'password' => 'required|min:3|confirmed',
                 'password_confirmation' => 'required|min:3'
             ]);
+            $user->password = Hash::make($request->input('password'));
         } else {
             $request->validate([
                     'name' => 'required',
@@ -63,8 +67,8 @@ class UserControllerAPI extends Controller
                     'nickname' => 'required|unique:users,nickname,'.$id
                 ]);
         }
-        $user->password = Hash::make($request->input('password'));
-        $user->update($request->all());
+        $user->update($request->except(['password']));
+        $user->save();
         return new UserResource($user);
     }
 
@@ -77,8 +81,9 @@ class UserControllerAPI extends Controller
         $user->reason_blocked = $request->reason;
         $user->save();
 
+        //SEND MAIL BLOCKED USER
         if ($request->sendMail) {
-          \Mail::to($user)->send(new BlockUser($user));
+          \Mail::to($user)->send(new SendMailBlockedUser($user));
         }
 
         return new UserResource($user);

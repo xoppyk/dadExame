@@ -26,9 +26,10 @@
                 </div>
 
                 <div class="control">
-                    <button type="button" class="btn btn-warning" v-if="!user.blocked" data-toggle="modal" data-target="#blockUser" data-whatever="@mdo">Block</button>
-                    <button type="button" class="btn btn-success" v-else data-toggle="modal" data-target="#blockUser" data-whatever="@mdo">Active</button>
-                    <a class="btn btn-default" v-on:click.prevent="editUser">Edit</a>
+                    <a class="btn btn-primary" v-on:click.prevent="editUser">Edit</a>
+                    <a class="btn btn-warning" v-if="!user.blocked" data-toggle="modal" data-target="#blockUser" data-whatever="@mdo">Block</a>
+                    <a class="btn btn-success" v-else data-toggle="modal" data-target="#blockUser" data-whatever="@mdo">Active</a>
+                    <a class="btn btn-danger" v-on:click.prevent="deleteUser()">Delete</a>
                     <a class="btn btn-default" v-on:click.prevent="cancelShow()">Cancel</a>
                 </div>
 
@@ -81,6 +82,9 @@
         methods: {
             editUser: function(){
                 this.$emit('want-edit', this.user);
+            },
+            deleteUser: function(){
+                this.$emit('want-delete', this.user);
             },
             blockUser: function(){
               axios.post('api/users/block/'+this.user.id, {

@@ -17,9 +17,11 @@ Vue.use(VueRouter);
 
 const user = Vue.component('user', require('./components/users/user.vue'));
 const userCreate = Vue.component('userCreate', require('./components/users/userCreate.vue'));
+const login = Vue.component('login', require('./components/users/login.vue'));
 
 const routes = [
   { path: '/', redirect: '/users' },
+  { path: '/login', component: login },
   { path: '/users', component: user },
   { path: '/regist', component: userCreate }
 ];

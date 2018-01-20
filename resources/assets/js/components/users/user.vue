@@ -5,9 +5,9 @@
         </div>
 
         <!-- SUCCES MESSAGE -->
-        <div class="alert alert-success" v-if="showSuccess">
-            <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
-            <strong>{{ successMessage }}</strong>
+        <div v-if="showSuccess" class="alert alert-success">
+            <a class="close" data-dismiss="alert" aria-label="close" @click.prevent="showSuccess = false">&times;</a>
+            <strong>Success!</strong> {{successMessage}}
         </div>
 
         <!-- NAV -->
@@ -31,7 +31,7 @@
 
         <!-- SHOW USER -->
         <div v-show="showSection === 'show'">
-            <user-show :user="currentUser" @want-edit="editUser" @user-canceled="cancelEdit" v-if="currentUser"></user-show>
+            <user-show :user="currentUser" @want-edit="editUser" @want-delete="deleteUser" @user-canceled="cancelEdit" v-if="currentUser"></user-show>
         </div>
 
     </div>
@@ -71,6 +71,7 @@
                         this.childMessage('User Deleted');
                         this.getUsers();
                     });
+                this.changeSection('list');
             },
             savedUser: function(){
                 this.currentUser = null;

@@ -9,12 +9,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\User;
 
-class BlockUser extends Mailable
+class SendMailBlockedUser extends Mailable
 {
     use Queueable, SerializesModels;
-
+    
     public $user;
-
     /**
      * Create a new message instance.
      *
@@ -32,6 +31,6 @@ class BlockUser extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.blockUser');
+        return $this->markdown('emails.blocked-user');
     }
 }
