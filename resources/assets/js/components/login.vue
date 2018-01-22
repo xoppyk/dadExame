@@ -45,7 +45,7 @@
                 }
                 axios.post('api/login', data, headers)
                 .then((response) => {
-                    alert(response.data.access_token);
+                    //alert(response.data.access_token);
                     window.localStorage.setItem("access_token", response.data.access_token);
                     //localStorage.setItem('access_token', response.data.access_token);
                 })
