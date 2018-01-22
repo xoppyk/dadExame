@@ -28,3 +28,12 @@ Route::delete('users/{id}', 'UserControllerAPI@delete');
 //Block & Active
 Route::post('users/block/{id}', 'UserControllerAPI@blockUser');
 Route::post('users/active/{id}', 'UserControllerAPI@activeUser');
+
+
+//PASSAPORT
+Route::post('login', 'LoginControllerAPI@login');
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return Auth::user();
+});
+Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');

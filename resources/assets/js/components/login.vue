@@ -23,7 +23,7 @@
 </template>
 
 <script type="text/javascript">
-    import {Form} from '../../classes/Form';
+    import {Form} from '../classes/Form';
     export default {
         data: function(){
             return {
