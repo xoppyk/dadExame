@@ -19,7 +19,7 @@ var app = require('http').createServer();
 
 var io = require('socket.io')(app);
 
-var TicTacToeGame = require('./gamemodel.js');
+var BlackJackGame = require('./gamemodel.js');
 var GameList = require('./gamelist.js');
 
 app.listen(8080, function(){
@@ -41,6 +41,20 @@ io.on('connection', function (socket) {
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.emit('lobby_changed');
+    });
+
+    socket.on('start_game', function (data){
+    	let game = games.gameByID(data.gameID);
+		if (game === null) {
+			socket.emit('invalid_play', {'type': 'Invalid_Game', 'game': null});
+			return;
+		}
+		game.start(data.playerName)
+		// Notifications to the client
+		socket.emit('my_active_games_changed');
+		io.emit('lobby_changed');
+		console.log('playerName ' + data.playerName);
+		console.log('started game ' + data.gameID);
     });
 
     socket.on('join_game', function (data){
