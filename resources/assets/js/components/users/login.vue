@@ -23,7 +23,7 @@
 </template>
 
 <script type="text/javascript">
-    import {Form} from '../classes/Form';
+    import {Form} from '../../classes/Form';
     export default {
         data: function(){
             return {
@@ -45,8 +45,9 @@
                 }
                 axios.post('api/login', data, headers)
                 .then((response) => {
-                  // localStorage.setItem('token', response.data.access_token)
-                  this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now())
+                    alert(response.data.access_token);
+                    window.localStorage.setItem("access_token", response.data.access_token);
+                    //localStorage.setItem('access_token', response.data.access_token);
                 })
                 .catch((error) => {
                     alert('ta mal')
