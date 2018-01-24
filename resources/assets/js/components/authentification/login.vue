@@ -17,13 +17,14 @@
                     </label>
                 </div>
                 <a class="btn btn-lg btn-primary btn-block" v-on:click.prevent="signIn()">Sign in</a>
+                <router-link class="button is-text" to="/forgot-password">Forgot Password</router-link>
             </form>
         </div> <!-- /container -->
     </div>
 </template>
 
 <script type="text/javascript">
-    import {Form} from '../classes/Form';
+    import {Form} from '../../classes/Form';
     export default {
         data: function(){
             return {

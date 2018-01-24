@@ -40,7 +40,6 @@
 <script type="text/javascript">
 
     import UserList from './userList.vue';
-    import UserCreate from './userCreate.vue';
     import UserEdit from './userEdit.vue';
     import UserShow from './userShow.vue';
     export default {
@@ -109,7 +108,6 @@
         },
         components: {
             'user-list': UserList,
-            'user-create': UserCreate,
             'user-edit': UserEdit,
             'user-show': UserShow,
         },

@@ -21,6 +21,7 @@ class InitialStructure extends Migration
             $table->string('nickname')->unique();
             $table->boolean('admin')->default(false);
             $table->boolean('blocked')->default(false);
+            $table->rememberToken();
             $table->string('reason_blocked')->nullable();
             $table->string('reason_reactivated')->nullable();
             $table->integer('total_points')->default(0);
@@ -91,7 +92,7 @@ class InitialStructure extends Migration
         Schema::dropIfExists('game_user');
         Schema::dropIfExists('games');
         Schema::dropIfExists('cards');
-        Schema::dropIfExists('decks');        
+        Schema::dropIfExists('decks');
         Schema::dropIfExists('config');
         Schema::dropIfExists('password_resets');
         Schema::dropIfExists('users');

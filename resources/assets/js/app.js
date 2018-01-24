@@ -15,15 +15,16 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 //Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
+const navbar = Vue.component('navbar', require('./components/navbar.vue'));
+const regist = Vue.component('regist', require('./components/authentification/regist.vue'));
+const login = Vue.component('login', require('./components/authentification/login.vue'));
 const user = Vue.component('user', require('./components/users/user.vue'));
-const userCreate = Vue.component('userCreate', require('./components/users/userCreate.vue'));
-const login = Vue.component('login', require('./components/login.vue'));
 
 const routes = [
   { path: '/', redirect: '/users' },
   { path: '/login', component: login },
   { path: '/users', component: user },
-  { path: '/regist', component: userCreate }
+  { path: '/regist', component: regist }
 ];
 
 const router = new VueRouter({

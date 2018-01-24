@@ -45,7 +45,6 @@
             </div>
             <div class="control">
                 <a class="btn btn-default" v-on:click.prevent="createUser()">Create</a>
-                <a class="btn btn-default" v-on:click.prevent="cancelEdit()">Cancel</a>
             </div>
         </form>
     </div>
@@ -69,15 +68,11 @@
         methods: {
             createUser(){
                 this.form.post('api/users/')
-                   // .then(response => console.log("Success"))
                    .then(response => {
-                        this.$emit('user-created');
+                        alert('Check Your Email');
                    })
                    .catch(error => console.log('Whoops'));
             },
-            cancelEdit () {
-                this.$emit('user-canceled');
-            }
         }
     }
 

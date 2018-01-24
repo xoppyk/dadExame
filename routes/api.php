@@ -19,12 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 //USERS
-Route::get('users', 'UserControllerAPI@getUsers');
-Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
-Route::get('users/{id}', 'UserControllerAPI@getUser');
-Route::post('users', 'UserControllerAPI@store');
-Route::put('users/{id}', 'UserControllerAPI@update');
-Route::delete('users/{id}', 'UserControllerAPI@delete');
+Route::get('users', 'UserControllerAPI@getUsers')->name('api.users.getUsers');
+Route::get('users/{id}', 'UserControllerAPI@getUser')->name('api.users.getUser');
+Route::post('users', 'Auth\RegisterController@register')->name('api.users.store');
+Route::put('users/{id}', 'UserControllerAPI@update')->name('api.users.update');
+Route::delete('users/{id}', 'UserControllerAPI@delete')->name('api.users.delete');
+
 //Block & Active
 Route::post('users/block/{id}', 'UserControllerAPI@blockUser');
 Route::post('users/active/{id}', 'UserControllerAPI@activeUser');
