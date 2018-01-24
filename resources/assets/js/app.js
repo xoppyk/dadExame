@@ -10,16 +10,18 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+import Auth from './classes/Auth.js'
 import VueSocketio from 'vue-socket.io';
 
 Vue.use(VueRouter);
+Vue.use(Auth);
 
 Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 const user = Vue.component('user', require('./components/users/user.vue'));
 const frontend = Vue.component('Game', require('./components/Frontend.vue'));
 const userCreate = Vue.component('userCreate', require('./components/users/userCreate.vue'));
-const login = Vue.component('login', require('./components/users/login.vue'));
+const login = Vue.component('login', require('./components/login.vue'));
 
 const routes = [
   { path: '/', redirect: '/users' },
