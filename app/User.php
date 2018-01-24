@@ -5,8 +5,6 @@ namespace App;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Mail\UserConfirmation;
-use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -27,19 +25,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token','admin',
     ];
-
-
-    public function isAdmin()
-    {
-      return $this->admin == self::ADMIN;
-    }
-
-    public function notifyConfirmation()
-    {
-        Mail::to($this)->send(new UserConfirmation($this));
-    }
 
     //USER pode pertencer a varios GAMES
     public function games()

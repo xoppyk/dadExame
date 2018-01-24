@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 define('YOUR_SERVER_URL', 'http://dadexame.test');
 // Check "oauth_clients" table for next 2 values:
 define('CLIENT_ID', '2');
-define('CLIENT_SECRET','Ls0csLtvaZTQ6CojMTXIyyEujGxLEWJyDsDGM8DV');
+define('CLIENT_SECRET','8q3T0AaavbYp40lLeVAlzsWZ9u2bMXCV5Y567y6A');
 
 class LoginControllerAPI extends Controller
 {

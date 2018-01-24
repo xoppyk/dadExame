@@ -28,6 +28,25 @@ class UserControllerAPI extends Controller
         return new UserResource(User::find($id));
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'nickname' => 'required|unique:users',
+                'password' => 'required|min:3|confirmed',
+                'password_confirmation' => 'required|min:3'
+            ]);
+        $user = new User();
+        $user->fill($request->all());
+        $user->password = Hash::make($user->password);
+        $user->blocked = 1;
+        $user->reason_blocked = 'Email Not Confirmed';
+
+        $user->save();
+        return response()->json(new UserResource($user), 201);
+    }
+
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -98,25 +117,5 @@ class UserControllerAPI extends Controller
             $totalEmail = DB::table('users')->where('email', '=', $request->email)->count();
         }
         return response()->json($totalEmail == 0);
-    }
-
-    public function confirmUser($token)
-    {
-        if (count($token) == 0) {
-            return redirect('/')->with('error', 'Error');
-        }
-        $user = User::where('remember_token', $token)->first();
-        if(!$user) {
-            return redirect('/')->with('error', 'User dont exist!');
-        }
-        // if($user->isActive()) {
-        //     return redirect('/')->with('flash', 'Account Confirmed!');
-        // }
-        $user->remember_token = '';
-        $user->blocked = false;
-        $user->reason_blocked = '';
-        $user->save();
-        // return redirect('/')->with('flash', 'Account Confirmed with Sussess!');
-        return redirect('/');
     }
 }

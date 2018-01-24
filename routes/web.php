@@ -10,13 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
 
 Route::get('/', function () {
     return view('vue/index');
 });
-Route::get('/home', function () {
-    return view('vue/index');
-});
-
-Route::get('confirm/{token}', 'UserControllerAPI@confirmUser')->name('confirmation');
