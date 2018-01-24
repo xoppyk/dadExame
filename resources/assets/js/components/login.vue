@@ -47,6 +47,7 @@
                 .then((response) => {
                   // localStorage.setItem('token', response.data.access_token)
                   this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now())
+                  this.$router.push("frontend")
                 })
                 .catch((error) => {
                     alert('ta mal')

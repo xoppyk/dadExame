@@ -3,9 +3,7 @@
         <div>
             <h3 class="text-center">{{ title }}</h3>
             <br>
-            <h2>Current Player: {{ currentPlayer }}</h2>
-            <p>Set current player name <input v-model.trim="currentPlayer"></p>
-            <p><em>Player name replaces authentication! Use different names on different browsers, and don't change it frequently.</em></p>
+            <h2>{{ currentPlayer }}</h2>
             <hr>
             <h3 class="text-center">Lobby</h3>
             <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
@@ -27,7 +25,7 @@
         data: function(){
             return {
                 title: 'Multiplayer TicTacToe',
-                currentPlayer: 'Player X',
+                currentPlayer: '',
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
@@ -82,7 +80,7 @@
                     alert('ERROR: '+errorObject.type);
                 }
             }
-        },        
+        },
         methods: {
             loadLobby(){
                 /// send message to server to load the list of games on the lobby
@@ -99,7 +97,7 @@
                     return;
                 }
                 else {
-                    this.$socket.emit('create_game', { playerName: this.currentPlayer });   
+                    this.$socket.emit('create_game', { playerName: this.currentPlayer });
                 }
             },
             join(game){
@@ -135,6 +133,6 @@
     }
 </script>
 
-<style> 
-    
+<style>
+
 </style>
