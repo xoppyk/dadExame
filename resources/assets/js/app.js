@@ -10,9 +10,11 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
+import Auth from './classes/Auth.js'
 //import VueSocketio from 'vue-socket.io';
 
 Vue.use(VueRouter);
+Vue.use(Auth);
 //Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 const user = Vue.component('user', require('./components/users/user.vue'));
