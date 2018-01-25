@@ -20,17 +20,18 @@
 </template>
 
 <script type="text/javascript">
-import Lobby from '../lobby.vue';
-import GameTicTocToe from './game.vue';
-
+import Lobby from '../Lobby.vue';
+import GameBlackJack from './game.vue';
 export default {
   data: function() {
     return {
-      title: 'Black Jack',
+      title: 'BlackJack',
       currentPlayer: {},
       lobbyGames: [],
       activeGames: [],
       socketId: "",
+      deck_nr: '',
+      cards: [],
     }
   },
   sockets: {
@@ -69,7 +70,6 @@ export default {
           break;
         }
       }
-
     },
     invalid_play(errorObject) {
       if (errorObject.type == 'Invalid_Game') {
@@ -98,9 +98,21 @@ export default {
         alert('Current Player is Empty - Cannot Create a Game');
         return;
       } else {
-        this.$socket.emit('create_game', {
-          playerName: this.currentPlayer
-        });
+        axios.get('/api/decks/random')
+          .then(response => {
+            //console.log('deck'+response.data.data.id);
+            this.deck_nr = response.data.data.id;
+            axios.get('/api/cards/deck/' + this.deck_nr)
+              .then(response => {
+                //console.log('response.data.data');
+                //console.log(response.data.data);
+                this.cards = response.data.data;
+                this.$socket.emit('create_game', {
+                  playerName: this.currentPlayer,
+                  cards: this.cards
+                });
+              });
+          });
       }
     },
     join(game) {
@@ -134,23 +146,30 @@ export default {
       this.$socket.emit('remove_game', {
         gameID: game.gameID
       });
+    },
+    giveCard(game) {
+      // to close a game
+      this.$socket.emit('give_card', {
+        gameID: game.gameID,
+        playerName: this.currentPlayer
+      });
     }
   },
   components: {
     'lobby': Lobby,
-    'game': GameTicTocToe,
+    'game': GameBlackJack,
   },
   mounted() {
     this.loadLobby();
   },
-  created() {
+  beforeMount() {
     // this.$socket.emit('authentication', window.localStorage.getItem('access_token'));
     var headers = {
-      'Accept' : 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + this.$auth.getToken()
     }
-    axios.get('api/user',headers)
+    axios.get('api/user', headers)
       .then((response) => {
         //Object.assign(this.currentPlayer, response.data);
         this.currentPlayer = response.data
@@ -159,7 +178,6 @@ export default {
         console.log('nao tem nada')
       })
   }
-
 }
 </script>
 

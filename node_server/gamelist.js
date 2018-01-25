@@ -13,9 +13,9 @@ class GameList {
     	return game;
     }
 
-    createGame(playerName, socketID) {
+    createGame(playerName, socketID, cards) {
     	this.contadorID = this.contadorID+1;
-    	var game = new BlackJackGame(this.contadorID, playerName);
+    	var game = new BlackJackGame(this.contadorID, playerName, cards);
     	game.player1SocketID = socketID;
     	this.games.set(game.gameID, game);
     	return game;
@@ -40,6 +40,17 @@ class GameList {
     	game.join(playerName);
     	game.player2SocketID = socketID;
     	return game;
+    }
+
+    giveCard(gameID, playerName) {
+        let game = this.gameByID(gameID);
+        if (game===null) {
+            return null;
+        }
+        console.log('aqui2');
+        game.giveCard(playerName);
+        game.player2SocketID = socketID;
+        return game;
     }
 
     removeGame(gameID, socketID) {
