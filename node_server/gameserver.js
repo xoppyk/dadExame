@@ -41,6 +41,7 @@ io.on('connection', function (socket) {
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.emit('lobby_changed');
+		console.log('create game ' + game.gameID);
     });
 
     socket.on('give_card', function (data){

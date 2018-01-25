@@ -14,25 +14,25 @@
             </div>
             <div v-if="game.gameStarted">
                 <div style="display: inline-block;">
-                    {{ game.players[0] }}
+                    {{ game.players[0].name }}
                     <div v-for="(card, key) of game.board1Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
                 <div style="clear: left;" v-if="game.players.length <= 2">
-                    {{ game.players[1] }}
+                    {{ game.players[1].name }}
                     <div v-for="(card, key) of game.board2Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
                 <div style="clear: left;" v-if="game.players.length <= 3">
-                    {{ game.players[2] }}
+                    {{ game.players[2].name}}
                     <div v-for="(card, key) of game.board3Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
                 <div style="clear: left;" v-if="game.players.length <= 4">
-                    {{ game.players[3] }}
+                    {{ game.players[3].name }}
                     <div v-for="(card, key) of game.board4Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>

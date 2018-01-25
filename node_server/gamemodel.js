@@ -28,6 +28,7 @@ class BlackJackGame {
     }
 
     start(playerName){
+        console.log('start game ' + this.gameID);
         if(this.players[0] == playerName && this.gameStarted == false){
             for(var i = 0; i < this.players.length;i++){
                 for(var ii = 0; ii < 2;ii++){
@@ -39,39 +40,32 @@ class BlackJackGame {
         }
     }
 
-    hasPoints(player){
+    pointsPerUser(array){
+        var total = 0;
+        array.forEach(function(c){
+            total = total + pointsPerCart(c);
+        });
+        return total;
+    }
+
+    points(player){
+        var pontos = 0;
         switch (player) {
-            case this.players[0]:
-                if(pointsPerCart(this.board1Player[0]) + pointsPerCart(this.board1Player[1]) + 
-                    pointsPerCart(this.board1Player[2]) + pointsPerCart(this.board1Player[3])){
-                    return true;
-                }
-                break;
-            case this.players[1]:
-                if(pointsPerCart(this.board2Player[0]) + pointsPerCart(this.board2Player[1]) + 
-                    pointsPerCart(this.board2Player[2]) + pointsPerCart(this.board2Player[3])){
-                    return true;
-                }
-                break;
-            case this.players[2]:
-                if(pointsPerCart(this.board3Player[0]) + pointsPerCart(this.board3Player[1]) + 
-                    pointsPerCart(this.board3Player[2]) + pointsPerCart(this.board3Player[3])){
-                    return true;
-                }
-                break;
-            case this.players[3]:
-                if(pointsPerCart(this.board4Player[0]) + pointsPerCart(this.board4Player[1]) + 
-                    pointsPerCart(this.board4Player[2]) + pointsPerCart(this.board4Player[3])){
-                    return true;
-                }
-                break;
+            case 1:
+                return pointsPerUser(this.board1Player);
+            case 2:
+                return pointsPerUser(this.board2Player);
+            case 3:
+                return pointsPerUser(this.board3Player);
+            case 3:
+                return pointsPerUser(this.board4Player);
             default:
-                return false;
+                return 0;
         }
     }
 
     giveCard(player){
-        //console.log('aqui3');
+        console.log('giveCard ' + player + ' in game ' + this.gameID);
         var number;
         do{
             number = Math.floor(Math.random() * this.cartas.length-1);
@@ -103,31 +97,29 @@ class BlackJackGame {
                 break;
         }
 
-        if (!this.checkGameEnded()) {
-            this.nrPlayerTurn --;
-            if(this.nrPlayerTurn < 0){
-                this.nrPlayerTurn = this.players.length-1;    
-            }
-            this.playerTurn = this.players[this.nrPlayerTurn];
-            console.log(this.playerTurn);
+        this.nrPlayerTurn --;
+        if(this.nrPlayerTurn < 0){
+            this.nrPlayerTurn = this.players.length-1;    
         }
+        this.playerTurn = this.players[this.nrPlayerTurn];
+        console.log('playerTurn' + this.playerTurn + ' in game ' + this.gameID);
     }
 
     jaEscolhida(card){
         this.board1Player.forEach(function(c) {
-            if(card.path == c.path)
+            if(card.id == c.id)
                 return true;
         });
         this.board2Player.forEach(function(c) {
-            if(card.path == c.path)
+            if(card.id == c.id)
                 return true;
         });
         this.board3Player.forEach(function(c) {
-            if(card.path == c.path)
+            if(card.id == c.id)
                 return true;
         });
         this.board4Player.forEach(function(c) {
-            if(card.path == c.path)
+            if(card.id == c.id)
                 return true;
         });
         return false;
@@ -146,25 +138,17 @@ class BlackJackGame {
         }
     }
 
-    checkGameEnded(){
-        if (this.hasPoints(1)) {
-            this.winner = 1;
-            this.gameEnded = true;
-            return true;
-        } else if (this.hasPoints(2)) {
-            this.winner = 2;
-            this.gameEnded = true;
-            return true;
-        } else if (this.hasPoints(3)) {
-            this.winner = 3;
-            this.gameEnded = true;
-            return true;
-        } else if (this.hasPoints(4)) {
-            this.winner = 4;
-            this.gameEnded = true;
-            return true;
+    vencedor(){
+        var aux = 0;
+        for(var i = 1 ; i < this.players.length;i++){
+            var p = points(i);
+            if(p <= 21){
+                if(p > aux){
+                    aux = p;
+                    this.winner = this.players[i-1];
+                }
+            }
         }
-        return false;
     }
 
     /*isBoardComplete(){

@@ -1,27 +1,27 @@
 <template>
     <div>
-      <div>
-        <h3 class="text-center">{{ title }}</h3>
-        <br>
-        <h3> {{currentPlayer.name}}</h3>
-        <p>Pontos : {{currentPlayer.total_points}}</p>
-        <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
-        <hr>
-        <h3 class="text-center">Lobby</h3>
-        <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
-        <hr>
-        <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
-        <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
-        <template v-for="game in activeGames">
-            <game :game="game" :currentPlayer="currentPlayer"></game>
-        </template>
-      </div>
+        <div>
+            <h3 class="text-center">{{ title }}</h3>
+            <br>
+            <h3>{{currentPlayer.name}}</h3>
+            <p>Pontos : {{currentPlayer.total_points}}</p>
+            <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
+            <hr>
+            <h3 class="text-center">Lobby</h3>
+            <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
+            <hr>
+            <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
+            <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
+            <template v-for="activeGame in activeGames">
+                <game :game="activeGame" :currentPlayer="currentPlayer"></game>
+            </template>
+        </div>
     </div>
 </template>
 
 <script type="text/javascript">
-    import Lobby from './lobby.vue';
-    import Game from './game.vue';
+    import Lobby from './Lobby.vue';
+    import Game from './Game.vue';
 
     export default {
         data: function(){
@@ -54,6 +54,7 @@
             },
             my_active_games(games){
                 this.activeGames = games;
+                //console.log(games.length);
             },
             my_lobby_games(games){
                 this.lobbyGames = games;
@@ -95,6 +96,7 @@
                 this.$socket.emit('get_my_activegames');
             },
             createGame(){
+                console.log('criei');
                 // For this to work, server must handle (on event) the "create_game" message
                 if (this.currentPlayer.name == "") {
                     alert('Current Player is Empty - Cannot Create a Game');
@@ -110,7 +112,7 @@
                                     //console.log('response.data.data');
                                     //console.log(response.data.data);
                                     this.cards = response.data.data;
-                                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name, cards: this.cards });  
+                                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name, cards: this.cards });
                                 });
                         });
                 }
@@ -153,7 +155,8 @@
                   })
                   .catch((error) => {
                     console.log('nao tem nada')
-                  })
+                  });
+                console.log('load user');
             }
         },
         components: {
@@ -161,24 +164,9 @@
             'game': Game,
         },
         mounted() {
+            console.log('mounted');
             this.loadUser();
             this.loadLobby();
-        },
-        beforeMount() {
-        // this.$socket.emit('authentication', window.localStorage.getItem('access_token'));
-        /*var headers = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.$auth.getToken()
-        }
-        axios.get('api/user', headers)
-          .then((response) => {
-            //Object.assign(this.currentPlayer, response.data);
-            this.currentPlayer = response.data
-          })
-          .catch((error) => {
-            console.log('nao tem nada')
-          })*/
         }
 
     }
