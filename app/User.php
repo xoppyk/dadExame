@@ -5,6 +5,9 @@ namespace App;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Mail\UserConfirmation;
+use Illuminate\Support\Facades\Mail;
+
 
 class User extends Authenticatable
 {
@@ -38,5 +41,20 @@ class User extends Authenticatable
     public function my_created_games()
     {
         return $this->hasMany('App\Game', 'created_by', 'id');
+    }
+
+    public function isAdmin()
+    {
+        return $this->admin == self::ADMIN;
+    }
+
+    public function notifyConfirmation()
+    {
+        Mail::to($this)->send(new UserConfirmation($this));
+    }
+
+    public function isActive()
+    {
+        return $this->active;
     }
 }

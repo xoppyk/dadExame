@@ -69,9 +69,9 @@
         methods: {
             createUser(){
                 this.form.post('api/users/')
-                   // .then(response => console.log("Success"))
                    .then(response => {
-                        this.$emit('user-created');
+                        // this.$emit('user-created');
+                        alert('Check Your Mail')
                    })
                    .catch(error => console.log('Whoops'));
             },

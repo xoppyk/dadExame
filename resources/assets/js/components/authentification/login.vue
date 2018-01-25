@@ -23,7 +23,7 @@
 </template>
 
 <script type="text/javascript">
-    import {Form} from '../classes/Form';
+    import {Form} from '../../classes/Form';
     export default {
         data: function(){
             return {
@@ -47,7 +47,7 @@
                 .then((response) => {
                   // localStorage.setItem('token', response.data.access_token)
                   this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now())
-                  this.$router.push("frontend")
+                  this.$router.push("blackJack")
                 })
                 .catch((error) => {
                     alert('ta mal')
