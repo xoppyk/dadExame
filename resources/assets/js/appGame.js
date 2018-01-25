@@ -12,6 +12,7 @@ window.Vue = require('vue');
 import VueRouter from 'vue-router';
 import Auth from './classes/Auth.js'
 import VueSocketio from 'vue-socket.io';
+import VueAppGame from './VueAppGame.vue';
 
 Vue.use(VueRouter);
 Vue.use(Auth);
@@ -57,5 +58,6 @@ router.beforeEach(
 
 
 const app = new Vue({
-  router
+  router,
+  render: h => h(VueAppGame),
 }).$mount('#app')
