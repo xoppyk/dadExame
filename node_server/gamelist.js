@@ -16,7 +16,8 @@ class GameList {
     createGame(playerName, socketID, cards) {
     	this.contadorID = this.contadorID+1;
     	var game = new BlackJackGame(this.contadorID, playerName, cards);
-    	game.player1SocketID = socketID;
+        game.playerSocketID = new Array();
+    	game.playerSocketID[0] = socketID;
     	this.games.set(game.gameID, game);
     	return game;
     }
@@ -27,7 +28,7 @@ class GameList {
             return null;
         }
         game.start(playerName);
-        game.player1SocketID = socketID;
+        game.playerSocketID[0] = socketID;
         this.games.set(game.gameID, game);
         return game;
     }
@@ -38,7 +39,7 @@ class GameList {
     		return null;
     	}
     	game.join(playerName);
-    	game.player2SocketID = socketID;
+    	game.playerSocketID[game.playerSocketID.length] = socketID;
     	return game;
     }
 
@@ -49,7 +50,6 @@ class GameList {
         }
         console.log('aqui2');
         game.giveCard(playerName);
-        game.player2SocketID = socketID;
         return game;
     }
 
@@ -58,12 +58,12 @@ class GameList {
     	if (game===null) {
     		return null;
     	}
-    	if (game.player1SocketID == socketID) {
-    		game.player1SocketID = "";
-    	} else if (game.player2SocketID == socketID) {
-    		game.player2SocketID = "";
+    	if (game.playerSocketID[0] == socketID) {
+    		game.playerSocketID[0] = "";
+    	} else if (game.playerSocketID[1] == socketID) {
+    		game.playerSocketID[1] = "";
     	} 
-    	if ((game.player1SocketID === "") && (game.player2SocketID === "")) {
+    	if ((game.playerSocketID[0] === "") && (game.playerSocketID[1] === "")) {
     		this.games.delete(gameID);
     	}
     	return game;
@@ -72,7 +72,8 @@ class GameList {
     getConnectedGamesOf(socketID) {
     	let games = [];
     	for (var [key, value] of this.games) {
-    		if ((value.player1SocketID == socketID) || (value.player2SocketID == socketID)) {
+    		if ((value.playerSocketID[0] == socketID) || (value.playerSocketID[1] == socketID) || 
+                (value.playerSocketID[2] == socketID) || (value.playerSocketID[3] == socketID)) {
     			games.push(value);
     		}
 		}
@@ -83,7 +84,8 @@ class GameList {
     	let games = [];
     	for (var [key, value] of this.games) {
     		if ((!value.gameStarted) && (!value.gameEnded))  {
-    			if ((value.player1SocketID != socketID) && (value.player2SocketID != socketID)) {
+    			if ((value.playerSocketID[0] != socketID) && (value.playerSocketID[1] != socketID) &&
+                    (value.playerSocketID[2] != socketID) && (value.playerSocketID[3] != socketID)) {
     				games.push(value);
     			}
     		}

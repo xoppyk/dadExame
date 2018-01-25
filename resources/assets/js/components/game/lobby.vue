@@ -11,12 +11,12 @@
 	        </tr>
 	    </thead>
 	    <tbody>
-	        <tr v-for="game in games"  :key="game.gameID">
+	        <tr v-for="game in games" :key="game.gameID">
 	            <td>{{ game.gameID }}</td>
-	            <td>{{ game.players[0] }}</td>
-	            <td>{{ game.players[1] }}</td>
-	            <td>{{ game.players[2] }}</td>
-	            <td>{{ game.players[3] }}</td>
+	            <td v-if="game.players[1] != 'undefined'">{{ game.players[0] }}</td>
+	            <td v-if="game.players[1] != 'undefined'">{{ game.players[1] }}</td>
+	            <td v-if="game.players[2] != 'undefined'">{{ game.players[2] }}</td>
+	            <td v-if="game.players[3] != 'undefined'">{{ game.players[3] }}</td>
 	            <td>
 	                <a class="btn btn-xs btn-primary" v-on:click.prevent="join(game)">Join</a>
 	            </td>
@@ -32,8 +32,8 @@
         methods: {
             join(game) {
             	this.$emit('join-click', game);
-            },	
-        },		
+            },
+        },	
 	}
 </script>
 

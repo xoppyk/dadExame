@@ -42,6 +42,7 @@ Route::get('cards/{id}', 'CardControllerAPI@getCard');
 Route::post('login', 'LoginControllerAPI@login');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return Auth::user();
+    // return Auth::user();
+    return $request->user();
 });
 Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');

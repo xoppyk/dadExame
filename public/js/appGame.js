@@ -45794,7 +45794,7 @@ if (inBrowser && window.Vue) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Form; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Errors_js__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Errors_js__ = __webpack_require__(63);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -45996,11 +45996,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_2_vue_socket_io___default.a, 'http://192.168.1
 window.axios.defaults.headers.common['Accept'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken();
 
-var blackJack = Vue.component('game', __webpack_require__(59));
-var regist = Vue.component('regist', __webpack_require__(74));
-var login = Vue.component('login', __webpack_require__(80));
-
-var routes = [{ path: '/', redirect: '/users' }, { path: '/login', component: login, meta: { forVisitors: true } }, { path: '/regist', component: regist, meta: { forVisitors: true } }, { path: '/blackJack', component: blackJack, meta: { forAuth: true } }];
+var routes = [{ path: '/', redirect: '/users' }, { path: '/login', component: __webpack_require__(59), meta: { forVisitors: true } }, { path: '/regist', component: __webpack_require__(65), meta: { forVisitors: true } }, { path: '/blackJack', component: __webpack_require__(70), meta: { forAuth: true } }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
   routes: routes
@@ -46426,13 +46422,13 @@ var normalizeComponent = __webpack_require__(5)
 /* script */
 var __vue_script__ = __webpack_require__(62)
 /* template */
-var __vue_template__ = __webpack_require__(73)
+var __vue_template__ = __webpack_require__(64)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = null
+var __vue_scopeId__ = "data-v-c58007a8"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -46443,7 +46439,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/game/blackJack.vue"
+Component.options.__file = "resources/assets/js/components/authentification/login.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -46452,9 +46448,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-274ea010", Component.options)
+    hotAPI.createRecord("data-v-c58007a8", Component.options)
   } else {
-    hotAPI.reload("data-v-274ea010", Component.options)
+    hotAPI.reload("data-v-c58007a8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -46475,13 +46471,13 @@ var content = __webpack_require__(61);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("43f389cb", content, false);
+var update = __webpack_require__(4)("36eabbcd", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-274ea010\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./blackJack.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-274ea010\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./blackJack.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c58007a8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./login.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c58007a8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./login.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -46499,7 +46495,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -46510,1097 +46506,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lobby_vue__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lobby_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lobby_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_vue__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__game_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__game_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            title: 'BlackJack',
-            currentPlayer: {},
-            lobbyGames: [],
-            activeGames: [],
-            socketId: "",
-            deck_nr: '',
-            cards: []
-        };
-    },
-    sockets: {
-        connect: function connect() {
-            console.log('socket connected');
-            this.socketId = this.$socket.id;
-        },
-        discconnect: function discconnect() {
-            console.log('socket disconnected');
-            this.socketId = "";
-        },
-        lobby_changed: function lobby_changed() {
-            // For this to work, websocket server must emit a message
-            // named "lobby_changed"
-            this.loadLobby();
-        },
-        my_active_games_changed: function my_active_games_changed() {
-            this.loadActiveGames();
-        },
-        my_active_games: function my_active_games(games) {
-            this.activeGames = games;
-        },
-        my_lobby_games: function my_lobby_games(games) {
-            this.lobbyGames = games;
-        },
-        game_changed: function game_changed(game) {
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = this.lobbyGames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var lobbyGame = _step.value;
-
-                    if (game.gameID == lobbyGame.gameID) {
-                        Object.assign(lobbyGame, game);
-                        break;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = this.activeGames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var activeGame = _step2.value;
-
-                    if (game.gameID == activeGame.gameID) {
-                        Object.assign(activeGame, game);
-                        break;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-        },
-        invalid_play: function invalid_play(errorObject) {
-            if (errorObject.type == 'Invalid_Game') {
-                alert('ERROR: Game does not exist on server');
-            } else if (errorObject.type == 'Invalid_Player') {
-                alert('ERROR: Player not valid for this game');
-            } else if (errorObject.type == 'Invalid_Play') {
-                alert('ERROR: Move not valid or not your turn');
-            } else {
-                alert('ERROR: ' + errorObject.type);
-            }
-        }
-    },
-    methods: {
-        loadLobby: function loadLobby() {
-            /// send message to server to load the list of games on the lobby
-            this.$socket.emit('get_my_lobby_games');
-        },
-        loadActiveGames: function loadActiveGames() {
-            /// send message to server to load the list of games that player is playing
-            this.$socket.emit('get_my_activegames');
-        },
-        createGame: function createGame() {
-            var _this = this;
-
-            // For this to work, server must handle (on event) the "create_game" message
-            if (this.currentPlayer.name == "") {
-                alert('Current Player is Empty - Cannot Create a Game');
-                return;
-            } else {
-                axios.get('/api/decks/random').then(function (response) {
-                    //console.log('deck'+response.data.data.id);
-                    _this.deck_nr = response.data.data.id;
-                    axios.get('/api/cards/deck/' + _this.deck_nr).then(function (response) {
-                        //console.log('response.data.data');
-                        //console.log(response.data.data);
-                        _this.cards = response.data.data;
-                        _this.$socket.emit('create_game', { playerName: _this.currentPlayer.name, cards: _this.cards });
-                    });
-                });
-            }
-        },
-        join: function join(game) {
-            // Click to join game
-            if (game.player1 == this.currentPlayer.name) {
-                alert('Cannot join because your name is the same as Player1');
-                return;
-            }
-            this.$socket.emit('join_game', { gameID: game.gameID, playerName: this.currentPlayer.name });
-        },
-        start: function start(game) {
-            // play a game - click on piece on specified index
-            this.$socket.emit('start_game', { gameID: game.gameID, playerName: this.currentPlayer.name });
-            console.log(this.currentPlayer.name);
-        },
-        play: function play(game, index) {
-            // play a game - click on piece on specified index
-            this.$socket.emit('play', { gameID: game.gameID, index: index });
-        },
-        close: function close(game) {
-            // to close a game
-            this.$socket.emit('remove_game', { gameID: game.gameID });
-        },
-        giveCard: function giveCard(game) {
-            // to close a game
-            this.$socket.emit('give_card', { gameID: game.gameID, playerName: this.currentPlayer.name });
-        },
-
-        loadUser: function loadUser() {
-            var _this2 = this;
-
-            var headers = {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.$auth.getToken()
-            };
-            axios.get('api/user', headers).then(function (response) {
-                //Object.assign(this.currentPlayer, response.data);
-                _this2.currentPlayer = response.data;
-            }).catch(function (error) {
-                console.log('nao tem nada');
-            });
-        }
-    },
-    components: {
-        'lobby': __WEBPACK_IMPORTED_MODULE_0__lobby_vue___default.a,
-        'game': __WEBPACK_IMPORTED_MODULE_1__game_vue___default.a
-    },
-    mounted: function mounted() {
-        this.loadUser();
-        this.loadLobby();
-    },
-    beforeMount: function beforeMount() {
-        // this.$socket.emit('authentication', window.localStorage.getItem('access_token'));
-        /*var headers = {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.$auth.getToken()
-        }
-        axios.get('api/user', headers)
-          .then((response) => {
-            //Object.assign(this.currentPlayer, response.data);
-            this.currentPlayer = response.data
-          })
-          .catch((error) => {
-            console.log('nao tem nada')
-          })*/
-    }
-});
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(64)
-}
-var normalizeComponent = __webpack_require__(5)
-/* script */
-var __vue_script__ = __webpack_require__(66)
-/* template */
-var __vue_template__ = __webpack_require__(67)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-8a5c6760"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/game/lobby.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-8a5c6760", Component.options)
-  } else {
-    hotAPI.reload("data-v-8a5c6760", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(65);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("4eff960a", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8a5c6760\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./lobby.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8a5c6760\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./lobby.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, exports) {
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// Component code (not registered)
-module.exports = {
-    props: ['games'],
-    methods: {
-        join: function join(game) {
-            this.$emit('join-click', game);
-        }
-    }
-};
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table table-striped" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "tbody",
-      _vm._l(_vm.games, function(game) {
-        return _c("tr", { key: game.gameID }, [
-          _c("td", [_vm._v(_vm._s(game.gameID))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(game.players[0]))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(game.players[1]))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(game.players[2]))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(game.players[3]))]),
-          _vm._v(" "),
-          _c("td", [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-xs btn-primary",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    _vm.join(game)
-                  }
-                }
-              },
-              [_vm._v("Join")]
-            )
-          ])
-        ])
-      })
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("ID")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Player 1")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Player 2")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Player 3")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Player 4")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-8a5c6760", module.exports)
-  }
-}
-
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(69)
-}
-var normalizeComponent = __webpack_require__(5)
-/* script */
-var __vue_script__ = __webpack_require__(71)
-/* template */
-var __vue_template__ = __webpack_require__(72)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-e01e0f30"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/game/game.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-e01e0f30", Component.options)
-  } else {
-    hotAPI.reload("data-v-e01e0f30", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(70);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("7a59d362", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-e01e0f30\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./game.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-e01e0f30\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./game.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.gameseparator[data-v-e01e0f30]{\n    border-style: solid;\n    border-width: 2px 0 0 0;\n    border-color: black;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 71 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['game', 'currentPlayer'],
-    data: function data() {
-        return {};
-    },
-    computed: {
-        message: function message() {
-            // return Message to show
-            if (!this.game.gameStarted) {
-                return "Game has not started yet";
-            } else if (this.game.gameEnded) {
-                if (this.game.winner == this.ownPlayerNumber) {
-                    return "Game has ended. YOU WIN !!!";
-                } else if (this.game.winner == 0) {
-                    return "Game has ended. It's a tie";
-                }
-                return "Game has ended and " + this.adversaryName + "'s has won. YOU HAVE LOST !!!";
-            } else {
-                if (this.game.playerTurn == this.currentPlayer) {
-                    return "It's your turn";
-                } else {
-                    //return "It's "+this.adversaryName+"'s' turn";
-                    return "It's " + this.game.playerTurn + "'s turn";
-                }
-            }
-            return "Game is inconsistent";
-        },
-        alerttype: function alerttype() {
-            if (!this.game.gameStarted) {
-                return "alert-warning";
-            } else if (this.game.gameEnded) {
-                if (this.game.winner == this.ownPlayerNumber) {
-                    return "alert-success";
-                } else if (this.game.winner == 0) {
-                    return "alert-info";
-                }
-                return "alert-danger";
-            } else {
-                if (this.game.playerTurn == this.currentPlayer) {
-                    return "alert-success";
-                } else {
-                    return "alert-info";
-                }
-            }
-        },
-        adversaryName: function adversaryName() {
-            var ownPlayerNumb = this.ownPlayerNumber;
-            if (ownPlayerNumb == 1) {
-                return this.game.player2;
-            }
-            if (ownPlayerNumb == 2) {
-                return this.game.player1;
-            }
-            return "Unknown";
-        },
-        ownPlayerNumber: function ownPlayerNumber() {
-            if (this.game.player1SocketID == this.$parent.socketId) {
-                return 1;
-            } else if (this.game.player2SocketID == this.$parent.socketId) {
-                return 2;
-            }
-            return 0;
-        }
-    },
-    methods: {
-        start: function start(game) {
-            this.$parent.start(this.game);
-        },
-        closeGame: function closeGame() {
-            // Click to close game
-            this.$parent.close(this.game);
-        },
-        giveCard: function giveCard() {
-            // Click to close game
-            this.$parent.giveCard(this.game);
-        },
-
-        cardImageURL: function cardImageURL(card) {
-            if (card != 'undefined') {
-                var imgSrc = String(card.path);
-                return 'img/' + imgSrc;
-            }
-        }
-    },
-    mounted: function mounted() {
-        console.log(this.currentPlayer);
-    }
-});
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "gameseparator" }, [
-    _c("div", [
-      _c("h2", { staticClass: "text-center" }, [
-        _vm._v("Game " + _vm._s(_vm.game.gameID))
-      ]),
-      _vm._v(" "),
-      _c("br")
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "game-zone-content" }, [
-      _c("div", { staticClass: "alert", class: _vm.alerttype }, [
-        _c("strong", [
-          _vm._v(_vm._s(_vm.message) + "     \n                "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-xs btn-primary",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  _vm.closeGame($event)
-                }
-              }
-            },
-            [_vm._v("Close Game")]
-          ),
-          _vm._v(" "),
-          _vm.game.players[0] == _vm.currentPlayer &&
-          !_vm.game.gameStarted &&
-          _vm.game.players.length > 1
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-primary",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.start(_vm.game)
-                    }
-                  }
-                },
-                [_vm._v("Start")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.game.playerTurn == _vm.currentPlayer && _vm.game.gameStarted
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-success",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.giveCard($event)
-                    }
-                  }
-                },
-                [_vm._v("Give me card")]
-              )
-            : _vm._e()
-        ])
-      ]),
-      _vm._v(" "),
-      _vm.game.gameStarted
-        ? _c("div", [
-            _c(
-              "div",
-              { staticStyle: { display: "inline-block" } },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.game.players[0]) +
-                    "\n                "
-                ),
-                _vm._l(_vm.game.board1Player, function(card, key) {
-                  return _c(
-                    "div",
-                    { staticStyle: { display: "inline-block" } },
-                    [
-                      _c("img", {
-                        attrs: { src: _vm.cardImageURL(card), width: "70px" }
-                      })
-                    ]
-                  )
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _vm.game.players.length <= 2
-              ? _c(
-                  "div",
-                  { staticStyle: { clear: "left" } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.game.players[1]) +
-                        "\n                "
-                    ),
-                    _vm._l(_vm.game.board2Player, function(card, key) {
-                      return _c(
-                        "div",
-                        { staticStyle: { display: "inline-block" } },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: _vm.cardImageURL(card),
-                              width: "70px"
-                            }
-                          })
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.game.players.length <= 3
-              ? _c(
-                  "div",
-                  { staticStyle: { clear: "left" } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.game.players[2]) +
-                        "\n                "
-                    ),
-                    _vm._l(_vm.game.board3Player, function(card, key) {
-                      return _c(
-                        "div",
-                        { staticStyle: { display: "inline-block" } },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: _vm.cardImageURL(card),
-                              width: "70px"
-                            }
-                          })
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.game.players.length <= 4
-              ? _c(
-                  "div",
-                  { staticStyle: { clear: "left" } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.game.players[3]) +
-                        "\n                "
-                    ),
-                    _vm._l(_vm.game.board4Player, function(card, key) {
-                      return _c(
-                        "div",
-                        { staticStyle: { display: "inline-block" } },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: _vm.cardImageURL(card),
-                              width: "70px"
-                            }
-                          })
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("hr")
-          ])
-        : _vm._e()
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-e01e0f30", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      [
-        _c("h3", { staticClass: "text-center" }, [_vm._v(_vm._s(_vm.title))]),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("h3", [_vm._v(" " + _vm._s(_vm.currentPlayer.name))]),
-        _vm._v(" "),
-        _c("p", [_vm._v("Pontos : " + _vm._s(_vm.currentPlayer.total_points))]),
-        _vm._v(" "),
-        _c("p", [
-          _vm._v(
-            "Jogos Jogados : " + _vm._s(_vm.currentPlayer.total_games_played)
-          )
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("h3", { staticClass: "text-center" }, [_vm._v("Lobby")]),
-        _vm._v(" "),
-        _c("p", [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-xs btn-success",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  _vm.createGame($event)
-                }
-              }
-            },
-            [_vm._v("Create a New Game")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("hr"),
-        _vm._v(" "),
-        _c("h4", [
-          _vm._v("Pending games ("),
-          _c(
-            "a",
-            {
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  _vm.loadLobby($event)
-                }
-              }
-            },
-            [_vm._v("Refresh")]
-          ),
-          _vm._v(")")
-        ]),
-        _vm._v(" "),
-        _c("lobby", {
-          attrs: { games: _vm.lobbyGames },
-          on: { "join-click": _vm.join, "start-click": _vm.start }
-        }),
-        _vm._v(" "),
-        _vm._l(_vm.activeGames, function(game) {
-          return [
-            _c("game", {
-              attrs: { game: game, currentPlayer: _vm.currentPlayer }
-            })
-          ]
-        })
-      ],
-      2
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-274ea010", module.exports)
-  }
-}
-
-/***/ }),
-/* 74 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__(75)
-}
-var normalizeComponent = __webpack_require__(5)
-/* script */
-var __vue_script__ = __webpack_require__(77)
-/* template */
-var __vue_template__ = __webpack_require__(79)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-060dcdc3"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/authentification/regist.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-060dcdc3", Component.options)
-  } else {
-    hotAPI.reload("data-v-060dcdc3", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(76);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("29262d05", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-060dcdc3\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./regist.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-060dcdc3\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./regist.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 77 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_Form__ = __webpack_require__(41);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -47631,31 +46537,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             form: new __WEBPACK_IMPORTED_MODULE_0__classes_Form__["a" /* Form */]({
-                name: '',
-                email: '',
-                nickname: '',
-                password: '',
-                password_confirmation: ''
+                username: '',
+                password: ''
             })
         };
     },
     methods: {
-        createUser: function createUser() {
-            this.form.post('api/users/').then(function (response) {
-                // this.$emit('user-created');
-                alert('Check Your Mail');
+        signIn: function signIn() {
+            var _this = this;
+
+            var headers = {
+                'Content-Type': 'application/json'
+            };
+            var data = {
+                'email': this.form.username,
+                'password': this.form.password
+
+            };
+            axios.post('api/login', data, headers).then(function (response) {
+                // localStorage.setItem('token', response.data.access_token)
+                _this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
+                _this.$router.push("/blackJack");
             }).catch(function (error) {
-                return console.log('Whoops');
+                alert('ta mal');
             });
-        },
-        cancelEdit: function cancelEdit() {
-            this.$emit('user-canceled');
         }
     }
 });
 
 /***/ }),
-/* 78 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47753,7 +46664,311 @@ var Errors = function () {
 }();
 
 /***/ }),
-/* 79 */
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "jumbotron" }, [
+    _c("h2", [_vm._v("Login")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c("form", { staticClass: "form-signin" }, [
+        _c("h2", { staticClass: "form-signin-heading" }, [
+          _vm._v("Please sign in")
+        ]),
+        _vm._v(" "),
+        _c("label", { staticClass: "sr-only", attrs: { for: "email" } }, [
+          _vm._v("Email address or NickName")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.form.username,
+              expression: "form.username"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            id: "email",
+            placeholder: "Email address or NickName",
+            required: "",
+            autofocus: ""
+          },
+          domProps: { value: _vm.form.username },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "username", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "label",
+          { staticClass: "sr-only", attrs: { for: "inputPassword" } },
+          [_vm._v("Password")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.form.password,
+              expression: "form.password"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "password",
+            id: "inputPassword",
+            placeholder: "Password",
+            required: ""
+          },
+          domProps: { value: _vm.form.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.form, "password", $event.target.value)
+            }
+          }
+        }),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block",
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                _vm.signIn()
+              }
+            }
+          },
+          [_vm._v("Sign in")]
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "checkbox" }, [
+      _c("label", [
+        _c("input", { attrs: { type: "checkbox", value: "remember-me" } }),
+        _vm._v(" Remember me\n                ")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-c58007a8", module.exports)
+  }
+}
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(66)
+}
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(68)
+/* template */
+var __vue_template__ = __webpack_require__(69)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-060dcdc3"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/authentification/regist.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-060dcdc3", Component.options)
+  } else {
+    hotAPI.reload("data-v-060dcdc3", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(67);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("29262d05", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-060dcdc3\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./regist.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-060dcdc3\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./regist.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_Form__ = __webpack_require__(41);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            form: new __WEBPACK_IMPORTED_MODULE_0__classes_Form__["a" /* Form */]({
+                name: '',
+                email: '',
+                nickname: '',
+                password: '',
+                password_confirmation: ''
+            })
+        };
+    },
+    methods: {
+        createUser: function createUser() {
+            this.form.post('api/users/').then(function (response) {
+                // this.$emit('user-created');
+                alert('Check Your Mail');
+            }).catch(function (error) {
+                return console.log('Whoops');
+            });
+        },
+        cancelEdit: function cancelEdit() {
+            this.$emit('user-canceled');
+        }
+    }
+});
+
+/***/ }),
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -48014,17 +47229,17 @@ if (false) {
 }
 
 /***/ }),
-/* 80 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(81)
+  __webpack_require__(71)
 }
 var normalizeComponent = __webpack_require__(5)
 /* script */
-var __vue_script__ = __webpack_require__(83)
+var __vue_script__ = __webpack_require__(73)
 /* template */
 var __vue_template__ = __webpack_require__(84)
 /* template functional */
@@ -48032,7 +47247,7 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-c58007a8"
+var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -48043,7 +47258,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/authentification/login.vue"
+Component.options.__file = "resources/assets/js/components/game/blackJack.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -48052,9 +47267,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c58007a8", Component.options)
+    hotAPI.createRecord("data-v-274ea010", Component.options)
   } else {
-    hotAPI.reload("data-v-c58007a8", Component.options)
+    hotAPI.reload("data-v-274ea010", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -48065,23 +47280,23 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 81 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(82);
+var content = __webpack_require__(72);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("36eabbcd", content, false);
+var update = __webpack_require__(4)("43f389cb", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c58007a8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./login.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-c58007a8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./login.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-274ea010\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./blackJack.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-274ea010\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./blackJack.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -48091,7 +47306,7 @@ if(false) {
 }
 
 /***/ }),
-/* 82 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(false);
@@ -48099,18 +47314,21 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 83 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_Form__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Lobby_vue__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Lobby_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Lobby_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Game_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Game_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Game_vue__);
 //
 //
 //
@@ -48132,142 +47350,385 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            form: new __WEBPACK_IMPORTED_MODULE_0__classes_Form__["a" /* Form */]({
-                username: '',
-                password: ''
-            })
+            title: 'BlackJack',
+            currentPlayer: {},
+            lobbyGames: [],
+            activeGames: [],
+            socketId: "",
+            deck_nr: '',
+            cards: []
         };
     },
+    sockets: {
+        connect: function connect() {
+            console.log('socket connected');
+            this.socketId = this.$socket.id;
+        },
+        discconnect: function discconnect() {
+            console.log('socket disconnected');
+            this.socketId = "";
+        },
+        lobby_changed: function lobby_changed() {
+            // For this to work, websocket server must emit a message
+            // named "lobby_changed"
+            this.loadLobby();
+        },
+        my_active_games_changed: function my_active_games_changed() {
+            this.loadActiveGames();
+        },
+        my_active_games: function my_active_games(games) {
+            this.activeGames = games;
+            //console.log(games.length);
+        },
+        my_lobby_games: function my_lobby_games(games) {
+            this.lobbyGames = games;
+        },
+        game_changed: function game_changed(game) {
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = this.lobbyGames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var lobbyGame = _step.value;
+
+                    if (game.gameID == lobbyGame.gameID) {
+                        Object.assign(lobbyGame, game);
+                        break;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
+
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+                for (var _iterator2 = this.activeGames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                    var activeGame = _step2.value;
+
+                    if (game.gameID == activeGame.gameID) {
+                        Object.assign(activeGame, game);
+                        break;
+                    }
+                }
+            } catch (err) {
+                _didIteratorError2 = true;
+                _iteratorError2 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                        _iterator2.return();
+                    }
+                } finally {
+                    if (_didIteratorError2) {
+                        throw _iteratorError2;
+                    }
+                }
+            }
+        },
+        invalid_play: function invalid_play(errorObject) {
+            if (errorObject.type == 'Invalid_Game') {
+                alert('ERROR: Game does not exist on server');
+            } else if (errorObject.type == 'Invalid_Player') {
+                alert('ERROR: Player not valid for this game');
+            } else if (errorObject.type == 'Invalid_Play') {
+                alert('ERROR: Move not valid or not your turn');
+            } else {
+                alert('ERROR: ' + errorObject.type);
+            }
+        }
+    },
     methods: {
-        signIn: function signIn() {
+        loadLobby: function loadLobby() {
+            /// send message to server to load the list of games on the lobby
+            this.$socket.emit('get_my_lobby_games');
+        },
+        loadActiveGames: function loadActiveGames() {
+            /// send message to server to load the list of games that player is playing
+            this.$socket.emit('get_my_activegames');
+        },
+        createGame: function createGame() {
             var _this = this;
 
-            var headers = {
-                'Content-Type': 'application/json'
-            };
-            var data = {
-                'email': this.form.username,
-                'password': this.form.password
+            console.log('criei');
+            // For this to work, server must handle (on event) the "create_game" message
+            if (this.currentPlayer.name == "") {
+                alert('Current Player is Empty - Cannot Create a Game');
+                return;
+            } else {
+                axios.get('/api/decks/random').then(function (response) {
+                    //console.log('deck'+response.data.data.id);
+                    _this.deck_nr = response.data.data.id;
+                    axios.get('/api/cards/deck/' + _this.deck_nr).then(function (response) {
+                        //console.log('response.data.data');
+                        //console.log(response.data.data);
+                        _this.cards = response.data.data;
+                        _this.$socket.emit('create_game', { playerName: _this.currentPlayer.name, cards: _this.cards });
+                    });
+                });
+            }
+        },
+        join: function join(game) {
+            // Click to join game
+            if (game.player1 == this.currentPlayer.name) {
+                alert('Cannot join because your name is the same as Player1');
+                return;
+            }
+            this.$socket.emit('join_game', { gameID: game.gameID, playerName: this.currentPlayer.name });
+        },
+        start: function start(game) {
+            // play a game - click on piece on specified index
+            this.$socket.emit('start_game', { gameID: game.gameID, playerName: this.currentPlayer.name });
+            console.log(this.currentPlayer.name);
+        },
+        play: function play(game, index) {
+            // play a game - click on piece on specified index
+            this.$socket.emit('play', { gameID: game.gameID, index: index });
+        },
+        close: function close(game) {
+            // to close a game
+            this.$socket.emit('remove_game', { gameID: game.gameID });
+        },
+        giveCard: function giveCard(game) {
+            // to close a game
+            this.$socket.emit('give_card', { gameID: game.gameID, playerName: this.currentPlayer.name });
+        },
 
+        loadUser: function loadUser() {
+            var _this2 = this;
+
+            var headers = {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.$auth.getToken()
             };
-            axios.post('api/login', data, headers).then(function (response) {
-                // localStorage.setItem('token', response.data.access_token)
-                _this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
-                _this.$router.push("blackJack");
+            axios.get('api/user', headers).then(function (response) {
+                //Object.assign(this.currentPlayer, response.data);
+                _this2.currentPlayer = response.data;
             }).catch(function (error) {
-                alert('ta mal');
+                console.log('nao tem nada');
             });
+            console.log('load user');
         }
+    },
+    components: {
+        'lobby': __WEBPACK_IMPORTED_MODULE_0__Lobby_vue___default.a,
+        'game': __WEBPACK_IMPORTED_MODULE_1__Game_vue___default.a
+    },
+    mounted: function mounted() {
+        console.log(this.$auth.getToken());
+        this.loadLobby();
+    },
+    created: function created() {
+        this.loadUser();
     }
 });
 
 /***/ }),
-/* 84 */
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(75)
+}
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(77)
+/* template */
+var __vue_template__ = __webpack_require__(78)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-3243ec30"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/game/Lobby.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3243ec30", Component.options)
+  } else {
+    hotAPI.reload("data-v-3243ec30", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(76);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("315796d1", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3243ec30\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Lobby.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-3243ec30\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Lobby.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// Component code (not registered)
+module.exports = {
+    props: ['games'],
+    methods: {
+        join: function join(game) {
+            this.$emit('join-click', game);
+        }
+    }
+};
+
+/***/ }),
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "jumbotron" }, [
-    _c("h2", [_vm._v("Login")]),
+  return _c("table", { staticClass: "table table-striped" }, [
+    _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "container" }, [
-      _c("form", { staticClass: "form-signin" }, [
-        _c("h2", { staticClass: "form-signin-heading" }, [
-          _vm._v("Please sign in")
-        ]),
-        _vm._v(" "),
-        _c("label", { staticClass: "sr-only", attrs: { for: "email" } }, [
-          _vm._v("Email address or NickName")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.form.username,
-              expression: "form.username"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "text",
-            id: "email",
-            placeholder: "Email address or NickName",
-            required: "",
-            autofocus: ""
-          },
-          domProps: { value: _vm.form.username },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.form, "username", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "label",
-          { staticClass: "sr-only", attrs: { for: "inputPassword" } },
-          [_vm._v("Password")]
-        ),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.form.password,
-              expression: "form.password"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: {
-            type: "password",
-            id: "inputPassword",
-            placeholder: "Password",
-            required: ""
-          },
-          domProps: { value: _vm.form.password },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.form, "password", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block",
-            on: {
-              click: function($event) {
-                $event.preventDefault()
-                _vm.signIn()
-              }
-            }
-          },
-          [_vm._v("Sign in")]
-        )
-      ])
-    ])
+    _c(
+      "tbody",
+      _vm._l(_vm.games, function(game) {
+        return _c("tr", { key: game.gameID }, [
+          _c("td", [_vm._v(_vm._s(game.gameID))]),
+          _vm._v(" "),
+          game.players[1] != "undefined"
+            ? _c("td", [_vm._v(_vm._s(game.players[0]))])
+            : _vm._e(),
+          _vm._v(" "),
+          game.players[1] != "undefined"
+            ? _c("td", [_vm._v(_vm._s(game.players[1]))])
+            : _vm._e(),
+          _vm._v(" "),
+          game.players[2] != "undefined"
+            ? _c("td", [_vm._v(_vm._s(game.players[2]))])
+            : _vm._e(),
+          _vm._v(" "),
+          game.players[3] != "undefined"
+            ? _c("td", [_vm._v(_vm._s(game.players[3]))])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("td", [
+            _c(
+              "a",
+              {
+                staticClass: "btn btn-xs btn-primary",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.join(game)
+                  }
+                }
+              },
+              [_vm._v("Join")]
+            )
+          ])
+        ])
+      })
+    )
   ])
 }
 var staticRenderFns = [
@@ -48275,10 +47736,19 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "checkbox" }, [
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox", value: "remember-me" } }),
-        _vm._v(" Remember me\n                ")
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Player 1")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Player 2")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Player 3")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Player 4")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   }
@@ -48288,7 +47758,531 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c58007a8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3243ec30", module.exports)
+  }
+}
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(80)
+}
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(83)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-d86946f0"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/game/Game.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-d86946f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-d86946f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(81);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("2d8f67de", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d86946f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Game.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-d86946f0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Game.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.gameseparator[data-v-d86946f0]{\n    border-style: solid;\n    border-width: 2px 0 0 0;\n    border-color: black;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['game', 'currentPlayer'],
+    data: function data() {
+        return {};
+    },
+    computed: {
+        message: function message() {
+            // return Message to show
+            if (!this.game.gameStarted) {
+                return "Game has not started yet";
+            } else if (this.game.gameEnded) {
+                if (this.game.winner == this.ownPlayerNumber) {
+                    return "Game has ended. YOU WIN !!!";
+                } else if (this.game.winner == 0) {
+                    return "Game has ended. It's a tie";
+                }
+                return "Game has ended and " + this.adversaryName + "'s has won. YOU HAVE LOST !!!";
+            } else {
+                if (this.game.playerTurn == this.currentPlayer) {
+                    return "It's your turn";
+                } else {
+                    //return "It's "+this.adversaryName+"'s' turn";
+                    return "It's " + this.game.playerTurn + "'s turn";
+                }
+            }
+            return "Game is inconsistent";
+        },
+        alerttype: function alerttype() {
+            if (!this.game.gameStarted) {
+                return "alert-warning";
+            } else if (this.game.gameEnded) {
+                if (this.game.winner == this.ownPlayerNumber) {
+                    return "alert-success";
+                } else if (this.game.winner == 0) {
+                    return "alert-info";
+                }
+                return "alert-danger";
+            } else {
+                if (this.game.playerTurn == this.currentPlayer) {
+                    return "alert-success";
+                } else {
+                    return "alert-info";
+                }
+            }
+        },
+        adversaryName: function adversaryName() {
+            var ownPlayerNumb = this.ownPlayerNumber;
+            if (ownPlayerNumb == 1) {
+                return this.game.player2;
+            }
+            if (ownPlayerNumb == 2) {
+                return this.game.player1;
+            }
+            return "Unknown";
+        },
+        ownPlayerNumber: function ownPlayerNumber() {
+            if (this.game.player1SocketID == this.$parent.socketId) {
+                return 1;
+            } else if (this.game.player2SocketID == this.$parent.socketId) {
+                return 2;
+            }
+            return 0;
+        }
+    },
+    methods: {
+        start: function start(game) {
+            this.$parent.start(this.game);
+        },
+        closeGame: function closeGame() {
+            // Click to close game
+            this.$parent.close(this.game);
+        },
+        giveCard: function giveCard() {
+            // Click to close game
+            this.$parent.giveCard(this.game);
+        },
+
+        cardImageURL: function cardImageURL(card) {
+            if (card != 'undefined') {
+                var imgSrc = String(card.path);
+                return 'img/' + imgSrc;
+            }
+        }
+    },
+    mounted: function mounted() {
+        console.log(this.currentPlayer);
+    }
+});
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "gameseparator" }, [
+    _c("div", [
+      _c("h2", { staticClass: "text-center" }, [
+        _vm._v("Game " + _vm._s(_vm.game.gameID))
+      ]),
+      _vm._v(" "),
+      _c("br")
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "game-zone-content" }, [
+      _c("div", { staticClass: "alert", class: _vm.alerttype }, [
+        _c("strong", [
+          _vm._v(_vm._s(_vm.message) + "     \n                "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-xs btn-primary",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.closeGame($event)
+                }
+              }
+            },
+            [_vm._v("Close Game")]
+          ),
+          _vm._v(" "),
+          _vm.game.players[0] == _vm.currentPlayer &&
+          !_vm.game.gameStarted &&
+          _vm.game.players.length > 1
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-xs btn-primary",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.start(_vm.game)
+                    }
+                  }
+                },
+                [_vm._v("Start")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.game.playerTurn == _vm.currentPlayer && _vm.game.gameStarted
+            ? _c(
+                "button",
+                {
+                  staticClass: "btn btn-xs btn-success",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.giveCard($event)
+                    }
+                  }
+                },
+                [_vm._v("Give me card")]
+              )
+            : _vm._e()
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.game.gameStarted
+        ? _c("div", [
+            _c(
+              "div",
+              { staticStyle: { display: "inline-block" } },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.game.players[0].name) +
+                    "\n                "
+                ),
+                _vm._l(_vm.game.board1Player, function(card, key) {
+                  return _c(
+                    "div",
+                    { staticStyle: { display: "inline-block" } },
+                    [
+                      _c("img", {
+                        attrs: { src: _vm.cardImageURL(card), width: "70px" }
+                      })
+                    ]
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _vm.game.players.length <= 2
+              ? _c(
+                  "div",
+                  { staticStyle: { clear: "left" } },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.game.players[1].name) +
+                        "\n                "
+                    ),
+                    _vm._l(_vm.game.board2Player, function(card, key) {
+                      return _c(
+                        "div",
+                        { staticStyle: { display: "inline-block" } },
+                        [
+                          _c("img", {
+                            attrs: {
+                              src: _vm.cardImageURL(card),
+                              width: "70px"
+                            }
+                          })
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.game.players.length <= 3
+              ? _c(
+                  "div",
+                  { staticStyle: { clear: "left" } },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.game.players[2].name) +
+                        "\n                "
+                    ),
+                    _vm._l(_vm.game.board3Player, function(card, key) {
+                      return _c(
+                        "div",
+                        { staticStyle: { display: "inline-block" } },
+                        [
+                          _c("img", {
+                            attrs: {
+                              src: _vm.cardImageURL(card),
+                              width: "70px"
+                            }
+                          })
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.game.players.length <= 4
+              ? _c(
+                  "div",
+                  { staticStyle: { clear: "left" } },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.game.players[3].name) +
+                        "\n                "
+                    ),
+                    _vm._l(_vm.game.board4Player, function(card, key) {
+                      return _c(
+                        "div",
+                        { staticStyle: { display: "inline-block" } },
+                        [
+                          _c("img", {
+                            attrs: {
+                              src: _vm.cardImageURL(card),
+                              width: "70px"
+                            }
+                          })
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("hr")
+          ])
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-d86946f0", module.exports)
+  }
+}
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      [
+        _c("h3", { staticClass: "text-center" }, [_vm._v(_vm._s(_vm.title))]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("h3", [_vm._v(_vm._s(_vm.currentPlayer.name))]),
+        _vm._v(" "),
+        _c("p", [_vm._v("Pontos : " + _vm._s(_vm.currentPlayer.total_points))]),
+        _vm._v(" "),
+        _c("p", [
+          _vm._v(
+            "Jogos Jogados : " + _vm._s(_vm.currentPlayer.total_games_played)
+          )
+        ]),
+        _vm._v(" "),
+        _c("hr"),
+        _vm._v(" "),
+        _c("h3", { staticClass: "text-center" }, [_vm._v("Lobby")]),
+        _vm._v(" "),
+        _c("p", [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-xs btn-success",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.createGame($event)
+                }
+              }
+            },
+            [_vm._v("Create a New Game")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("hr"),
+        _vm._v(" "),
+        _c("h4", [
+          _vm._v("Pending games ("),
+          _c(
+            "a",
+            {
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.loadLobby($event)
+                }
+              }
+            },
+            [_vm._v("Refresh")]
+          ),
+          _vm._v(")")
+        ]),
+        _vm._v(" "),
+        _c("lobby", {
+          attrs: { games: _vm.lobbyGames },
+          on: { "join-click": _vm.join, "start-click": _vm.start }
+        }),
+        _vm._v(" "),
+        _vm._l(_vm.activeGames, function(activeGame) {
+          return [
+            _c("game", {
+              attrs: { game: activeGame, currentPlayer: _vm.currentPlayer }
+            })
+          ]
+        })
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-274ea010", module.exports)
   }
 }
 

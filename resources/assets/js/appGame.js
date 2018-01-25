@@ -22,15 +22,11 @@ window.axios.defaults.headers.common['Accept'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken();
 
 
-const blackJack = Vue.component('game', require('./components/game/blackJack.vue'));
-const regist = Vue.component('regist', require('./components/authentification/regist.vue'));
-const login = Vue.component('login', require('./components/authentification/login.vue'));
-
 const routes = [
   { path: '/', redirect: '/users' },
-  { path: '/login', component: login, meta: {forVisitors:true} },
-  { path: '/regist', component: regist, meta: {forVisitors:true}  },
-  { path: '/blackJack', component: blackJack, meta: {forAuth:true} }
+  { path: '/login', component: require('./components/authentification/login.vue'), meta: {forVisitors:true} },
+  { path: '/regist', component: require('./components/authentification/regist.vue'), meta: {forVisitors:true}  },
+  { path: '/blackJack', component: require('./components/game/blackJack.vue'), meta: {forAuth:true} }
 ];
 
 const router = new VueRouter({

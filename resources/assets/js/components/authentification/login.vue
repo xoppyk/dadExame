@@ -46,8 +46,8 @@
                 axios.post('api/login', data, headers)
                 .then((response) => {
                   // localStorage.setItem('token', response.data.access_token)
-                  this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now())
-                  this.$router.push("blackJack")
+                  this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
+                  this.$router.push("/blackJack");
                 })
                 .catch((error) => {
                     alert('ta mal')
