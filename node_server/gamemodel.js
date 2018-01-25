@@ -33,7 +33,9 @@ class BlackJackGame {
             for(var i = 0; i < this.players.length;i++){
                 for(var ii = 0; ii < 2;ii++){
                     //console.log(ii);
-                    this.boards[i][ii] = this.cartas[Math.floor(Math.random() * this.cartas.length-1)];
+                    var number = Math.floor(Math.random() * this.cartas.length-1);
+                    this.boards[i][ii] = this.cartas[number];
+                    this.cartas.splice(number, 1);
                 }
             }
             this.gameStarted = true;
@@ -66,36 +68,43 @@ class BlackJackGame {
 
     giveCard(player){
         console.log('giveCard ' + player + ' in game ' + this.gameID);
-        var number;
+        /*var number;
         do{
             number = Math.floor(Math.random() * this.cartas.length-1);
         }while(this.jaEscolhida(this.cartas[number]));
-        //console.log(player + '--' + this.players[0]);
+        */
+       
+       var number = Math.floor(Math.random() * this.cartas.length-1);
 
         switch (player) {
             case this.players[0]:
                 if(this.board1Player.length < 4){
                     this.board1Player[this.board1Player.length] = this.cartas[number];
+                    this.cartas.splice(number, 1);
                 }
                 break;
             case this.players[1]:
                 if(this.board2Player.length < 4){
                     this.board2Player[this.board2Player.length] = this.cartas[number];
+                    this.cartas.splice(number, 1);
                 }
                 break;
             case this.players[2]:
                 if(this.board3Player.length < 4){
                     this.board3Player[this.board3Player.length] = this.cartas[number];
+                    this.cartas.splice(number, 1);
                 }
                 break;
             case this.players[3]:
                 if(this.board4Player.length < 4){
                     this.board4Player[this.board4Player.length] = this.cartas[number];
+                    this.cartas.splice(number, 1);
                 }
                 break;
             default:
                 break;
         }
+        console.log(this.cartas.length);
 
         this.nrPlayerTurn --;
         if(this.nrPlayerTurn < 0){

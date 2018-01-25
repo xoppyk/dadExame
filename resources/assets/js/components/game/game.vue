@@ -8,31 +8,32 @@
             <div class="alert" :class="alerttype">
                 <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-xs btn-primary" v-on:click.prevent="closeGame">Close Game</button>
-                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.players[0] == currentPlayer && !game.gameStarted && game.players.length > 1">Start</button>
-                    <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-if="game.playerTurn == currentPlayer && game.gameStarted">Give me card</button>
+                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.players[0] == currentPlayer.name && !game.gameStarted && game.players.length > 1">Start</button>
+                    <button class="btn btn-xs btn-danger" v-on:click.prevent="start(game)" v-if="game.gameStarted && game.players.length > 1 && game.playerTurn == currentPlayer.name">Skip</button>
+                    <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-if="game.playerTurn == currentPlayer.name && game.gameStarted">Give me card</button>
                 </strong>
             </div>
             <div v-if="game.gameStarted">
                 <div style="display: inline-block;">
-                    {{ game.players[0].name }}
+                    {{ game.players[0] }}
                     <div v-for="(card, key) of game.board1Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
                 <div style="clear: left;" v-if="game.players.length <= 2">
-                    {{ game.players[1].name }}
+                    {{ game.players[1] }}
                     <div v-for="(card, key) of game.board2Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
                 <div style="clear: left;" v-if="game.players.length <= 3">
-                    {{ game.players[2].name}}
+                    {{ game.players[2] }}
                     <div v-for="(card, key) of game.board3Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
                 <div style="clear: left;" v-if="game.players.length <= 4">
-                    {{ game.players[3].name }}
+                    {{ game.players[3] }}
                     <div v-for="(card, key) of game.board4Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
