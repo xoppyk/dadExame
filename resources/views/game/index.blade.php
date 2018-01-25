@@ -14,5 +14,5 @@
 @endsection
 
 @section('pagescript')
-    <script src="/js/app.js"></script>
+    <script src="{{ asset('js/appGame.js') }}"></script>
 @stop

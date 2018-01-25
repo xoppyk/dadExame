@@ -56,8 +56,6 @@ router.beforeEach(
 )
 
 
-const appGame = new Vue({
-  router,
-  data:{
-  }
-}).$mount('#appGame');
+const app = new Vue({
+  router
+}).$mount('#app')

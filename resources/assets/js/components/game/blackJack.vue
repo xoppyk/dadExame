@@ -143,7 +143,7 @@ export default {
   mounted() {
     this.loadLobby();
   },
-  beforeMount() {
+  created() {
     // this.$socket.emit('authentication', window.localStorage.getItem('access_token'));
     var headers = {
       'Accept' : 'application/json',
