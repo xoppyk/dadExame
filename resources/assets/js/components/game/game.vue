@@ -19,19 +19,19 @@
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
-                <div style="clear: left;" v-if="game.players.length == 2">
+                <div style="clear: left;" v-if="game.players.length <= 2">
                     {{ game.players[1] }}
                     <div v-for="(card, key) of game.board2Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
-                <div style="clear: left;" v-if="game.players.length == 3">
+                <div style="clear: left;" v-if="game.players.length <= 3">
                     {{ game.players[2] }}
                     <div v-for="(card, key) of game.board3Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
                     </div>
                 </div>
-                <div style="clear: left;" v-if="game.players.length == 4">
+                <div style="clear: left;" v-if="game.players.length <= 4">
                     {{ game.players[3] }}
                     <div v-for="(card, key) of game.board4Player" style="display: inline-block;">
                         <img v-bind:src="cardImageURL(card)" width="70px">    
