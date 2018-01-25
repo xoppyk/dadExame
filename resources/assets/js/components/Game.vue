@@ -7,35 +7,38 @@
         <div class="game-zone-content">       
             <div class="alert" :class="alerttype">
                 <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-xs btn-primary" v-on:click.prevent="closeGame">Close Game</a>
-                    <a class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.players[0] == currentPlayer && !game.gameStarted">Start</a>
+                    <button class="btn btn-xs btn-primary" v-on:click.prevent="closeGame">Close Game</button>
+                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.players[0] == currentPlayer && !game.gameStarted && game.players.length > 1">Start</button>
+                    <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-if="game.playerTurn == currentPlayer && game.gameStarted">Give me card</button>
                 </strong>
             </div>
-            <div style="display: inline-block;">
-                {{ game.players[0] }}
-                <div v-for="(piece, key) of game.board1Player" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+            <div v-if="game.gameStarted">
+                <div style="display: inline-block;">
+                    {{ game.players[0] }}
+                    <div v-for="(card, key) of game.board1Player" style="display: inline-block;">
+                        <img v-bind:src="cardImageURL(card)" width="70px">    
+                    </div>
                 </div>
-            </div>
-            <div style="display: inline-block;" v-if="game.players.length == 2">
-                {{ game.players[1] }}
-                <div v-for="(piece, key) of game.board2Player" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                <div style="clear: left;" v-if="game.players.length == 2">
+                    {{ game.players[1] }}
+                    <div v-for="(card, key) of game.board2Player" style="display: inline-block;">
+                        <img v-bind:src="cardImageURL(card)" width="70px">    
+                    </div>
                 </div>
-            </div>
-            <div style="display: inline-block;" v-if="game.players.length == 3">
-                {{ game.players[2] }}
-                <div v-for="(piece, key) of game.board3Player" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                <div style="clear: left;" v-if="game.players.length == 3">
+                    {{ game.players[2] }}
+                    <div v-for="(card, key) of game.board3Player" style="display: inline-block;">
+                        <img v-bind:src="cardImageURL(card)" width="70px">    
+                    </div>
                 </div>
-            </div>
-            <div style="display: inline-block;" v-if="game.players.length == 4">
-                {{ game.players[3] }}
-                <div v-for="(piece, key) of game.board4Player" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                <div style="clear: left;" v-if="game.players.length == 4">
+                    {{ game.players[3] }}
+                    <div v-for="(card, key) of game.board4Player" style="display: inline-block;">
+                        <img v-bind:src="cardImageURL(card)" width="70px">    
+                    </div>
                 </div>
+                <hr>
             </div>
-            <hr>
         </div>  
     </div>          
 </template>
@@ -61,10 +64,11 @@
                     }
                     return "Game has ended and "+this.adversaryName+"'s has won. YOU HAVE LOST !!!";
                 }else{
-                   if(this.game.playerTurn == this.ownPlayerNumber){
+                   if(this.game.playerTurn == this.currentPlayer){
                         return "It's your turn";
                     }else{
-                        return "It's "+this.adversaryName+"'s' turn";
+                        //return "It's "+this.adversaryName+"'s' turn";
+                        return "It's "+this.game.playerTurn+"'s turn";
                     }
                 }
                 return "Game is inconsistent";
@@ -80,7 +84,7 @@
                     }
                     return "alert-danger";
                 }else{
-                   if(this.game.playerTurn == this.ownPlayerNumber){
+                   if(this.game.playerTurn == this.currentPlayer){
                         return "alert-success";
                     }else{
                         return "alert-info";
@@ -110,26 +114,19 @@
             start(game) {
                 this.$parent.start(this.game);
             },
-            closeGame (){
+            closeGame(){
                 // Click to close game
                 this.$parent.close(this.game);
             },
-            clickPiece(index){
-                if(!this.game.gameEnded){
-                    if(this.game.playerTurn != this.ownPlayerNumber){
-                        alert('Its not your turn');
-                    }else{
-                        if(this.game.board[index] == 0){
-                            this.$parent.play(this.game, index);
-                        }
-                    }
-                }
+            giveCard(){
+                // Click to close game
+                this.$parent.giveCard(this.game);
             },
-            pieceImageURL: function (piece) {
-                //if(piece != 'undefined'){
-                    var imgSrc = String(piece);
-                    return 'img/' + imgSrc + '.png';
-                //}
+            cardImageURL: function (card) {
+                if(card != 'undefined'){
+                    var imgSrc = String(card.path);
+                    return 'img/' + imgSrc;
+                }
             }
         },
         mounted(){

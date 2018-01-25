@@ -1,58 +1,65 @@
 /*jshint esversion: 6 */
 
 class BlackJackGame {
-    constructor(ID, player1Name, carts) {
+    constructor(ID, player1Name, cards) {
         this.gameID = ID;
-        this.cartas = carts;
+        this.cartas = cards;
         this.gameEnded = false;
         this.gameStarted = false;
-        /*this.player1 = player1Name;
-        this.player2 = '';*/
         this.players = [];
         this.players[0] = player1Name;
-        this.playerTurn = 1;
+        this.playerTurn = player1Name;
+        this.nrPlayerTurn = 0;
         this.winner = 0;
-        this.board1Player = ['undefined', 'undefined', 'undefined', 'undefined'];
-        this.board2Player = ['undefined', 'undefined', 'undefined', 'undefined'];
-        this.board3Player = ['undefined', 'undefined', 'undefined', 'undefined'];
-        this.board4Player = ['undefined', 'undefined', 'undefined', 'undefined'];
+        this.board1Player = ['undefined', 'undefined'];
+        this.board2Player = ['undefined', 'undefined'];
+        this.board3Player = ['undefined', 'undefined'];
+        this.board4Player = ['undefined', 'undefined'];
+        this.boards = [this.board1Player, this.board2Player, this.board3Player, this.board4Player]
     }
 
     join(playerName){
         if(this.players.length < 5){
             this.players[this.players.length] = playerName;
-            this.playerTurn++;
-            console.log('join player ' + playerName);
+            this.playerTurn = playerName;
+            this.nrPlayerTurn ++;
+            console.log('join player ' + playerName + ' to game ' + this.gameID);
         }
     }
 
     start(playerName){
         if(this.players[0] == playerName && this.gameStarted == false){
+            for(var i = 0; i < this.players.length;i++){
+                for(var ii = 0; ii < 2;ii++){
+                    //console.log(ii);
+                    this.boards[i][ii] = this.cartas[Math.floor(Math.random() * this.cartas.length-1)];
+                }
+            }
             this.gameStarted = true;
         }
     }
 
     hasPoints(player){
         switch (player) {
-            case 1:
+            case this.players[0]:
                 if(pointsPerCart(this.board1Player[0]) + pointsPerCart(this.board1Player[1]) + 
                     pointsPerCart(this.board1Player[2]) + pointsPerCart(this.board1Player[3])){
                     return true;
                 }
                 break;
-            case 2:
+            case this.players[1]:
                 if(pointsPerCart(this.board2Player[0]) + pointsPerCart(this.board2Player[1]) + 
                     pointsPerCart(this.board2Player[2]) + pointsPerCart(this.board2Player[3])){
                     return true;
                 }
                 break;
-            case 3:
+            case this.players[2]:
                 if(pointsPerCart(this.board3Player[0]) + pointsPerCart(this.board3Player[1]) + 
                     pointsPerCart(this.board3Player[2]) + pointsPerCart(this.board3Player[3])){
                     return true;
                 }
                 break;
-            case 4:
+            case this.players[3]:
                 if(pointsPerCart(this.board4Player[0]) + pointsPerCart(this.board4Player[1]) + 
                     pointsPerCart(this.board4Player[2]) + pointsPerCart(this.board4Player[3])){
                     return true;
@@ -63,45 +70,64 @@ class BlackJackGame {
         }
     }
 
-    addCart(player){
+    giveCard(player){
+        //console.log('aqui3');
         var number;
         do{
-            number = Math.floor(Math.random() * this.cartas.length);
-        }while(jaEscolhida(this.cartas[number]))
+            number = Math.floor(Math.random() * this.cartas.length-1);
+        }while(this.jaEscolhida(this.cartas[number]));
+        //console.log(player + '--' + this.players[0]);
 
         switch (player) {
-            case 1:
-                this.board1Player[this.board1Player.length] = this.cartas[number];
+            case this.players[0]:
+                if(this.board1Player.length < 4){
+                    this.board1Player[this.board1Player.length] = this.cartas[number];
+                }
                 break;
-            case 2:
-                this.board2Player[this.board2Player.length] = this.cartas[number];
+            case this.players[1]:
+                if(this.board2Player.length < 4){
+                    this.board2Player[this.board2Player.length] = this.cartas[number];
+                }
                 break;
-            case 3:
-                this.board3Player[this.board3Player.length] = this.cartas[number];
+            case this.players[2]:
+                if(this.board3Player.length < 4){
+                    this.board3Player[this.board3Player.length] = this.cartas[number];
+                }
                 break;
-            case 4:
-                this.board4Player[this.board4Player.length] = this.cartas[number];
+            case this.players[3]:
+                if(this.board4Player.length < 4){
+                    this.board4Player[this.board4Player.length] = this.cartas[number];
+                }
                 break;
             default:
-                return false;
+                break;
+        }
+
+        if (!this.checkGameEnded()) {
+            this.nrPlayerTurn --;
+            if(this.nrPlayerTurn < 0){
+                this.nrPlayerTurn = this.players.length-1;    
+            }
+            this.playerTurn = this.players[this.nrPlayerTurn];
+            console.log(this.playerTurn);
         }
     }
 
-    jaEscolhida(carta){
+    jaEscolhida(card){
         this.board1Player.forEach(function(c) {
-            if(carta == c)
+            if(card.path == c.path)
                 return true;
         });
         this.board2Player.forEach(function(c) {
-            if(carta == c)
+            if(card.path == c.path)
                 return true;
         });
         this.board3Player.forEach(function(c) {
-            if(carta == c)
+            if(card.path == c.path)
                 return true;
         });
         this.board4Player.forEach(function(c) {
-            if(carta == c)
+            if(card.path == c.path)
                 return true;
         });
         return false;
@@ -163,10 +189,15 @@ class BlackJackGame {
         /*if (this.board[index] !== 0) {
             return false;
         }*/
-        /*this.board[index] = playerNumber;
+        //this.board[index] = playerNumber;
         if (!this.checkGameEnded()) {
-            this.playerTurn = this.playerTurn == 1 ? 2 : 1;
-        }*/
+            this.nrPlayerTurn --;
+            if(this.nrPlayerTurn < 0){
+                this.nrPlayerTurn = this.players.length;    
+            }
+            this.playerTurn = this.players[this.nrPlayerTurn];
+            console.log('aqui3');
+        }
         return true;
     }
 

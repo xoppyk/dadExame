@@ -36,11 +36,20 @@ io.on('connection', function (socket) {
     console.log('client has connected');
 
     socket.on('create_game', function (data){
-    	let game = games.createGame(data.playerName, socket.id);
+    	let game = games.createGame(data.playerName, socket.id, data.cards);
 		socket.join(game.gameID);
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.emit('lobby_changed');
+    });
+
+    socket.on('give_card', function (data){
+    	let game = games.gameByID(data.gameID);
+		game.giveCard(data.playerName);
+		//console.log('aqui1' + data.playerName);
+		// Notifications to the client
+		socket.emit('my_active_games_changed');
+		io.to(game.gameID).emit('game_changed', game);
     });
 
     socket.on('start_game', function (data){
@@ -52,8 +61,7 @@ io.on('connection', function (socket) {
 		game.start(data.playerName)
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
-		io.emit('lobby_changed');
-		console.log('playerName ' + data.playerName);
+		io.to(game.gameID).emit('game_changed', game);
 		console.log('started game ' + data.gameID);
     });
 
@@ -99,12 +107,12 @@ io.on('connection', function (socket) {
     });
 
     socket.on('get_my_activegames', function (data){
-    	var my_games= games.getConnectedGamesOf(socket.id);
+    	var my_games = games.getConnectedGamesOf(socket.id);
     	socket.emit('my_active_games', my_games);
     });
 
     socket.on('get_my_lobby_games', function (){
-    	var my_games= games.getLobbyGamesOf(socket.id);
+    	var my_games = games.getLobbyGamesOf(socket.id);
     	socket.emit('my_lobby_games', my_games);
     });
 

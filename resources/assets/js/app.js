@@ -19,7 +19,7 @@ Vue.use(Auth);
 Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 const user = Vue.component('user', require('./components/users/user.vue'));
-const frontend = Vue.component('Game', require('./components/Frontend.vue'));
+const blackjack = Vue.component('Game', require('./components/Frontend.vue'));
 const userCreate = Vue.component('userCreate', require('./components/users/userCreate.vue'));
 const login = Vue.component('login', require('./components/login.vue'));
 
@@ -28,7 +28,7 @@ const routes = [
   { path: '/login', component: login },
   { path: '/users', component: user },
   { path: '/regist', component: userCreate },
-  { path: '/frontend', component: frontend }
+  { path: '/blackjack', component: blackjack }
 ];
 
 const router = new VueRouter({

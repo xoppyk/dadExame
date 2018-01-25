@@ -29,6 +29,13 @@ Route::delete('users/{id}', 'UserControllerAPI@delete');
 Route::post('users/block/{id}', 'UserControllerAPI@blockUser');
 Route::post('users/active/{id}', 'UserControllerAPI@activeUser');
 
+Route::get('decks', 'DeckControllerAPI@getDecks');
+Route::get('decks/random', 'DeckControllerAPI@getDeckRandom');
+Route::get('decks/{id}', 'DeckControllerAPI@getDeck');
+
+Route::get('cards', 'CardControllerAPI@getCards');
+Route::get('cards/deck/{deck_id}', 'CardControllerAPI@getCardsByDeck');
+Route::get('cards/{id}', 'CardControllerAPI@getCard');
 
 //PASSAPORT
 Route::post('login', 'LoginControllerAPI@login');

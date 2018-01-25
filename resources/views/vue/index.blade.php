@@ -6,7 +6,7 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <router-link class="navbar-item" to="/users">Users</router-link>
-            <router-link class="navbar-item" to="/frontend">Frontend</router-link>
+            <router-link class="navbar-item" to="/blackjack">BlackJack</router-link>
             <router-link class="navbar-item" to="/login">Login</router-link>
             <router-link class="navbar-item" to="/regist">Regist</router-link>
         </div>

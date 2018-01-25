@@ -26,11 +26,13 @@
     export default {
         data: function(){
             return {
-                title: 'Multiplayer TicTacToe',
+                title: 'BlackJack',
                 currentPlayer: 'Player X',
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
+                deck_nr: '',
+                cards: [],
             }
         },
         sockets:{
@@ -99,7 +101,18 @@
                     return;
                 }
                 else {
-                    this.$socket.emit('create_game', { playerName: this.currentPlayer });   
+                    axios.get('/api/decks/random')
+                        .then(response => {
+                            //console.log('deck'+response.data.data.id);
+                            this.deck_nr = response.data.data.id;
+                            axios.get('/api/cards/deck/' + this.deck_nr)
+                                .then(response => {
+                                    //console.log('response.data.data');
+                                    //console.log(response.data.data);
+                                    this.cards = response.data.data;
+                                    this.$socket.emit('create_game', { playerName: this.currentPlayer, cards: this.cards });  
+                                });
+                        });
                 }
             },
             join(game){
@@ -122,6 +135,10 @@
             close(game){
                 // to close a game
                 this.$socket.emit('remove_game', {gameID: game.gameID});
+            },
+            giveCard(game){
+                // to close a game
+                this.$socket.emit('give_card', {gameID: game.gameID, playerName: this.currentPlayer});
             }
         },
         components: {
