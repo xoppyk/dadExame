@@ -16,5 +16,8 @@
             </div>
           </div>
         </section>
+        <div id="app">
+            <administration></administration>
+        </div>
       </div>
 @endsection

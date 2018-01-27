@@ -1,8 +1,6 @@
 <template>
     <div>
         <div>
-            <h3 class="text-center">{{ title }}</h3>
-            <br>
             <h3>{{currentPlayer.name}}</h3>
             <p>Pontos : {{currentPlayer.total_points}}</p>
             <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
@@ -164,8 +162,7 @@
             'game': Game,
         },
         mounted() {
-            console.log(this.$auth.getToken());
-            this.loadLobby();
+          this.loadLobby();
         },
         created(){
           this.loadUser();

@@ -1,4 +1,6 @@
 export default function (Vue) {
+  let authenticatedUser = {}
+
   Vue.auth = {
     setToken(token, expiration){
       localStorage.setItem('token', token);
@@ -26,11 +28,19 @@ export default function (Vue) {
       localStorage.removeItem('expiration');
     },
 
-    isAuthentificated(){
+    isAuthenticated(){
       if(this.getToken()){
         return true;
       }
       return false;
+    },
+
+    setAutenticatedUser(data){
+      authenticatedUser = data
+    },
+
+    getAutentificatedUser(){
+      return authenticatedUser
     }
   }
   Object.defineProperties(Vue.prototype, {

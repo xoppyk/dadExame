@@ -12,6 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
 </head>
 <body>
     <div id="app">
@@ -36,7 +38,6 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -70,7 +71,18 @@
                 </div>
             </div>
         </nav>
-
+    <!-- <nav class="navbar is-dark">
+      <div class="navbar-menu container">
+        <div class="navbar-start" class="is-flex is-centered">
+            <a class="navbar-item" href="{{ url('/admin') }}">
+                Home
+            </a>
+            <a class="navbar-item">
+                Utilizadores
+            </a>
+        </div>
+      </div>
+    </nav> -->
         @yield('content')
     </div>
 
