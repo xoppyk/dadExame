@@ -32,6 +32,7 @@
                 activeGames: [],
                 socketId: "",
                 deck_nr: '',
+                hidden_face: '',
                 cards: [],
             }
         },
@@ -89,7 +90,7 @@
         methods: {
             loadLobby(){
                 /// send message to server to load the list of games on the lobby
-                this.$socket.emit('get_my_lobby_games');
+                this.$socket.emit('get_my_lobby_games', {currentPlayer: this.currentPlayer.name});
             },
             loadActiveGames(){
                 /// send message to server to load the list of games that player is playing
@@ -103,18 +104,20 @@
                     return;
                 }
                 else {
-                    axios.get('/api/decks/random')
+                    /*axios.get('/api/decks/random')
                         .then(response => {
-                            //console.log('deck'+response.data.data.id);
+                            console.log(response.data.data.hidden_face_image_path);
                             this.deck_nr = response.data.data.id;
+                            this.hidden_face = response.data.data.hidden_face_image_path;
                             axios.get('/api/cards/deck/' + this.deck_nr)
                                 .then(response => {
                                     //console.log('response.data.data');
                                     //console.log(response.data.data);
                                     this.cards = response.data.data;
-                                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name, cards: this.cards });
+                                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name, cards: this.cards, hidden_face: this.hidden_face });
                                 });
-                        });
+                        });*/
+                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name });
                 }
             },
             join(game){
@@ -128,7 +131,10 @@
             start(game){
                 // play a game - click on piece on specified index
                 this.$socket.emit('start_game', {gameID: game.gameID, playerName: this.currentPlayer.name});
-                console.log(this.currentPlayer.name);
+            },
+            skip(game){
+                // play a game - click on piece on specified index
+                this.$socket.emit('skip', {gameID: game.gameID, playerName: this.currentPlayer.name});
             },
             play(game, index){
                 // play a game - click on piece on specified index
@@ -164,7 +170,7 @@
             'game': Game,
         },
         mounted() {
-            console.log(this.$auth.getToken());
+            //console.log(this.$auth.getToken());
             this.loadLobby();
         },
         created(){

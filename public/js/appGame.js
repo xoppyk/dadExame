@@ -47425,7 +47425,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47474,6 +47474,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             activeGames: [],
             socketId: "",
             deck_nr: '',
+            hidden_face: '',
             cards: []
         };
     },
@@ -47573,31 +47574,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         loadLobby: function loadLobby() {
             /// send message to server to load the list of games on the lobby
-            this.$socket.emit('get_my_lobby_games');
+            this.$socket.emit('get_my_lobby_games', { currentPlayer: this.currentPlayer.name });
         },
         loadActiveGames: function loadActiveGames() {
             /// send message to server to load the list of games that player is playing
             this.$socket.emit('get_my_activegames');
         },
         createGame: function createGame() {
-            var _this = this;
-
             console.log('criei');
             // For this to work, server must handle (on event) the "create_game" message
             if (this.currentPlayer.name == "") {
                 alert('Current Player is Empty - Cannot Create a Game');
                 return;
             } else {
-                axios.get('/api/decks/random').then(function (response) {
-                    //console.log('deck'+response.data.data.id);
-                    _this.deck_nr = response.data.data.id;
-                    axios.get('/api/cards/deck/' + _this.deck_nr).then(function (response) {
-                        //console.log('response.data.data');
-                        //console.log(response.data.data);
-                        _this.cards = response.data.data;
-                        _this.$socket.emit('create_game', { playerName: _this.currentPlayer.name, cards: _this.cards });
-                    });
-                });
+                /*axios.get('/api/decks/random')
+                    .then(response => {
+                        console.log(response.data.data.hidden_face_image_path);
+                        this.deck_nr = response.data.data.id;
+                        this.hidden_face = response.data.data.hidden_face_image_path;
+                        axios.get('/api/cards/deck/' + this.deck_nr)
+                            .then(response => {
+                                //console.log('response.data.data');
+                                //console.log(response.data.data);
+                                this.cards = response.data.data;
+                                this.$socket.emit('create_game', { playerName: this.currentPlayer.name, cards: this.cards, hidden_face: this.hidden_face });
+                            });
+                    });*/
+                this.$socket.emit('create_game', { playerName: this.currentPlayer.name });
             }
         },
         join: function join(game) {
@@ -47611,7 +47614,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         start: function start(game) {
             // play a game - click on piece on specified index
             this.$socket.emit('start_game', { gameID: game.gameID, playerName: this.currentPlayer.name });
-            console.log(this.currentPlayer.name);
+        },
+        skip: function skip(game) {
+            // play a game - click on piece on specified index
+            this.$socket.emit('skip', { gameID: game.gameID, playerName: this.currentPlayer.name });
         },
         play: function play(game, index) {
             // play a game - click on piece on specified index
@@ -47627,7 +47633,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         loadUser: function loadUser() {
-            var _this2 = this;
+            var _this = this;
 
             var headers = {
                 'Accept': 'application/json',
@@ -47636,7 +47642,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             axios.get('api/user', headers).then(function (response) {
                 //Object.assign(this.currentPlayer, response.data);
-                _this2.currentPlayer = response.data;
+                _this.currentPlayer = response.data;
             }).catch(function (error) {
                 console.log('nao tem nada');
             });
@@ -47648,7 +47654,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'game': __WEBPACK_IMPORTED_MODULE_1__Game_vue___default.a
     },
     mounted: function mounted() {
-        console.log(this.$auth.getToken());
+        //console.log(this.$auth.getToken());
         this.loadLobby();
     },
     created: function created() {
@@ -47742,7 +47748,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47751,6 +47757,10 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /* 77 */
 /***/ (function(module, exports) {
 
+//
+//
+//
+//
 //
 //
 //
@@ -47803,41 +47813,38 @@ var render = function() {
     _c(
       "tbody",
       _vm._l(_vm.games, function(game) {
-        return _c("tr", { key: game.gameID }, [
-          _c("td", [_vm._v(_vm._s(game.gameID))]),
-          _vm._v(" "),
-          game.players[1] != "undefined"
-            ? _c("td", [_vm._v(_vm._s(game.players[0]))])
-            : _vm._e(),
-          _vm._v(" "),
-          game.players[1] != "undefined"
-            ? _c("td", [_vm._v(_vm._s(game.players[1]))])
-            : _vm._e(),
-          _vm._v(" "),
-          game.players[2] != "undefined"
-            ? _c("td", [_vm._v(_vm._s(game.players[2]))])
-            : _vm._e(),
-          _vm._v(" "),
-          game.players[3] != "undefined"
-            ? _c("td", [_vm._v(_vm._s(game.players[3]))])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("td", [
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-xs btn-primary",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    _vm.join(game)
+        return _c(
+          "tr",
+          { key: game.gameID },
+          [
+            _c("td", [_vm._v(_vm._s(game.gameID))]),
+            _vm._v(" "),
+            _vm._l(4, function(n, index) {
+              return _c("td", [
+                game.playersFull[index] != "undefined"
+                  ? _c("label", [_vm._v(_vm._s(game.playersFull[index]))])
+                  : _c("label")
+              ])
+            }),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-xs btn-primary",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.join(game)
+                    }
                   }
-                }
-              },
-              [_vm._v("Join")]
-            )
-          ])
-        ])
+                },
+                [_vm._v("Join")]
+              )
+            ])
+          ],
+          2
+        )
       })
     )
   ])
@@ -48002,20 +48009,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game', 'currentPlayer'],
@@ -48028,17 +48021,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.game.gameStarted) {
                 return "Game has not started yet";
             } else if (this.game.gameEnded) {
-                if (this.game.winner == this.ownPlayerNumber) {
+                if (this.game.winner == this.currentPlayer.name) {
                     return "Game has ended. YOU WIN !!!";
                 } else if (this.game.winner == 0) {
                     return "Game has ended. It's a tie";
                 }
-                return "Game has ended and " + this.adversaryName + "'s has won. YOU HAVE LOST !!!";
+                return "Game has ended and " + this.game.winner + "'s has won. YOU HAVE LOST !!!";
             } else {
-                if (this.game.playerTurn == this.currentPlayer) {
+                if (this.game.playerTurn == this.currentPlayer.name) {
+                    for (var i = 0; i < this.game.playersFull.length; i++) {
+                        if (this.game.playersFull[i][0] == this.game.playerTurn) {
+                            if (this.game.playersFull[i][4]) {
+                                return "To many points. YOU HAVE LOST !!!";
+                            }
+                        }
+                    }
                     return "It's your turn";
                 } else {
-                    //return "It's "+this.adversaryName+"'s' turn";
                     return "It's " + this.game.playerTurn + "'s turn";
                 }
             }
@@ -48048,14 +48047,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (!this.game.gameStarted) {
                 return "alert-warning";
             } else if (this.game.gameEnded) {
-                if (this.game.winner == this.ownPlayerNumber) {
+                if (this.game.winner == this.currentPlayer.name) {
                     return "alert-success";
                 } else if (this.game.winner == 0) {
                     return "alert-info";
                 }
                 return "alert-danger";
             } else {
-                if (this.game.playerTurn == this.currentPlayer) {
+                for (var i = 0; i < this.game.playersFull.length; i++) {
+                    if (this.game.playersFull[i][0] == this.game.playerTurn) {
+                        if (this.game.playersFull[i][4]) {
+                            return "alert-danger";
+                        }
+                    }
+                }
+                if (this.game.playerTurn == this.currentPlayer.name) {
                     return "alert-success";
                 } else {
                     return "alert-info";
@@ -48085,6 +48091,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         start: function start(game) {
             this.$parent.start(this.game);
         },
+        skip: function skip(game) {
+            this.$parent.skip(this.game);
+        },
         closeGame: function closeGame() {
             // Click to close game
             this.$parent.close(this.game);
@@ -48094,15 +48103,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$parent.giveCard(this.game);
         },
 
-        cardImageURL: function cardImageURL(card) {
+        cardImageURL: function cardImageURL(card, key, playerName) {
             if (card != 'undefined') {
-                var imgSrc = String(card.path);
+                var imgSrc;
+                if (this.currentPlayer.name == playerName) {
+                    imgSrc = String(card.path);
+                } else if (this.currentPlayer.name != playerName && key == 0) {
+                    imgSrc = String(card.path);
+                } else {
+                    imgSrc = String(this.game.semFace);
+                }
                 return 'img/' + imgSrc;
             }
         }
     },
     mounted: function mounted() {
-        console.log(this.currentPlayer);
+        //console.log(this.currentPlayer);
     }
 });
 
@@ -48141,9 +48157,9 @@ var render = function() {
             [_vm._v("Close Game")]
           ),
           _vm._v(" "),
-          _vm.game.players[0] == _vm.currentPlayer.name &&
+          _vm.game.playersFull[0][0] == _vm.currentPlayer.name &&
           !_vm.game.gameStarted &&
-          _vm.game.players.length > 1
+          _vm.game.playersFull.length > 1
             ? _c(
                 "button",
                 {
@@ -48159,157 +48175,100 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.game.gameStarted &&
-          _vm.game.players.length > 1 &&
-          _vm.game.playerTurn == _vm.currentPlayer.name
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-danger",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.start(_vm.game)
-                    }
-                  }
-                },
-                [_vm._v("Skip")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.game.playerTurn == _vm.currentPlayer.name && _vm.game.gameStarted
-            ? _c(
-                "button",
-                {
-                  staticClass: "btn btn-xs btn-success",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.giveCard($event)
-                    }
-                  }
-                },
-                [_vm._v("Give me card")]
-              )
+          !_vm.game.gameEnded
+            ? _c("label", [_vm._v("Time: " + _vm._s(_vm.game.tempo))])
             : _vm._e()
         ])
       ]),
       _vm._v(" "),
       _vm.game.gameStarted
-        ? _c("div", [
-            _c(
-              "div",
-              { staticStyle: { display: "inline-block" } },
-              [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.game.players[0]) +
-                    "\n                "
-                ),
-                _vm._l(_vm.game.board1Player, function(card, key) {
-                  return _c(
-                    "div",
-                    { staticStyle: { display: "inline-block" } },
-                    [
-                      _c("img", {
-                        attrs: { src: _vm.cardImageURL(card), width: "70px" }
-                      })
-                    ]
-                  )
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _vm.game.players.length <= 2
-              ? _c(
+        ? _c(
+            "div",
+            [
+              _vm._l(_vm.game.playersFull, function(player, key) {
+                return _c(
                   "div",
-                  { staticStyle: { clear: "left" } },
                   [
                     _vm._v(
                       "\n                " +
-                        _vm._s(_vm.game.players[1]) +
+                        _vm._s(player[0]) +
                         "\n                "
                     ),
-                    _vm._l(_vm.game.board2Player, function(card, key) {
+                    _vm._l(player[1], function(card, key) {
                       return _c(
                         "div",
                         { staticStyle: { display: "inline-block" } },
                         [
                           _c("img", {
                             attrs: {
-                              src: _vm.cardImageURL(card),
+                              src: _vm.cardImageURL(card, key, player[0]),
                               width: "70px"
                             }
                           })
                         ]
                       )
-                    })
+                    }),
+                    _vm._v(" "),
+                    player[0] == _vm.currentPlayer.name
+                      ? _c(
+                          "div",
+                          { staticStyle: { display: "inline-block" } },
+                          [
+                            _vm._v(
+                              "\n                    Points: " +
+                                _vm._s(player[5]) +
+                                "\n                    "
+                            ),
+                            _vm.game.playerTurn == _vm.currentPlayer.name &&
+                            _vm.game.gameStarted &&
+                            !_vm.game.gameEnded &&
+                            !player[4]
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-xs btn-success",
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        _vm.giveCard($event)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Give me card")]
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _vm.game.gameStarted &&
+                            _vm.game.playersFull.length > 1 &&
+                            _vm.game.playerTurn == _vm.currentPlayer.name &&
+                            !_vm.game.gameEnded &&
+                            !player[4]
+                              ? _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-xs btn-danger",
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        _vm.skip(_vm.game)
+                                      }
+                                    }
+                                  },
+                                  [_vm._v("Skip")]
+                                )
+                              : _vm._e()
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   2
                 )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.game.players.length <= 3
-              ? _c(
-                  "div",
-                  { staticStyle: { clear: "left" } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.game.players[2]) +
-                        "\n                "
-                    ),
-                    _vm._l(_vm.game.board3Player, function(card, key) {
-                      return _c(
-                        "div",
-                        { staticStyle: { display: "inline-block" } },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: _vm.cardImageURL(card),
-                              width: "70px"
-                            }
-                          })
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.game.players.length <= 4
-              ? _c(
-                  "div",
-                  { staticStyle: { clear: "left" } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.game.players[3]) +
-                        "\n                "
-                    ),
-                    _vm._l(_vm.game.board4Player, function(card, key) {
-                      return _c(
-                        "div",
-                        { staticStyle: { display: "inline-block" } },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: _vm.cardImageURL(card),
-                              width: "70px"
-                            }
-                          })
-                        ]
-                      )
-                    })
-                  ],
-                  2
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("hr")
-          ])
+              }),
+              _vm._v(" "),
+              _c("hr")
+            ],
+            2
+          )
         : _vm._e()
     ])
   ])

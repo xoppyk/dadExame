@@ -13,9 +13,9 @@ class GameList {
     	return game;
     }
 
-    createGame(playerName, socketID, cards) {
+    createGame(playerName, socketID, cards, hidden_face) {
     	this.contadorID = this.contadorID+1;
-    	var game = new BlackJackGame(this.contadorID, playerName, cards);
+    	var game = new BlackJackGame(this.contadorID, playerName, cards, hidden_face);
         game.playerSocketID = new Array();
     	game.playerSocketID[0] = socketID;
     	this.games.set(game.gameID, game);

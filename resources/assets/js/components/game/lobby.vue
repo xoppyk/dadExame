@@ -13,10 +13,14 @@
 	    <tbody>
 	        <tr v-for="game in games" :key="game.gameID">
 	            <td>{{ game.gameID }}</td>
-	            <td v-if="game.players[1] != 'undefined'">{{ game.players[0] }}</td>
-	            <td v-if="game.players[1] != 'undefined'">{{ game.players[1] }}</td>
-	            <td v-if="game.players[2] != 'undefined'">{{ game.players[2] }}</td>
-	            <td v-if="game.players[3] != 'undefined'">{{ game.players[3] }}</td>
+				<td v-for="(n, index) in 4">
+					<label v-if="game.playersFull[index] != 'undefined'">{{ game.playersFull[index] }}</label>
+					<label v-else></label>
+				</td>
+	            <!--<td v-if="game.playersFull[0] != 'undefined'">{{ game.playersFull[0] }}</td>
+	            <td v-if="game.playersFull[1] != 'undefined'">{{ game.playersFull[1] }}</td>
+	            <td v-if="game.playersFull[2] != 'undefined'">{{ game.playersFull[2] }}</td>
+	            <td v-if="game.playersFull[3] != 'undefined'">{{ game.playersFull[3] }}</td>-->
 	            <td>
 	                <a class="btn btn-xs btn-primary" v-on:click.prevent="join(game)">Join</a>
 	            </td>
