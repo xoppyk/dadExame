@@ -4,18 +4,13 @@
         <div class="container">
             <form class="form-signin">
                 <h2 class="form-signin-heading">Please sign in</h2>
-
                 <label for="email" class="sr-only">Email address or NickName</label>
                 <input type="text" id="email" class="form-control" placeholder="Email address or NickName" required autofocus v-model="form.username">
 
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required v-model="form.password">
-
-                <div class="checkbox">
-                    <label>
-                    <input type="checkbox" value="remember-me"> Remember me
-                    </label>
-                </div>
+                <p class="content help is-danger is-large" v-if="cardenciaisErradas">Wrong Username or Password</p>
+                <a class="btn btn-link" href="password/reset"> Forgot Your Password? </a>
                 <a class="btn btn-lg btn-primary btn-block" v-on:click.prevent="signIn()">Sign in</a>
             </form>
         </div> <!-- /container -->
@@ -30,7 +25,8 @@
                 form: new Form({
                     username: '',
                     password: '',
-                })
+                }),
+                cardenciaisErradas : false
             }
         },
         methods: {
@@ -50,7 +46,7 @@
                   this.$router.push("/blackJack");
                 })
                 .catch((error) => {
-                    alert('ta mal')
+                    this.cardenciaisErradas = true
                 })
             },
         }
