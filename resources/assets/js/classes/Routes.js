@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '../components/authentication/login.vue'
 import register from '../components/authentication/regist.vue'
-// import editUser from '../components/users/userEdit.vue'
+import profile from '../components/game/profile.vue'
 import blackJack from '../components/game/blackJack.vue'
 
 Vue.use(Router)
@@ -28,11 +28,12 @@ export default new Router({
       component: blackJack,
       meta: { forAuth: true}
     },
-    // {
-    //   path: '/editUser',
-    //   component: editUser,
-    //   meta: { forAuth: true}
-    // }
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile,
+      meta: { forAuth: true}
+    }
   ],
   linkActiveClass: 'active'
 })

@@ -58,10 +58,14 @@ class UserControllerAPI extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
                 'nickname' => 'required|unique:users,nickname,'.$id,
-                'password' => 'required|min:3|confirmed',
-                'password_confirmation' => 'required|min:3'
+                'old_password' => 'required|min:6',
+                'password' => 'required|min:6|confirmed',
+                'password_confirmation' => 'required|min:6'
             ]);
-            $user->password = Hash::make($request->input('password'));
+            if (!Hash::check($request->input('old_password'), $user->password)) {
+              return response()->json('Wrong Old Password', 401);
+            }
+            $user->password = bcrypt($request->password);
         } else {
             $request->validate([
                     'name' => 'required',

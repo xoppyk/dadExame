@@ -1,6 +1,6 @@
 <template>
     <div class="jumbotron">
-            <h2>Edit User</h2>
+            <h2>User Profile</h2>
 
             <form method="PUT" action="api/users/">
                 <div class="form-group">
@@ -30,7 +30,15 @@
                     <p class="content help is-danger is-large" v-if="form.errors.has('nickname')" v-text="form.errors.get('nickname')"></p>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Old Password</label>
+                    <input
+                        type="password" class="form-control" v-model="form.old_password"
+                        name="old_password" id="old_password"
+                        placeholder="Password"/>
+                    <p class="help is-danger" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></p>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password (If you dont want change, keep Empty)</label>
                     <input
                         type="password" class="form-control" v-model="form.password"
                         name="password" id="password"
@@ -56,13 +64,17 @@
 <script type="text/javascript">
     import {Form} from '../../classes/Form';
     export default {
-        // props: ['user'],
+        props: ['user'],
+        // props: {
+        //     user: this.user
+        // },
         data: function(){
             return {
                 form: new Form({
                     name: this.user.name,
                     email: this.user.email,
-                    nickname: this.user.nickName,
+                    nickname: this.user.nickname,
+                    old_password: '',
                     password: '',
                     password_confirmation: '',
                 })
@@ -70,20 +82,15 @@
         },
         methods: {
             saveUser: function(){
+                console.log(this.user);
                 this.form.put('api/users/' + this.user.id)
                     .then(response => {
-                        this.$emit('user-saved');
+                        this.$router.push("/blackJack");
                     })
                     .catch(error => console.log('Whoops'));
             },
             cancelEdit: function(){
-                axios.get('api/users/'+this.user.id)
-                    .then(response=>{
-                        // Copy object properties from response.data.data to this.user
-                        // without creating a new reference
-                        Object.assign(this.user, response.data.data);
-                        this.$emit('user-canceled', this.user);
-                    });
+              this.$router.push("/blackJack");
             }
         }
     }

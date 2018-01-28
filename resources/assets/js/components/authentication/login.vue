@@ -30,26 +30,27 @@
             }
         },
         methods: {
-            signIn: function(){
-                var headers = {
-                            'Content-Type': 'application/json'
-                }
-                var data = {
-                            'email': this.form.username,
-                            'password': this.form.password,
+          signIn: function(){
+            // this.navbar.isAuth = true;
+            var headers = {
+                        'Content-Type': 'application/json'
+            }
+            var data = {
+                        'email': this.form.username,
+                        'password': this.form.password,
 
-                }
-                axios.post('api/login', data, headers)
-                .then((response) => {
-                  // localStorage.setItem('token', response.data.access_token)
-                  this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
-                  this.$router.push("/blackJack");
-                })
-                .catch((error) => {
-                    this.cardenciaisErradas = true
-                })
-            },
-        }
+            }
+            axios.post('api/login', data, headers)
+            .then((response) => {
+              // localStorage.setItem('token', response.data.access_token)
+              this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
+              this.$router.push("/blackJack");
+            })
+            .catch((error) => {
+                this.cardenciaisErradas = true
+            })
+        },
+      }
     }
 </script>
 
