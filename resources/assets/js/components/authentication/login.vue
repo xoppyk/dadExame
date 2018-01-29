@@ -8,7 +8,7 @@
           <hr class="colorgraph">
           <p class="content help is-danger is-small" v-if="cardenciaisErradas">Wrong Username or Password</p>
           <div class="form-group">
-            <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" required autofocus v-model="form.username">
+            <input type="text" name="email" id="email" class="form-control input-lg" placeholder="Email Address" required autofocus v-model="form.username">
           </div>
           <div class="form-group">
             <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" required v-model="form.password">
