@@ -1,7 +1,7 @@
 <template>
-<div id="app" class="container">
-  <navbar @logout="logout"></navbar>
-  <router-view :user="currentUser" ></router-view>
+<div id="app">
+  <navbar @logout="logout" :currentPlayer="currentPlayer"></navbar>
+  <router-view :currentPlayer="currentPlayer"></router-view>
 </div>
 </template>
 
@@ -11,7 +11,7 @@ import Navbar from './components/Navbar.vue'
 export default {
   data() {
     return {
-      currentUser: {},
+      currentPlayer: {},
     }
   },
   components: {
@@ -23,7 +23,7 @@ export default {
       this.$forceUpdate();
     }
   },
-  mounted (){
+  mounted() {
     var headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default {
       .then((response) => {
         //Object.assign(this.currentPlayer, response.data);
         // this.currentPlayer = response.data
-        this.currentUser = response.data
+        this.currentPlayer = response.data
       })
       .catch((error) => {
         console.log('nao tem nada')

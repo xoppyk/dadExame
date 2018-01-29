@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
     <div>
         <div>
             <h3>{{currentPlayer.name}}</h3>
@@ -15,6 +16,8 @@
             </template>
         </div>
     </div>
+  </div>
+
 </template>
 
 <script type="text/javascript">
@@ -22,10 +25,10 @@
     import Game from './Game.vue';
 
     export default {
+        props: ['currentPlayer'],
         data: function(){
             return {
                 title: 'BlackJack',
-                currentPlayer: {},
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
@@ -94,6 +97,7 @@
                 this.$socket.emit('get_my_activegames');
             },
             createGame(){
+                alert(this.user.name);
                 console.log('criei');
                 // For this to work, server must handle (on event) the "create_game" message
                 if (this.currentPlayer.name == "") {
@@ -139,22 +143,6 @@
             giveCard(game){
                 // to close a game
                 this.$socket.emit('give_card', {gameID: game.gameID, playerName: this.currentPlayer.name});
-            },
-            loadUser: function(){
-                var headers = {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + this.$auth.getToken()
-                }
-                axios.get('api/user', headers)
-                  .then((response) => {
-                    //Object.assign(this.currentPlayer, response.data);
-                    this.currentPlayer = response.data
-                  })
-                  .catch((error) => {
-                    console.log('nao tem nada')
-                  });
-                console.log('load user');
             }
         },
         components: {
@@ -164,9 +152,6 @@
         mounted() {
           this.loadLobby();
         },
-        created(){
-          this.loadUser();
-        }
 
     }
 </script>

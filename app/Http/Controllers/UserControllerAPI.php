@@ -63,7 +63,7 @@ class UserControllerAPI extends Controller
                 'password_confirmation' => 'required|min:6'
             ]);
             if (!Hash::check($request->input('old_password'), $user->password)) {
-              return response()->json('Wrong Old Password', 401);
+              return response()->json(['error' => 'Wrong Old Password'], 401);              
             }
             $user->password = bcrypt($request->password);
         } else {
