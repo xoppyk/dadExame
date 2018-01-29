@@ -1,35 +1,59 @@
 <template>
-  <div class="container">
-    <div class="row" style="margin-top:20px">
-      <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-        <form role="form">
-          <fieldset>
-            <h2>Please Sign In</h2>
-            <hr class="colorgraph">
-            <p class="content help is-danger is-small" v-if="cardenciaisErradas">Wrong Username or Password</p>
+<div class="container">
+  <div class="row" style="margin-top:20px">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+      <form role="form">
+        <fieldset>
+          <h2>Please Sign In</h2>
+          <hr class="colorgraph">
+          <p class="content help is-danger is-small" v-if="cardenciaisErradas">Wrong Username or Password</p>
+          <div class="form-group">
+            <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" required autofocus v-model="form.username">
+          </div>
+          <div class="form-group">
+            <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" required v-model="form.password">
+            <a href="" class="btn btn-link pull-right" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Forgot Password?</a>
+          </div>
+          <hr class="colorgraph">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In" v-on:click.prevent="login()">
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <a style="text-decoration:none">
+                <router-link tag="a" to="/regist" class="btn btn-lg btn-primary btn-block">Regist</router-link>
+              </a>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Forgot Password</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+          <form>
             <div class="form-group">
-              <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" required autofocus v-model="form.username">
+              <label for="recipient-name" class="col-form-label">Your Email</label>
+              <input type="email" class="form-control" id="recipient-name" placeholder="Email Address" required autofocus v-model="emailResetPassword">
             </div>
-            <div class="form-group">
-              <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" required v-model="form.password">
-              <a href="password/reset" class="btn btn-link pull-right">Forgot Password?</a>
-            </div>
-            <hr class="colorgraph">
-            <div class="row">
-              <div class="col-xs-6 col-sm-6 col-md-6">
-                <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In" v-on:click.prevent="login()">
-              </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
-                <a style="text-decoration:none">
-                  <router-link tag="a" to="/regist" class="btn btn-lg btn-primary btn-block">Regist</router-link>
-                </a>
-              </div>
-            </div>
-          </fieldset>
-        </form>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" v-on:click.prevent="forgotPassword()" data-dismiss="modal">Reset Password</button>
+        </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script type="text/javascript">
@@ -43,7 +67,8 @@ export default {
         username: '',
         password: '',
       }),
-      cardenciaisErradas: false
+      cardenciaisErradas: false,
+      emailResetPassword: ''
     }
   },
   methods: {
@@ -69,6 +94,21 @@ export default {
           this.cardenciaisErradas = true
         })
     },
+    forgotPassword() {
+      var headers = {
+        'Content-Type': 'application/json'
+      }
+      var data = {
+        'email': this.emailResetPassword,
+      }
+      axios.post('password/email', data, headers)
+        .then((response) => {
+          swal("Request Send!", "Check Your Email!", "success")
+        })
+        .catch((error) => {
+          swal("Error", error.error, "error");
+        })
+    }
   }
 }
 </script>
