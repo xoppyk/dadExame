@@ -29,14 +29,11 @@ export default {
   },
   methods: {
     logout() {
-      this.isAuth = false;
+      // this.isAuth = false;
       this.$emit('logout');
       this.$router.push("/login");
     },
   },
-  created() {
-    this.isAuth = this.$auth.isAuthenticated();
-  }
 }
 </script>
 

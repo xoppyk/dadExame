@@ -97,7 +97,6 @@
                 this.$socket.emit('get_my_activegames');
             },
             createGame(){
-                alert(this.user.name);
                 console.log('criei');
                 // For this to work, server must handle (on event) the "create_game" message
                 if (this.currentPlayer.name == "") {

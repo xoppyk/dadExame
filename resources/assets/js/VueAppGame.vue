@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       currentPlayer: {},
-      isAuth: false,
+      isAuth: this.$auth.isAuthenticated(),
     }
   },
   components: {
@@ -31,14 +31,13 @@ export default {
           }
         })
         .then((response) => {
-          this.isAuth = false;
           this.$auth.destroyToken();
         })
         .catch(function(error) {
           console.log(error)
         });
         this.$auth.destroyToken();
-
+        this.isAuth = false;
     },
     getUser() {
       axios({
@@ -58,6 +57,9 @@ export default {
     }
   },
   mounted() {
+    if (this.$auth.isAuthenticated()) {
+      this.getUser();
+    }
   }
 }
 </script>
