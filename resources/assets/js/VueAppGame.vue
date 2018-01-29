@@ -1,7 +1,7 @@
 <template>
 <div id="app">
-  <navbar @logout="logout" :currentPlayer="currentPlayer"></navbar>
-  <router-view :currentPlayer="currentPlayer"></router-view>
+  <navbar :currentPlayer="currentPlayer" :isAuth="isAuth" @logout="logout"></navbar>
+  <router-view :currentPlayer="currentPlayer" @login="login"></router-view>
 </div>
 </template>
 
@@ -12,33 +12,52 @@ export default {
   data() {
     return {
       currentPlayer: {},
+      isAuth: false,
     }
   },
   components: {
     'navbar': Navbar,
   },
   methods: {
+    login() {
+      this.getUser();
+    },
     logout() {
-      // tenho que atualizar a navbar
-      this.$forceUpdate();
+      axios({
+          url: 'api/logout',
+          method: 'post',
+          headers: {
+            Authorization: "Bearer " + this.$auth.getToken()
+          }
+        })
+        .then((response) => {
+          this.isAuth = false;
+          this.$auth.destroyToken();
+        })
+        .catch(function(error) {
+          console.log(error)
+        });
+        this.$auth.destroyToken();
+
+    },
+    getUser() {
+      axios({
+          url: 'api/user',
+          method: 'get',
+          headers: {
+            Authorization: "Bearer " + this.$auth.getToken()
+          }
+        })
+        .then((response) => {
+          this.currentPlayer = response.data;
+          this.isAuth = true;
+        })
+        .catch(function(error) {
+          console.log(error)
+        });
     }
   },
   mounted() {
-    var headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + this.$auth.getToken()
-    }
-    axios.get('api/user', headers)
-      .then((response) => {
-        //Object.assign(this.currentPlayer, response.data);
-        // this.currentPlayer = response.data
-        this.currentPlayer = response.data
-      })
-      .catch((error) => {
-        console.log('nao tem nada')
-      });
-    console.log('load user no VueAppgame');
   }
 }
 </script>

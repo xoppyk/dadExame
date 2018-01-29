@@ -12,7 +12,7 @@
       <router-link tag="li" v-if="isAuth" to="/profile"><a><span class="glyphicon glyphicon-user"></span>Edit User</a></router-link>
       <li><a class="navbar-item" v-if="isAuth" v-on:click.prevent="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
       <!-- DONT Authentificatede  -->
-      <router-link tag="li" v-if="!isAuth" to="/login"><a><span class="glyphicon glyphicon-log-in"></span>Sign In</a></router-link>
+      <router-link tag="li" v-if="!isAuth" to="/login" ><a><span class="glyphicon glyphicon-log-in"></span>Sign In</a></router-link>
       <router-link tag="li" v-if="!isAuth" to="/regist"><a><span class="glyphicon glyphicon-user"></span>Regist</a></router-link>
     </ul>
   </div>
@@ -21,37 +21,17 @@
 
 <script>
 export default {
-  props: ['currentPlayer'],
+  props: ['currentPlayer', 'isAuth'],
   data() {
     return {
-      isAuth: false,
       showEditUser: false
     }
   },
   methods: {
     logout() {
-      this.$auth.destroyToken();
-      this.serverLogout();
-      this.$router.push("/login");
-      this.$emit('logout');
       this.isAuth = false;
-    },
-    serverLogout() {
-      var headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.$auth.getToken()
-      }
-      axios.post('api/logout', headers)
-        .then((response) => {
-          // alert('logout no servidor com sucesso')
-          // localStorage.setItem('token', response.data.access_token)
-          // this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
-          // this.$router.push("/blackJack");
-        })
-        .catch((error) => {
-          this.cardenciaisErradas = true
-        })
+      this.$emit('logout');
+      this.$router.push("/login");
     },
   },
   created() {

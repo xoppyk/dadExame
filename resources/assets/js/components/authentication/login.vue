@@ -1,79 +1,81 @@
 <template>
   <div class="container">
-
-  <div class="row" style="margin-top:20px">
+    <div class="row" style="margin-top:20px">
       <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-  		<form role="form">
-  			<fieldset>
-  				<h2>Please Sign In</h2>
-  				<hr class="colorgraph">
-          <p class="content help is-danger is-small" v-if="cardenciaisErradas">Wrong Username or Password</p>
-  				<div class="form-group">
-                      <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" required autofocus
-                      v-model="form.username">
-  				</div>
-  				<div class="form-group">
-                      <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" required
-                      v-model="form.password">
-                      <a href="password/reset" class="btn btn-link pull-right">Forgot Password?</a>
-  				</div>
-  				<hr class="colorgraph">
-  				<div class="row">
-  					<div class="col-xs-6 col-sm-6 col-md-6">
-                          <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In" v-on:click.prevent="login()">
-  					</div>
-  					<div class="col-xs-6 col-sm-6 col-md-6">
-              <a style="text-decoration:none"><router-link tag="a" to="/regist" class="btn btn-lg btn-primary btn-block" >Regist</router-link></a>
-  					</div>
-  				</div>
-  			</fieldset>
-  		</form>
-  	</div>
+        <form role="form">
+          <fieldset>
+            <h2>Please Sign In</h2>
+            <hr class="colorgraph">
+            <p class="content help is-danger is-small" v-if="cardenciaisErradas">Wrong Username or Password</p>
+            <div class="form-group">
+              <input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address" required autofocus v-model="form.username">
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" required v-model="form.password">
+              <a href="password/reset" class="btn btn-link pull-right">Forgot Password?</a>
+            </div>
+            <hr class="colorgraph">
+            <div class="row">
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <input type="submit" class="btn btn-lg btn-success btn-block" value="Sign In" v-on:click.prevent="login()">
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <a style="text-decoration:none">
+                  <router-link tag="a" to="/regist" class="btn btn-lg btn-primary btn-block">Regist</router-link>
+                </a>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
   </div>
-
-  </div>
-
 </template>
 
 <script type="text/javascript">
-    import {Form} from '../../classes/Form';
-    export default {
-        data: function(){
-            return {
-                form: new Form({
-                    username: '',
-                    password: '',
-                }),
-                cardenciaisErradas : false
-            }
-        },
-        methods: {
-          login: function(){
-            // this.navbar.isAuth = true;
-            var headers = {
-              'Content-Type': 'application/json'
-            }
-            var data = {
-              'email': this.form.username,
-              'password': this.form.password,
-
-            }
-            axios.post('api/login', data, headers)
-            .then((response) => {
-              // localStorage.setItem('token', response.data.access_token)
-              this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
-              this.$router.push("/blackJack");
-            })
-            .catch((error) => {
-                this.cardenciaisErradas = true
-            })
-        },
-      }
+import {
+  Form
+} from '../../classes/Form';
+export default {
+  data: function() {
+    return {
+      form: new Form({
+        username: '',
+        password: '',
+      }),
+      cardenciaisErradas: false
     }
+  },
+  methods: {
+    login: function() {
+      // this.navbar.isAuth = true;
+      var headers = {
+        'Content-Type': 'application/json'
+      }
+      var data = {
+        'email': this.form.username,
+        'password': this.form.password,
+
+      }
+      axios.post('api/login', data, headers)
+        .then((response) => {
+          // localStorage.setItem('token', response.data.access_token)
+          this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
+          this.$router.push("/blackJack");
+          this.$emit('login');
+          console.log('Tamos no login e vamos emitir para o pai');
+        })
+        .catch((error) => {
+          this.cardenciaisErradas = true
+        })
+    },
+  }
+}
 </script>
 
 <style>
 /* Credit to bootsnipp.com for the css for the color graph */
+
 .colorgraph {
   height: 5px;
   border-top: 0;
