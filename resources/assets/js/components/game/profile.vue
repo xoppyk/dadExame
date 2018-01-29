@@ -121,6 +121,7 @@ export default {
     saveUser: function() {
       this.form.put('api/users/' + this.currentPlayer.id)
         .then(response => {
+          Object.assign(this.currentPlayer, response.data);
           swal("Good job!", "Profile Edited with Success!", "success")
           this.$router.push("/blackJack");
         })
