@@ -7,7 +7,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css"> -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         @yield('metatags')
         <title>@yield('title')</title>
         @yield('extrastyles')
@@ -16,19 +16,18 @@
 
         </head>
         <body>
+          @if(session()->has('flash'))
+            <script type="text/javascript">
+              // swal("Something Wrong!", '{{ session('flash') }}', "warning");
+              swal({ title: "Sweet!", text: '{{ session('flash') }}', imageUrl: 'thumbs-up.jpg' });
+            </script>
+          @endif
+          @if(session()->has('error'))
+            <script type="text/javascript">
+              swal("Something Wrong!", '{{ session('error') }}', "warning");
+            </script>
+          @endif
         <div class="container" id="app">
-            <!-- @if(session()->has('flash'))
-              <div class="row">
-                <div class="alert alert-success">
-                    <a class="close" data-dismiss="alert" aria-label="close" >&times;</a>
-                    <strong>Notification</strong> {{ session()->get('flash')}}
-                </div>
-            @endif -->
-            @if (session('flash'))
-                        <div class="alert alert-success">
-                            {{ session('flash') }}
-                        </div>
-                    @endif
             @yield('content')
         </div>
 

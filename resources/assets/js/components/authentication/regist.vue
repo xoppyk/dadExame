@@ -72,7 +72,7 @@ export default {
           this.$router.push("/login");
         })
         .catch(error => {
-          swal(response.status.toString(), response.data.error, "error");
+          swal("Error", 'Connection Failed', "error");
         });
     }
   }

@@ -3,17 +3,26 @@
     <div>
         <div>
             <h3>{{currentPlayer.name}}</h3>
-            <p>Pontos : {{currentPlayer.total_points}}</p>
-            <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
-            <hr>
-            <h3 class="text-center">Lobby</h3>
-            <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
-            <hr>
-            <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
-            <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
-            <template v-for="activeGame in activeGames">
-                <game :game="activeGame" :currentPlayer="currentPlayer"></game>
-            </template>
+              <div v-if="!currentPlayer.blocked">
+                <p>Pontos : {{currentPlayer.total_points}}</p>
+                <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
+                <hr>
+                <h3 class="text-center">Lobby</h3>
+                <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
+                <hr>
+                <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
+                <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
+                <template v-for="activeGame in activeGames">
+                    <game :game="activeGame" :currentPlayer="currentPlayer"></game>
+                </template>
+              </div>
+            <div v-else>
+              <hr>
+              <h4>You Are Bloked</h4>
+              <hr>
+              <h4>Reason:</h4>
+              <p v-text="currentPlayer.reason_blocked"></p>
+            </div>
         </div>
     </div>
   </div>

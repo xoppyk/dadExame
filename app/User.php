@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function notifyConfirmation()
     {
-        Mail::to($this)->send(new UserConfirmation($this));
+        return Mail::to($this)->send(new UserConfirmation($this));
     }
 }

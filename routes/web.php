@@ -12,6 +12,7 @@
 */
 Auth::routes();
 Route::get('confirm/{token}', 'UserControllerAPI@confirmation')->name('confirmation');
+Route::get('abort/{token}', 'UserControllerAPI@abort')->name('abort');
 
 Route::get('/', function () {
     return view('game/index');

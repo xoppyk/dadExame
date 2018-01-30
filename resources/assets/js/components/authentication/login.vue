@@ -86,6 +86,7 @@ export default {
         })
         .catch((error) => {
           this.cardenciaisErradas = true
+          swal("Error", error.error, "error");
         })
     },
     forgotPassword() {

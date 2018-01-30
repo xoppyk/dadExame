@@ -44,6 +44,10 @@
               <div class="col-xs-12 col-md-6"><a href="#" class="btn btn-default btn-block btn-lg" v-on:click.prevent="cancelEdit()">Cancel</a></div>
               <div class="col-xs-12 col-md-6"><a href="#" class="btn btn-success btn-block btn-lg" v-on:click.prevent="saveUser()">Save</a></div>
             </div>
+            <hr>
+            <div class="row">
+              <div class="col-xs-12 col-md-6"><a href="#" class="btn btn-danger btn-block btn-lg" v-on:click.prevent="deleteUser()">Delete</a></div>
+            </div>
           </form>
         </div>
       </div>
@@ -78,8 +82,33 @@ export default {
           this.$router.push("/blackJack");
         })
         .catch(error => {
+          // swal("Error", error.error, "error");
           swal("Error", error.error, "error");
         });
+    },
+    deleteUser: function() {
+      swal({
+          title: "Are you sure?",
+          text: "Your will delete this Account!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonClass: "btn-danger",
+          confirmButtonText: "Yes, delete it!",
+          closeOnConfirm: false
+        })
+        // function() {
+        //
+        // });
+        // this.form.delete('api/users/' + this.currentPlayer.id)
+        //   .then(response => {
+        //     this.$emit('logout');
+        //     this.$router.push("/login");
+        //     swal("Good job!", "Profile delted withSuccess!", "success")
+        //   })
+        //   .catch(error => {
+        //     // swal("Error", error.error, "error");
+        //     swal("Error", error.error, "error");
+        //   });
     },
     cancelEdit: function() {
       this.$router.push("/blackJack");

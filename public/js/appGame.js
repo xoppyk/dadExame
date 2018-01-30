@@ -46797,7 +46797,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
 
 // exports
 
@@ -46895,6 +46895,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.$emit('login');
       }).catch(function (error) {
         _this.cardenciaisErradas = true;
+        swal("Error", error.error, "error");
       });
     },
     forgotPassword: function forgotPassword() {
@@ -47357,7 +47358,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()("Good job!", "Check Your Email to Confirmation!", "success");
         _this.$router.push("/login");
       }).catch(function (error) {
-        __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()(response.status.toString(), response.data.error, "error");
+        __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()("Error", 'Connection Failed', "error");
       });
     }
   }
@@ -47804,6 +47805,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47829,8 +47834,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         swal("Good job!", "Profile Edited with Success!", "success");
         _this.$router.push("/blackJack");
       }).catch(function (error) {
+        // swal("Error", error.error, "error");
         swal("Error", error.error, "error");
       });
+    },
+    deleteUser: function deleteUser() {
+      swal({
+        title: "Are you sure?",
+        text: "Your will delete this Account!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Yes, delete it!",
+        closeOnConfirm: false
+      });
+      // function() {
+      //
+      // });
+      // this.form.delete('api/users/' + this.currentPlayer.id)
+      //   .then(response => {
+      //     this.$emit('logout');
+      //     this.$router.push("/login");
+      //     swal("Good job!", "Profile delted withSuccess!", "success")
+      //   })
+      //   .catch(error => {
+      //     // swal("Error", error.error, "error");
+      //     swal("Error", error.error, "error");
+      //   });
     },
     cancelEdit: function cancelEdit() {
       this.$router.push("/blackJack");
@@ -48141,6 +48171,27 @@ var render = function() {
                     [_vm._v("Save")]
                   )
                 ])
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-xs-12 col-md-6" }, [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-danger btn-block btn-lg",
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.deleteUser()
+                        }
+                      }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ])
               ])
             ])
           ])
@@ -48245,7 +48296,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48260,6 +48311,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Lobby_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Lobby_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Game_vue__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Game_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Game_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -49128,75 +49188,97 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", [
-      _c(
-        "div",
-        [
-          _c("h3", [_vm._v(_vm._s(_vm.currentPlayer.name))]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v("Pontos : " + _vm._s(_vm.currentPlayer.total_points))
-          ]),
-          _vm._v(" "),
-          _c("p", [
-            _vm._v(
-              "Jogos Jogados : " + _vm._s(_vm.currentPlayer.total_games_played)
+      _c("div", [
+        _c("h3", [_vm._v(_vm._s(_vm.currentPlayer.name))]),
+        _vm._v(" "),
+        !_vm.currentPlayer.blocked
+          ? _c(
+              "div",
+              [
+                _c("p", [
+                  _vm._v("Pontos : " + _vm._s(_vm.currentPlayer.total_points))
+                ]),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v(
+                    "Jogos Jogados : " +
+                      _vm._s(_vm.currentPlayer.total_games_played)
+                  )
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("h3", { staticClass: "text-center" }, [_vm._v("Lobby")]),
+                _vm._v(" "),
+                _c("p", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-xs btn-success",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.createGame($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Create a New Game")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("h4", [
+                  _vm._v("Pending games ("),
+                  _c(
+                    "a",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.loadLobby($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Refresh")]
+                  ),
+                  _vm._v(")")
+                ]),
+                _vm._v(" "),
+                _c("lobby", {
+                  attrs: { games: _vm.lobbyGames },
+                  on: { "join-click": _vm.join, "start-click": _vm.start }
+                }),
+                _vm._v(" "),
+                _vm._l(_vm.activeGames, function(activeGame) {
+                  return [
+                    _c("game", {
+                      attrs: {
+                        game: activeGame,
+                        currentPlayer: _vm.currentPlayer
+                      }
+                    })
+                  ]
+                })
+              ],
+              2
             )
-          ]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c("h3", { staticClass: "text-center" }, [_vm._v("Lobby")]),
-          _vm._v(" "),
-          _c("p", [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-xs btn-success",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    _vm.createGame($event)
-                  }
+          : _c("div", [
+              _c("hr"),
+              _vm._v(" "),
+              _c("h4", [_vm._v("You Are Bloked")]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("h4", [_vm._v("Reason:")]),
+              _vm._v(" "),
+              _c("p", {
+                domProps: {
+                  textContent: _vm._s(_vm.currentPlayer.reason_blocked)
                 }
-              },
-              [_vm._v("Create a New Game")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _c("h4", [
-            _vm._v("Pending games ("),
-            _c(
-              "a",
-              {
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    _vm.loadLobby($event)
-                  }
-                }
-              },
-              [_vm._v("Refresh")]
-            ),
-            _vm._v(")")
-          ]),
-          _vm._v(" "),
-          _c("lobby", {
-            attrs: { games: _vm.lobbyGames },
-            on: { "join-click": _vm.join, "start-click": _vm.start }
-          }),
-          _vm._v(" "),
-          _vm._l(_vm.activeGames, function(activeGame) {
-            return [
-              _c("game", {
-                attrs: { game: activeGame, currentPlayer: _vm.currentPlayer }
               })
-            ]
-          })
-        ],
-        2
-      )
+            ])
+      ])
     ])
   ])
 }

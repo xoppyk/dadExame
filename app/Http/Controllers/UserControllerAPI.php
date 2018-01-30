@@ -44,9 +44,9 @@ class UserControllerAPI extends Controller
         $user->blocked = 1;
         $user->reason_blocked = 'Email Not Confirmed';
         $user->remember_token = str_random(10);
-        $user->save();
-
-        $user->notifyConfirmation();
+        if ($user->notifyConfirmation()) {
+          $user->save();
+        }
         return response()->json(new UserResource($user), 201);
     }
 
@@ -126,14 +126,29 @@ class UserControllerAPI extends Controller
         if(!$user) {
             return redirect('/')->with('error', 'User dont Exist!');
         }
-        if($user->isActive()) {
+        if($user->remember_token == '') {
             return redirect('/')->with('flash', 'Accout been Actived!');
         }
         $user->remember_token = '';
         $user->blocked = false;
         $user->reason_blocked = '';
         $user->save();
-        session()->flash('flash', 'User are Confirmed');
         return redirect('/')->with('flash', 'Account Actived With Success!');
+    }
+    //Abort USER
+    public function abort($token)
+    {
+        if (count($token) == 0) {
+            return redirect('/')->with('error', 'Error');
+        }
+        $user = User::where('remember_token', $token)->first();
+        if(!$user) {
+            return redirect('/')->with('error', 'User dont Exist!');
+        }
+        if($user->remember_token == '') {
+            return redirect('/')->with('flash', 'Sorry Your Account is Active!');
+        }
+        $user->delete();
+        return redirect('/')->with('flash', 'Account Aborted With Success!');
     }
 }
