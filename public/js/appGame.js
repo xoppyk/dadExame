@@ -43339,6 +43339,7 @@ module.exports = __webpack_require__(71);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< Updated upstream
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Auth_js__ = __webpack_require__(72);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_socket_io__ = __webpack_require__(73);
@@ -43346,6 +43347,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__VueAppGame_vue__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__VueAppGame_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__VueAppGame_vue__);
 
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_Auth_js__ = __webpack_require__(72);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_socket_io__ = __webpack_require__(73);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_socket_io___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_socket_io__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__VueAppGame_vue__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__VueAppGame_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__VueAppGame_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__classes_Routes_js__ = __webpack_require__(84);
+>>>>>>> Stashed changes
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -43391,6 +43400,10 @@ router.beforeEach(function (to, from, next) {
         path: '/login'
       });
     } else next();
+  } else if (to.matched.some(function (record) {
+    return record.meta.forAll;
+  })) {
+    next(true);
   }
 });
 
@@ -43621,11 +43634,251 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< Updated upstream
 /* 78 */,
 /* 79 */,
 /* 80 */,
 /* 81 */,
 /* 82 */,
+=======
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(79)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(81)
+/* template */
+var __vue_template__ = __webpack_require__(82)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/Navbar.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cadbadf2", Component.options)
+  } else {
+    hotAPI.reload("data-v-cadbadf2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(80);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("27a820c5", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cadbadf2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Navbar.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cadbadf2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Navbar.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.router-link-active {\n  background-color: blue;\n  color: white\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 81 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['currentPlayer', 'isAuth'],
+  data: function data() {
+    return {};
+  },
+
+  methods: {
+    logout: function logout() {
+      this.$emit('logout');
+      this.$router.push("/login");
+    }
+  }
+});
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("nav", { staticClass: "navbar navbar-inverse" }, [
+    _c("div", { staticClass: "container-fluid" }, [
+      _c(
+        "div",
+        { staticClass: "navbar-header" },
+        [
+          _c(
+            "router-link",
+            { staticClass: "navbar-brand", attrs: { to: "/blackJack" } },
+            [_vm._v("Black Jack")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("ul", { staticClass: "nav navbar-nav" }, [
+        _c("li", { class: { active: _vm.isAuth == 1 } }, [
+          _c("a", { attrs: { href: "/" } }, [_vm._v("Home")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "ul",
+        { staticClass: "nav navbar-nav navbar-right" },
+        [
+          _c("router-link", { attrs: { tag: "li", to: "/statistics" } }, [
+            _c("a", [
+              _c("span", { staticClass: "glyphicon glyphicon-log-in" }),
+              _vm._v("Statics")
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.isAuth
+            ? _c("router-link", { attrs: { tag: "li", to: "/profile" } }, [
+                _c("a", [
+                  _c("span", { staticClass: "glyphicon glyphicon-user" }),
+                  _vm._v("Edit User")
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("li", [
+            _vm.isAuth
+              ? _c(
+                  "a",
+                  {
+                    staticClass: "navbar-item",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        _vm.logout()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { staticClass: "glyphicon glyphicon-log-out" }),
+                    _vm._v("Logout")
+                  ]
+                )
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          !_vm.isAuth
+            ? _c("router-link", { attrs: { tag: "li", to: "/login" } }, [
+                _c("a", [
+                  _c("span", { staticClass: "glyphicon glyphicon-log-in" }),
+                  _vm._v("Sign In")
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.isAuth
+            ? _c("router-link", { attrs: { tag: "li", to: "/regist" } }, [
+                _c("a", [
+                  _c("span", { staticClass: "glyphicon glyphicon-user" }),
+                  _vm._v("Regist")
+                ])
+              ])
+            : _vm._e()
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-cadbadf2", module.exports)
+  }
+}
+
+/***/ }),
+>>>>>>> Stashed changes
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -43661,7 +43914,66 @@ if (false) {
 }
 
 /***/ }),
+<<<<<<< Updated upstream
 /* 84 */,
+=======
+/* 84 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_authentication_login_vue__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_authentication_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_authentication_login_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_authentication_regist_vue__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_authentication_regist_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_authentication_regist_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_game_profile_vue__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_game_profile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_game_profile_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_game_blackJack_vue__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_game_blackJack_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_game_blackJack_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_game_statistics_vue__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_game_statistics_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_game_statistics_vue__);
+
+
+
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
+
+/* harmony default export */ __webpack_exports__["a"] = (new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+  routes: [{
+    path: '/',
+    redirect: '/blackJack'
+  }, {
+    path: '/login',
+    component: __WEBPACK_IMPORTED_MODULE_2__components_authentication_login_vue___default.a,
+    meta: { forVisitors: true }
+  }, {
+    path: '/regist',
+    component: __WEBPACK_IMPORTED_MODULE_3__components_authentication_regist_vue___default.a,
+    meta: { forVisitors: true }
+  }, {
+    path: '/blackJack',
+    component: __WEBPACK_IMPORTED_MODULE_5__components_game_blackJack_vue___default.a,
+    meta: { forAuth: true }
+  }, {
+    path: '/profile',
+    component: __WEBPACK_IMPORTED_MODULE_4__components_game_profile_vue___default.a,
+    meta: { forAuth: true }
+  }, {
+    path: '/statistics',
+    component: __WEBPACK_IMPORTED_MODULE_6__components_game_statistics_vue___default.a,
+    meta: { forAll: true }
+  }],
+  linkActiveClass: 'active'
+}));
+
+/***/ }),
+>>>>>>> Stashed changes
 /* 85 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -46770,6 +47082,152 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-cadbadf2", module.exports)
+  }
+}
+
+/***/ }),
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(127)
+}
+var normalizeComponent = __webpack_require__(3)
+/* script */
+var __vue_script__ = __webpack_require__(129)
+/* template */
+var __vue_template__ = __webpack_require__(130)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/game/statistics.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-957982ce", Component.options)
+  } else {
+    hotAPI.reload("data-v-957982ce", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(128);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("7521af04", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-957982ce\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statistics.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-957982ce\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./statistics.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(1)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 129 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {}
+});
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "container" }, [
+      _c("h3", [_vm._v("Statistics")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-957982ce", module.exports)
   }
 }
 
