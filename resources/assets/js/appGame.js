@@ -9,41 +9,29 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import VueRouter from 'vue-router';
 import Auth from './classes/Auth.js'
 import VueSocketio from 'vue-socket.io';
 import VueAppGame from './VueAppGame.vue';
+import Router from './classes/Routes.js'
 
-Vue.use(VueRouter);
 Vue.use(Auth);
-Vue.use(VueSocketio, 'http://192.168.10.10:8080');
+Vue.use(VueSocketio, 'http://127.0.0.1:8080');
+// Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 window.axios.defaults.headers.common['Accept'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken();
 
-
-const routes = [
-  { path: '/', redirect: '/users' },
-  { path: '/login', component: require('./components/authentification/login.vue'), meta: {forVisitors:true} },
-  { path: '/regist', component: require('./components/authentification/regist.vue'), meta: {forVisitors:true}  },
-  { path: '/blackJack', component: require('./components/game/blackJack.vue'), meta: {forAuth:true} }
-];
-
-const router = new VueRouter({
-  routes:routes
-});
-
-router.beforeEach(
+Router.beforeEach(
   (to,from,next) => {
     if(to.matched.some(record => record.meta.forVisitors)) {
-      if(Vue.auth.isAuthentificated()){
+      if(Vue.auth.isAuthenticated()){
         next({
           path: '/blackJack'
         })
       } else next()
     }
     else if(to.matched.some(record => record.meta.forAuth)) {
-      if(!Vue.auth.isAuthentificated()){
+      if(!Vue.auth.isAuthenticated()){
         next({
           path: '/login'
         })
@@ -52,8 +40,8 @@ router.beforeEach(
   }
 )
 
-
-const app = new Vue({
-  router,
+new Vue({
+  el: '#app',
   render: h => h(VueAppGame),
-}).$mount('#app')
+  router: Router
+})

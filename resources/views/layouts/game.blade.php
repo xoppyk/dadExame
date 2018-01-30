@@ -5,8 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
         @yield('metatags')
         <title>@yield('title')</title>
         @yield('extrastyles')
@@ -15,6 +16,17 @@
 
         </head>
         <body>
+          @if(session()->has('flash'))
+            <script type="text/javascript">
+              // swal("Something Wrong!", '{{ session('flash') }}', "warning");
+              swal({ title: "Sweet!", text: '{{ session('flash') }}', imageUrl: 'thumbs-up.jpg' });
+            </script>
+          @endif
+          @if(session()->has('error'))
+            <script type="text/javascript">
+              swal("Something Wrong!", '{{ session('error') }}', "warning");
+            </script>
+          @endif
         <div class="container" id="app">
             @yield('content')
         </div>

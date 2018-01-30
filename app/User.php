@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Mail\UserConfirmation;
+use App\Mail\UserDeleteRequest;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -50,11 +51,10 @@ class User extends Authenticatable
 
     public function notifyConfirmation()
     {
-        Mail::to($this)->send(new UserConfirmation($this));
+        return Mail::to($this)->send(new UserConfirmation($this));
     }
-
-    public function isActive()
+    public function notifyDeleteRequest()
     {
-        return $this->active;
+        return Mail::to($this)->send(new UserDeleteRequest($this));
     }
 }

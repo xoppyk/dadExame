@@ -1,17 +1,42 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-          <router-link class="navbar-item" to="/blackJack">Black Jack</router-link>
-          <router-link class="navbar-item" to="/login">Login</router-link>
-          <router-link class="navbar-item" to="/regist">Regist</router-link>
-      </div>
-  </nav>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <router-link class="navbar-brand" to="/blackJack">Black Jack</router-link>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="/">Home</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <!-- Authentificatede  -->
+      <router-link tag="li" v-if="isAuth" to="/profile"><a><span class="glyphicon glyphicon-user"></span>Edit User</a></router-link>
+      <li><a class="navbar-item" v-if="isAuth" v-on:click.prevent="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
+      <!-- DONT Authentificatede  -->
+      <router-link tag="li" v-if="!isAuth" to="/login"><a><span class="glyphicon glyphicon-log-in"></span>Sign In</a></router-link>
+      <router-link tag="li" v-if="!isAuth" to="/regist"><a><span class="glyphicon glyphicon-user"></span>Regist</a></router-link>
+    </ul>
+  </div>
+</nav>
 </template>
 
 <script>
 export default {
+  props: ['currentPlayer', 'isAuth'],
+  data() {
+    return {}
+  },
+  methods: {
+    logout() {
+      this.$emit('logout');
+      this.$router.push("/login");
+    },
+  },
 }
 </script>
 
-<style lang="css">
+<style>
+.router-link-active {
+  background-color: blue;
+  color: white
+}
 </style>

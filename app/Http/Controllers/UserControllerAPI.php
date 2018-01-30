@@ -28,6 +28,7 @@ class UserControllerAPI extends Controller
         return new UserResource(User::find($id));
     }
 
+    //STORE USER
     public function store(Request $request)
     {
         $request->validate([
@@ -43,12 +44,21 @@ class UserControllerAPI extends Controller
         $user->blocked = 1;
         $user->reason_blocked = 'Email Not Confirmed';
         $user->remember_token = str_random(10);
-        $user->save();
-
-        $user->notifyConfirmation();
+        if ($user->notifyConfirmation()) {
+          $user->save();
+        }
         return response()->json(new UserResource($user), 201);
     }
 
+    public function deleteMailRequest($id){
+      $user = User::findOrFail($id);
+      $user->remember_token = str_random(10);
+      if ($user->notifyDeleteRequest()) {
+        $user->save();
+      }
+    }
+
+    //UPDATE USER
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -58,10 +68,14 @@ class UserControllerAPI extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
                 'nickname' => 'required|unique:users,nickname,'.$id,
-                'password' => 'required|min:3|confirmed',
-                'password_confirmation' => 'required|min:3'
+                'old_password' => 'required|min:6',
+                'password' => 'required|min:6|confirmed',
+                'password_confirmation' => 'required|min:6'
             ]);
-            $user->password = Hash::make($request->input('password'));
+            if (!Hash::check($request->input('old_password'), $user->password)) {
+              return response()->json(['error' => 'Wrong Old Password'], 401);
+            }
+            $user->password = bcrypt($request->password);
         } else {
             $request->validate([
                     'name' => 'required',
@@ -102,25 +116,15 @@ class UserControllerAPI extends Controller
         return new UserResource($user);
     }
 
-
-
+    //DELETE USER
     public function delete($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
         return response()->json(null, 204);
     }
-    public function emailAvailable(Request $request)
-    {
-        $totalEmail = 1;
-        if ($request->has('email') && $request->has('id')) {
-            $totalEmail = DB::table('users')->where('email', '=', $request->email)->where('id', '<>', $request->id)->count();
-        } else if ($request->has('email')) {
-            $totalEmail = DB::table('users')->where('email', '=', $request->email)->count();
-        }
-        return response()->json($totalEmail == 0);
-    }
 
+    //CONFIRM USER
     public function confirmation($token)
     {
         if (count($token) == 0) {
@@ -130,7 +134,7 @@ class UserControllerAPI extends Controller
         if(!$user) {
             return redirect('/')->with('error', 'User dont Exist!');
         }
-        if($user->isActive()) {
+        if($user->remember_token == '') {
             return redirect('/')->with('flash', 'Accout been Actived!');
         }
         $user->remember_token = '';
@@ -138,5 +142,34 @@ class UserControllerAPI extends Controller
         $user->reason_blocked = '';
         $user->save();
         return redirect('/')->with('flash', 'Account Actived With Success!');
+    }
+    //CONFIRM Deleting USER
+    public function confirmationDeleting($token)
+    {
+        if (count($token) == 0) {
+            return redirect('/')->with('error', 'Error');
+        }
+        $user = User::where('remember_token', $token)->first();
+        if(!$user) {
+            return redirect('/')->with('error', 'User dont Exist!');
+        }
+        $user->delete();
+        return redirect('/')->with('flash', 'Account Deleted With Success!');
+    }
+    //Abort USER
+    public function abort($token)
+    {
+        if (count($token) == 0) {
+            return redirect('/')->with('error', 'Error');
+        }
+        $user = User::where('remember_token', $token)->first();
+        if(!$user) {
+            return redirect('/')->with('error', 'User dont Exist!');
+        }
+        if($user->remember_token == '') {
+            return redirect('/')->with('flash', 'Sorry Your Account is Active!');
+        }
+        $user->delete();
+        return redirect('/')->with('flash', 'Account Aborted With Success!');
     }
 }

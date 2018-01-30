@@ -19,7 +19,6 @@ class InitialStructure extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('nickname')->unique();
-            $table->rememberToken();
             $table->boolean('admin')->default(false);
             $table->boolean('blocked')->default(false);
             $table->string('reason_blocked')->nullable();

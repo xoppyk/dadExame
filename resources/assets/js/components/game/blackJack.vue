@@ -1,33 +1,40 @@
 <template>
+  <div class="container">
     <div>
         <div>
-            <h3 class="text-center">{{ title }}</h3>
-            <br>
             <h3>{{currentPlayer.name}}</h3>
-            <p>Pontos : {{currentPlayer.total_points}}</p>
-            <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
-            <hr>
-            <h3 class="text-center">Lobby</h3>
-            <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
-            <hr>
-            <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
-            <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
-            <template v-for="activeGame in activeGames">
-                <game :game="activeGame" :currentPlayer="currentPlayer"></game>
-            </template>
+              <div v-if="!currentPlayer.blocked">
+                <p>Pontos : {{currentPlayer.total_points}}</p>
+                <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
+                <hr>
+                <h3 class="text-center">Lobby</h3>
+                <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
+                <hr>
+                <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
+                <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
+                <template v-for="activeGame in activeGames">
+                    <game :game="activeGame" :currentPlayer="currentPlayer"></game>
+                </template>
+              </div>
+            <div v-else>
+              <hr>
+              <h4>You Are Bloked</h4>
+              <hr>
+              <h4>Reason:</h4>
+              <p v-text="currentPlayer.reason_blocked"></p>
+            </div>
         </div>
     </div>
+  </div>
 </template>
-
 <script type="text/javascript">
     import Lobby from './Lobby.vue';
     import Game from './Game.vue';
-
     export default {
+        props: ['currentPlayer'],
         data: function(){
             return {
                 title: 'BlackJack',
-                currentPlayer: {},
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
@@ -46,8 +53,6 @@
                 this.socketId = "";
             },
             lobby_changed(){
-                // For this to work, websocket server must emit a message
-                // named "lobby_changed"
                 this.loadLobby();
             },
             my_active_games_changed(){
@@ -55,7 +60,6 @@
             },
             my_active_games(games){
                 this.activeGames = games;
-                //console.log(games.length);
             },
             my_lobby_games(games){
                 this.lobbyGames = games;
@@ -147,22 +151,6 @@
             giveCard(game){
                 // to close a game
                 this.$socket.emit('give_card', {gameID: game.gameID, playerName: this.currentPlayer.name});
-            },
-            loadUser: function(){
-                var headers = {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + this.$auth.getToken()
-                }
-                axios.get('api/user', headers)
-                  .then((response) => {
-                    //Object.assign(this.currentPlayer, response.data);
-                    this.currentPlayer = response.data
-                  })
-                  .catch((error) => {
-                    console.log('nao tem nada')
-                  });
-                console.log('load user');
             }
         },
         components: {
@@ -170,13 +158,8 @@
             'game': Game,
         },
         mounted() {
-            //console.log(this.$auth.getToken());
-            this.loadLobby();
+          this.loadLobby();
         },
-        created(){
-          this.loadUser();
-        }
-
     }
 </script>
 
