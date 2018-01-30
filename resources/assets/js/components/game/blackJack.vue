@@ -28,8 +28,9 @@
   </div>
 </template>
 <script type="text/javascript">
-    import Lobby from './Lobby.vue';
-    import Game from './Game.vue';
+    import Lobby from './lobby.vue';
+    import Game from './game.vue';
+
     export default {
         props: ['currentPlayer'],
         data: function(){
@@ -38,9 +39,6 @@
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
-                deck_nr: '',
-                hidden_face: '',
-                cards: [],
             }
         },
         sockets:{
@@ -53,6 +51,8 @@
                 this.socketId = "";
             },
             lobby_changed(){
+                // For this to work, websocket server must emit a message
+                // named "lobby_changed"
                 this.loadLobby();
             },
             my_active_games_changed(){
@@ -60,6 +60,7 @@
             },
             my_active_games(games){
                 this.activeGames = games;
+                //console.log(games.length);
             },
             my_lobby_games(games){
                 this.lobbyGames = games;
@@ -101,44 +102,34 @@
                 this.$socket.emit('get_my_activegames');
             },
             createGame(){
-                console.log('criei');
                 // For this to work, server must handle (on event) the "create_game" message
-                if (this.currentPlayer.name == "") {
+                if (this.currentPlayer.name == '') {
                     alert('Current Player is Empty - Cannot Create a Game');
                     return;
                 }
                 else {
-                    /*axios.get('/api/decks/random')
-                        .then(response => {
-                            console.log(response.data.data.hidden_face_image_path);
-                            this.deck_nr = response.data.data.id;
-                            this.hidden_face = response.data.data.hidden_face_image_path;
-                            axios.get('/api/cards/deck/' + this.deck_nr)
-                                .then(response => {
-                                    //console.log('response.data.data');
-                                    //console.log(response.data.data);
-                                    this.cards = response.data.data;
-                                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name, cards: this.cards, hidden_face: this.hidden_face });
-                                });
-                        });*/
-                    this.$socket.emit('create_game', { playerName: this.currentPlayer.name });
+                    this.$socket.emit('create_game', {tokenPlayer: this.$auth.getToken()});
                 }
             },
             join(game){
                 // Click to join game
-                if(game.player1 == this.currentPlayer.name){
-                    alert('Cannot join because your name is the same as Player1');
+                if(this.currentPlayer.name == ''){
+                    alert('Current Player is Empty - Cannot Create a Game');
                     return;
                 }
-                this.$socket.emit('join_game', {gameID: game.gameID, playerName: this.currentPlayer.name});
+                this.$socket.emit('join_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
             },
             start(game){
                 // play a game - click on piece on specified index
-                this.$socket.emit('start_game', {gameID: game.gameID, playerName: this.currentPlayer.name});
+                this.$socket.emit('start_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
             },
             skip(game){
                 // play a game - click on piece on specified index
-                this.$socket.emit('skip', {gameID: game.gameID, playerName: this.currentPlayer.name});
+                this.$socket.emit('skip', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+            },
+            giveCard(game){
+                // to close a game
+                this.$socket.emit('give_card', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
             },
             play(game, index){
                 // play a game - click on piece on specified index
@@ -148,9 +139,9 @@
                 // to close a game
                 this.$socket.emit('remove_game', {gameID: game.gameID});
             },
-            giveCard(game){
-                // to close a game
-                this.$socket.emit('give_card', {gameID: game.gameID, playerName: this.currentPlayer.name});
+            
+            check(game){
+                this.$socket.emit('check', {gameID: game.gameID });   
             }
         },
         components: {
@@ -160,6 +151,7 @@
         mounted() {
           this.loadLobby();
         },
+
     }
 </script>
 

@@ -13,43 +13,42 @@ class GameList {
     	return game;
     }
 
-    createGame(playerName, socketID, cards, hidden_face) {
+    createGame(tokenPlayer, socketID) {
     	this.contadorID = this.contadorID+1;
-    	var game = new BlackJackGame(this.contadorID, playerName, cards, hidden_face);
+    	var game = new BlackJackGame(this.contadorID, tokenPlayer);
         game.playerSocketID = new Array();
     	game.playerSocketID[0] = socketID;
     	this.games.set(game.gameID, game);
     	return game;
     }
 
-    startGame(gameID, playerName) {
+    startGame(gameID, tokenPlayer) {
         let game = this.gameByID(gameID);
         if (game===null) {
             return null;
         }
-        game.start(playerName);
+        game.start(tokenPlayer);
         game.playerSocketID[0] = socketID;
         this.games.set(game.gameID, game);
         return game;
     }
 
-    joinGame(gameID, playerName, socketID) {
+    joinGame(gameID, tokenPlayer, socketID) {
     	let game = this.gameByID(gameID);
     	if (game===null) {
     		return null;
     	}
-    	game.join(playerName);
+    	game.join(tokenPlayer);
     	game.playerSocketID[game.playerSocketID.length] = socketID;
     	return game;
     }
 
-    giveCard(gameID, playerName) {
+    giveCard(gameID, tokenPlayer) {
         let game = this.gameByID(gameID);
         if (game===null) {
             return null;
         }
-        console.log('aqui2');
-        game.giveCard(playerName);
+        game.giveCard(tokenPlayer);
         return game;
     }
 

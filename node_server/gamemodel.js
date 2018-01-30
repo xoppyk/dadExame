@@ -1,103 +1,160 @@
 /*jshint esversion: 6 */
 
+var axios = require('axios');
+
 class BlackJackGame {
-    constructor(ID, player1Name, cards, hidden_face) {
-        this.gameID = ID;
-        this.cartas = cards;
-        this.semFace = hidden_face;
+    constructor(gameID, tokenUser) {
+        this.gameID = gameID;
+        this.cartas = new Array();
+        this.semFace = '';
         this.gameEnded = false;
         this.gameStarted = false;
-        this.playerTurn = player1Name;
-        this.nrPlayerTurn = 0;
         this.winner = -1;
-        this.tempo = 20;
-        //name, board, skip, winner, lost, points
-        this.playersFull = new Array();
-        this.playersFull[0] = [player1Name, ['undefined', 'undefined'], false, false, false, 0];
+        this.time = 20;
+        this.deck_nr = -1;
+        this.jogadas = 1;
+        //id, name, board, played, canPlay, points
+        this.players = new Array();
+        //this.getUser(tokenUser);
+        this.players[0] = [tokenUser, this.getUser(tokenUser), ['undefined', 'undefined'], false, true, 0];
+        this.getCards();
+        //console.log(this.players[0]);
     }
 
-    join(playerName){
-        if(this.playersFull.length < 5){
-            this.playersFull[this.playersFull.length] = [playerName, ['undefined', 'undefined'], false, false, false, 0]
-            this.playerTurn = playerName;
-            this.nrPlayerTurn ++;
-            console.log('join player ' + playerName + ' to game ' + this.gameID);
+    getCards(){
+        axios.get('http://dadexame.test/api/decks/random')
+            .then(response => {
+                this.deck_nr = response.data.data.id;
+                this.semFace = response.data.data.hidden_face_image_path;
+                axios.get('http://dadexame.test/api/cards/deck/' + this.deck_nr)
+                    .then(response => {
+                        this.cartas = response.data.data;
+                        console.log('game ' + this.gameID + ' -> creatd');
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            });
+    }
+
+    getUser(tokenUser){
+        //var user;
+        axios({
+            url: 'http://dadexame.test/api/user',
+            method: 'get',
+            headers: {
+            Authorization: "Bearer " + tokenUser
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+            return response.data;
+        })
+        .catch(function(error) {
+            console.log(error)
+        });
+    }
+
+    join(tokenUser){
+        for(var i = 0; i < this.players.length; i++){
+            if(this.players[i][0] == idPlayer){
+                return;
+            }
+        }
+
+        if(this.players.length < 5){
+            this.players[this.players.length] = [tokenUser, this.getUser(tokenUser), ['undefined', 'undefined'], false, true, 0];
+            console.log('game ' + this.gameID + ' -> join player ' + (this.players[this.players.length - 1][0]).name);
         }
     }
 
+    check() {
+        if(this.gameEnded) {
+            return false;
+        }
+        return true;        
+    }
 
-    start(playerName){
-        console.log('start game ' + this.gameID);
-        if(this.playersFull[0][0] == playerName && this.gameStarted == false){
-            for(var i = 0; i < this.playersFull.length;i++){
+    start(tokenUser){
+        var number;
+        if(this.players[0][0] == tokenUser && !this.gameStarted){
+            for(var i = 0; i < this.players.length;i++){
                 for(var ii = 0; ii < 2;ii++){
-                    //console.log(ii);
-                    var number = Math.floor(Math.random() * this.cartas.length-1);
-                    this.playersFull[i][1][ii] = this.cartas[number];
-                    this.cartas.splice(number, 1);
+                    do{
+                        number = Math.floor(Math.random() * (this.cartas.length - 1));
+                        console.log(number);
+                    }while(this.jaEscolhida(this.cartas[number]));
+                    this.players[i][2][ii] = this.cartas[number];
                 }
             }
             this.gameStarted = true;
-            for(var i = 0; i < this.playersFull.length;i++){
-                this.playersFull[i][5] = this.pointsPerBoard(this.playersFull[i][1]);
-            }
-            //this.startTimer();
-            /*setInterval(function(){this.tempo--; console.log(this.tempo);}, 1000);
-            console.log(this.tempo);*/
-            /*var i = 20;
-            setInterval(function(){i--;this.tempo = i;console.log(i);}, 1000);*/
-            for(var i = 0; i < this.playersFull.length;i++){
-                if(this.playersFull[i][5] > 21){
-                    this.playersFull[i][4] = true;
-                    this.passTurn();
+            for(var i = 0; i < this.players.length;i++){
+                this.players[i][5] = this.pointsPerBoard(this.players[i][2]);
+                if(this.players[i][5] >= 21){
+                    this.players[i][4] = false;
                 }
             }
+
+            this.tik();
+
+            axios.post('http://dadexame.test/api/games/start', {status: 'active', total_players: this.players.length, created_by: this.players[0][0], deck_used: this.deck_nr})
+                .then(response => {
+                    console.log('game ' + this.gameID + ' -> start');
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     }
 
-    skip(playerName){
-        var index = -1;
-        for(var i = 0; i < this.playersFull.length; i++){
-            if(this.playersFull[i][0] == playerName){
-                index = i;
-            }
+    getIndexPlayerByToken(playerId){
+        switch (playerId) {
+            case this.players[0][0]:
+                return 0;
+            case this.players[1][0]:
+                return 1;
+            case this.players[2][0]:
+                return 2;
+            case this.players[3][0]:
+                return 3;
+            default:
+                return -1;
         }
+    }
 
-        if(index != -1){
-            if(!this.playersFull[index][2]){
-                console.log('skip ' + playerName + ' in game ' + this.gameID);
-                this.playersFull[index][2] = true;
-                this.passTurn();
-            }
-        }
-        if(this.allSkip()){
-            console.log('allSkip');
-            this.vencedor();
-        }else{
+    skip(tokenUser){
+        var indexPlayer = this.getIndexPlayerByToken(tokenUser);
+
+        if(indexPlayer != -1){
+            console.log('game ' + this.gameID + ' -> skip ' + playerName);
+            this.players[indexPlayer][3] = true;
+            this.players[indexPlayer][4] = false;
+
             this.status();
-        }
-    }
-
-    allSkip(){
-        var veri = true;
-        for(var i = 0; i < this.playersFull.length; i++){
-            //console.log(this.skipPlayer[i]+i);
-            veri = veri && this.playersFull[i][2];
-        }
-        return veri;
-    }
-
-    status(){
-        var qtdLost = 0;
-        for(var i = 0; i < this.playersFull.length; i++){
-            if(this.playersFull[i][4]){
-                qtdLost++;
+            if(!this.canPlay()){
+                this.jogadas++;
             }
         }
-        if(this.playersFull.length - qtdLost == 1){
-            console.log('there are winner');
-            this.vencedor();
+    }
+
+    giveCard(tokenUser){
+        var indexPlayer = this.getIndexPlayerByToken(playerId);
+
+        var indexCard;
+        do{
+            indexCard = Math.floor(Math.random() * (this.cartas.length - 1));
+        }while(this.jaEscolhida(this.cartas[indexCard]));
+
+        if(this.players[indexPlayer][3] || this.players[indexPlayer][2].length >= 4){
+            return;
         }
+        this.players[indexPlayer][2][this.players[indexPlayer][2].length] = this.cartas[indexCard];
+        this.players[indexPlayer][5] = this.pointsPerBoard(this.players[indexPlayer][2]);
+        this.players[indexPlayer][3] = true;
+
+        this.status();
+
+        console.log('game ' + this.gameID + ' -> giveCard ' + (this.players[indexPlayer][1]).name); 
     }
 
     pointsPerBoard(array){
@@ -117,138 +174,137 @@ class BlackJackGame {
         return total;
     }
 
-    giveCard(player){
-        console.log('giveCard ' + player + ' in game ' + this.gameID);       
-        var number = Math.floor(Math.random() * this.cartas.length-1);
-
-        switch (player) {
-            case this.playersFull[0][0]:
-                if(this.playersFull[0][1].length < 4){
-                    this.playersFull[0][1][this.playersFull[0][1].length] = this.cartas[number];
-                    this.cartas.splice(number, 1);
-                    this.playersFull[0][5] = this.pointsPerBoard(this.playersFull[0][1]);
-                    //console.log('0--'+this.playersFull[0][5]);
-                }
-                break;
-            case this.playersFull[1][0]:
-                if(this.playersFull[1][1].length < 4){
-                    this.playersFull[1][1][this.playersFull[1][1].length] = this.cartas[number];
-                    this.cartas.splice(number, 1);
-                    this.playersFull[1][5] = this.pointsPerBoard(this.playersFull[1][1]);
-                    //console.log('1--'+this.playersFull[0][5]);
-                }
-                break;
-            case this.playersFull[2][0]:
-                if(this.playersFull[2][1].length < 4){
-                    this.playersFull[2][1][this.playersFull[2][1].length] = this.cartas[number];
-                    this.cartas.splice(number, 1);
-                    this.playersFull[2][5] = this.pointsPerBoard(this.playersFull[2][1]);
-                    //console.log('2--'+this.playersFull[0][5]);
-                }
-                break;
-            case this.playersFull[3][0]:
-                if(this.playersFull[3][1].length < 4){
-                    this.playersFull[3][1][this.playersFull[3][1].length] = this.cartas[number];
-                    this.cartas.splice(number, 1);
-                    this.playersFull[3][5] = this.pointsPerBoard(this.playersFull[3][1]);
-                    //console.log('3--'+this.playersFull[0][5]);
-                }
-                break;
-            default:
-                break;
+    status(){
+        if(this.allPlayed()){
+            this.time = 0;
         }
-
-        for(var i = 0; i < this.playersFull.length;i++){
-            if(this.playersFull[i][5] > 21){
-                this.playersFull[i][4] = true;
-                this.passTurn();
-                break;
-            }
-        }
-
-        this.status();
-        this.passTurn();
     }
 
-    passTurn(){
-        do{
-            this.nrPlayerTurn --;
-            if(this.nrPlayerTurn < 0){
-                this.nrPlayerTurn = this.playersFull.length-1;    
-            }
-            if(this.allSkip()){
-                break;
-            }
-        }while(this.playersFull[this.nrPlayerTurn][2] || this.playersFull[this.nrPlayerTurn][4]);
-        this.playerTurn = this.playersFull[this.nrPlayerTurn][0];
-        console.log('playerTurn ' + this.playerTurn + ' in game ' + this.gameID);
-        
-        if(this.allSkip()){
-            console.log('allSkip');
-            this.vencedor();
+    canPlay(){
+        var canPlay = true;
+        for(var i = 0; i < this.players.length; i++){
+            canPlay = canPlay && this.players[i][4];
         }
+        return canPlay;
+    }
+
+    allPlayed(){
+        console.log('allPlayed');
+        var jaJogaram = true;
+
+        for(var i = 0; i < this.players.length; i++){
+            if(this.players[i][4]){  
+                jaJogaram = jaJogaram && this.players[i][3];  
+                this.players[i][3] = false;
+            }
+        }
+        return jaJogaram;
     }
 
     jaEscolhida(card){
-        this.playersFull[0][1].forEach(function(c) {
-            if(card.id == c.id)
-                return true;
-        });
-        this.playersFull[1][1].forEach(function(c) {
-            if(card.id == c.id)
-                return true;
-        });
-        this.playersFull[2][1].forEach(function(c) {
-            if(card.id == c.id)
-                return true;
-        });
-        this.playersFull[3][1].forEach(function(c) {
-            if(card.id == c.id)
-                return true;
-        });
+        for(var i = 0; i < this.players.length; i++){
+            this.players[i][2].forEach(function(c) {
+                if(card.id == c.id)
+                    return true;
+            });
+        }
         return false;
     }
 
     vencedor(){
-        var aux = 0;
-        var w = 0;
-        for(var i = 0 ; i < this.playersFull.length;i++){
-            var p = this.pointsPerBoard(this.playersFull[i][1]);
+        if(!this.gameEnded && (this.jogadas <= 2)){
+            return;
+        }
+
+        var pontuacaoMaxima = 0;
+        var p = 0;
+        var indexWinner = 0;
+        var draw = false;
+
+        for(var i = 0 ; i < this.players.length;i++){
+            p = this.pointsPerBoard(this.players[i][2]);
+            this.players[i][5] = p;
             if(p <= 21){
-                if(p > aux){
-                    aux = p;
-                    w = this.playersFull[i][0];
+                if(p > pontuacaoMaxima){
+                    pontuacaoMaxima = p;
+                    indexWinner = i;
+                    draw = false;
+                }else if (p == pontuacaoMaxima) {
+                    draw = true;
                 }
             }
+            this.addGameUser(this.players[i][0], this.players[i][1]);
         }
-        this.winner = w;
+
+        //se ha vencedores, vou procurar os nomes
+        if(draw){
+            for(i = 0 ; i < this.players.length;i++){
+                if(this.players[i][5] == pontuacaoMaxima){
+                    //caso de empate o utilizador recebe 50
+                    this.addPointsUser(this.players[i][0], this.players[i][1], 50);
+                }
+            }
+        }else{
+            this.winner = this.players[indexWinner][1];
+            //caso de vitoria o utilizador recebe 100
+            var poi = 100;
+            if(this.players[indexWinner][5] == 21){
+                //caso de vitoria com os pontos igual a 21, o utilizador recebe bonus de 50
+                poi = poi + 50;
+            }
+            this.addPointsUser(this.players[indexWinner][0], this.players[indexWinner][1], poi);
+        }
+        
         this.gameEnded = true;
-        console.log('game ended');
+        
+        axios.put('http://dadexame.test/api/games/' + this.gameID + '/update', {status: 'terminated'})
+            .then(response => {
+                console.log('game ' + this.gameID + ' -> ended -> winner -> ' + this.winner);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
-    play(playerNumber, index){
-        if (!this.gameStarted) {
-            return false;
-        }
-        if (this.gameEnded) {
-            return false;
-        }
-        if (playerNumber != this.playerTurn) {
-            return false;
-        }
-        /*if (this.board[index] !== 0) {
-            return false;
-        }*/
-        //this.board[index] = playerNumber;
-        if (!this.checkGameEnded()) {
-            this.nrPlayerTurn --;
-            if(this.nrPlayerTurn < 0){
-                this.nrPlayerTurn = this.playersFull.length;    
+    addPointsUser(idPlayer, namePlayer, p){
+        axios.post('http://dadexame.test/api/users/' + idPlayer + '/addPoints', {points: p})
+            .then(response => {
+                console.log('game ' + this.gameID + ' -> add points to ' + namePlayer + ': ' + p);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    addGameUser(idPlayer, namePlayer){
+        axios.post('http://dadexame.test/api/users/' + idPlayer + '/addGamePlayed')
+            .then(response => {
+                console.log('game ' + this.gameID + ' -> add game to ' + namePlayer);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    tik() {
+        var intv;
+        intv = setInterval(()=> {
+            if(this.gameStarted && !this.gameEnded) {
+                if(this.time <= 0){
+                    for(var i = 0; i < this.players.length; i++){
+                        if(this.players[i][3] == false){
+                            this.players[i][4] = false;
+                        } else {
+                            this.players[i][4] = true;
+                        }
+                    }
+                    this.jogadas++;
+                    this.vencedor();
+                    this.time = 20;
+                }
+                this.time--;
             }
-            this.playerTurn = this.playersFull[this.nrPlayerTurn][0];
-            console.log('aqui3');
-        }
-        return true;
+        },1000);
     }
 
 }

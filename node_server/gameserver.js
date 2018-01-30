@@ -22,6 +22,7 @@ var io = require('socket.io')(app);
 var BlackJackGame = require('./gamemodel.js');
 var GameList = require('./gamelist.js');
 var axios = require('axios');
+var delay = require('delay');
 
 app.listen(8080, function(){
 	console.log('listening on *:8080');
@@ -37,36 +38,33 @@ io.on('connection', function (socket) {
     console.log('client has connected');
 
     socket.on('create_game', function (data){
-    	let deck_nr;
-    	let hidden_face;
-    	let cards = new Array();
-    	axios.get('http://dadexame.test/api/decks/random')
-            .then(response => {
-                //console.log(response.data);
-                deck_nr = response.data.data.id;
-                hidden_face = response.data.data.hidden_face_image_path;
-                axios.get('http://dadexame.test/api/cards/deck/' + deck_nr)
-                    .then(response => {
-                        //console.log('response.data.data');
-                        //console.log(response.data);
-                        cards = response.data.data;
-                        //console.log(cards);
-                        let game = games.createGame(data.playerName, socket.id, cards, hidden_face);
-                        socket.join(game.gameID);
-						// Notifications to the client
-						socket.emit('my_active_games_changed');
-						io.emit('lobby_changed');
-						console.log('create game ' + game.gameID);
-                    })
-                    .catch(error => {
-			            console.log(error);
-			        });
+    	/*var instance = axios.create({
+              url : 'http://dadexame.test',
+              timeout: 1000,
+              headers: {
+                    'content-type': 'application/json',
+                    'Authorization': 'Bearer ' + data.tokenPlayer,
+                }
             });
+        instance.get('http://dadexame.test/api/user')
+            .then(response =>{
+                console.log(response.data);
+                //return response.data;
+                //this.user = response.data;
+                //socket.emit('authenticated', this.user);
+            }).catch(error => {
+                console.log(error);
+            });*/
+        let game = games.createGame(data.tokenPlayer, socket.id);
+        socket.join(game.gameID);
+		// Notifications to the client
+		socket.emit('my_active_games_changed');
+		io.emit('lobby_changed');
     });
 
     socket.on('give_card', function (data){
     	let game = games.gameByID(data.gameID);
-		game.giveCard(data.playerName);
+		game.giveCard(data.tokenPlayer);
 		//console.log('aqui1' + data.playerName);
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
@@ -79,7 +77,7 @@ io.on('connection', function (socket) {
 			socket.emit('invalid_play', {'type': 'Invalid_Game', 'game': null});
 			return;
 		}
-		game.start(data.playerName)
+		game.start(data.tokenPlayer)
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.to(game.gameID).emit('game_changed', game);
@@ -92,7 +90,7 @@ io.on('connection', function (socket) {
 			socket.emit('invalid_play', {'type': 'Invalid_Game', 'game': null});
 			return;
 		}
-		game.skip(data.playerName)
+		game.skip(data.tokenPlayer)
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.to(game.gameID).emit('game_changed', game);
@@ -100,7 +98,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join_game', function (data){
-			let game = games.joinGame(data.gameID, data.playerName, socket.id);
+			let game = games.joinGame(data.gameID, data.tokenPlayer, socket.id);
 			socket.join(game.gameID);
 			io.to(game.gameID).emit('my_active_games_changed');
 			io.emit('lobby_changed');
@@ -109,9 +107,10 @@ io.on('connection', function (socket) {
     socket.on('remove_game', function (data){
     	let game = games.removeGame(data.gameID, socket.id);
     	socket.emit('my_active_games_changed');
+    	io.emit('lobby_changed');
     });
 
-    socket.on('play', function (data){
+    /*socket.on('play', function (data){
 		let game = games.gameByID(data.gameID);
 		if (game === null) {
 			socket.emit('invalid_play', {'type': 'Invalid_Game', 'game': null});
@@ -133,7 +132,7 @@ io.on('connection', function (socket) {
 			socket.emit('invalid_play', {'type': 'Invalid_Play', 'game': game});
 			return;
 		}
-    });
+    });*/
 
     socket.on('get_game', function (data){
 		let game = games.gameByID(data.gameID);
@@ -150,4 +149,8 @@ io.on('connection', function (socket) {
     	socket.emit('my_lobby_games', my_games);
     });
 
+	socket.on('check', function (data){
+    	let game = games.gameByID(data.gameID);
+		io.to(game.gameID).emit('game_changed', game);
+	});
 });
