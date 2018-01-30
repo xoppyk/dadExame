@@ -52,9 +52,4 @@ class User extends Authenticatable
     {
         Mail::to($this)->send(new UserConfirmation($this));
     }
-
-    public function isActive()
-    {
-        return $this->active;
-    }
 }

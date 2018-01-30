@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <router-link class="navbar-brand" to="/blackJack">Black Jack</router-link>
@@ -12,7 +12,7 @@
       <router-link tag="li" v-if="isAuth" to="/profile"><a><span class="glyphicon glyphicon-user"></span>Edit User</a></router-link>
       <li><a class="navbar-item" v-if="isAuth" v-on:click.prevent="logout()"><span class="glyphicon glyphicon-log-out"></span>Logout</a></li>
       <!-- DONT Authentificatede  -->
-      <router-link tag="li" v-if="!isAuth" to="/login" ><a><span class="glyphicon glyphicon-log-in"></span>Sign In</a></router-link>
+      <router-link tag="li" v-if="!isAuth" to="/login"><a><span class="glyphicon glyphicon-log-in"></span>Sign In</a></router-link>
       <router-link tag="li" v-if="!isAuth" to="/regist"><a><span class="glyphicon glyphicon-user"></span>Regist</a></router-link>
     </ul>
   </div>
@@ -23,13 +23,10 @@
 export default {
   props: ['currentPlayer', 'isAuth'],
   data() {
-    return {
-      showEditUser: false
-    }
+    return {}
   },
   methods: {
     logout() {
-      // this.isAuth = false;
       this.$emit('logout');
       this.$router.push("/login");
     },

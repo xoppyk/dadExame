@@ -17,13 +17,10 @@
         </div>
     </div>
   </div>
-
 </template>
-
 <script type="text/javascript">
     import Lobby from './Lobby.vue';
     import Game from './Game.vue';
-
     export default {
         props: ['currentPlayer'],
         data: function(){
@@ -46,8 +43,6 @@
                 this.socketId = "";
             },
             lobby_changed(){
-                // For this to work, websocket server must emit a message
-                // named "lobby_changed"
                 this.loadLobby();
             },
             my_active_games_changed(){
@@ -55,7 +50,6 @@
             },
             my_active_games(games){
                 this.activeGames = games;
-                //console.log(games.length);
             },
             my_lobby_games(games){
                 this.lobbyGames = games;
@@ -151,7 +145,6 @@
         mounted() {
           this.loadLobby();
         },
-
     }
 </script>
 

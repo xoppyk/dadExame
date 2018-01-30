@@ -28,6 +28,7 @@ class UserControllerAPI extends Controller
         return new UserResource(User::find($id));
     }
 
+    //STORE USER
     public function store(Request $request)
     {
         $request->validate([
@@ -49,6 +50,7 @@ class UserControllerAPI extends Controller
         return response()->json(new UserResource($user), 201);
     }
 
+    //UPDATE USER
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -63,7 +65,7 @@ class UserControllerAPI extends Controller
                 'password_confirmation' => 'required|min:6'
             ]);
             if (!Hash::check($request->input('old_password'), $user->password)) {
-              return response()->json(['error' => 'Wrong Old Password'], 401);              
+              return response()->json(['error' => 'Wrong Old Password'], 401);
             }
             $user->password = bcrypt($request->password);
         } else {
@@ -106,25 +108,15 @@ class UserControllerAPI extends Controller
         return new UserResource($user);
     }
 
-
-
+    //DELETE USER
     public function delete($id)
     {
         $user = User::findOrFail($id);
         $user->delete();
         return response()->json(null, 204);
     }
-    public function emailAvailable(Request $request)
-    {
-        $totalEmail = 1;
-        if ($request->has('email') && $request->has('id')) {
-            $totalEmail = DB::table('users')->where('email', '=', $request->email)->where('id', '<>', $request->id)->count();
-        } else if ($request->has('email')) {
-            $totalEmail = DB::table('users')->where('email', '=', $request->email)->count();
-        }
-        return response()->json($totalEmail == 0);
-    }
 
+    //CONFIRM USER
     public function confirmation($token)
     {
         if (count($token) == 0) {
@@ -141,6 +133,7 @@ class UserControllerAPI extends Controller
         $user->blocked = false;
         $user->reason_blocked = '';
         $user->save();
+        session()->flash('flash', 'User are Confirmed');
         return redirect('/')->with('flash', 'Account Actived With Success!');
     }
 }

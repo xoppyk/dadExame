@@ -9,7 +9,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-// import VueRouter from 'vue-router';
 import Auth from './classes/Auth.js'
 import VueSocketio from 'vue-socket.io';
 import VueAppGame from './VueAppGame.vue';
@@ -21,18 +20,6 @@ Vue.use(VueSocketio, 'http://127.0.0.1:8080');
 
 window.axios.defaults.headers.common['Accept'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken();
-
-
-// const routes = [
-//   { path: '/', redirect: '/blackJack' },
-//   { path: '/login', component: require('./components/authentification/login.vue'), meta: {forVisitors:true} },
-//   { path: '/regist', component: require('./components/authentification/regist.vue'), meta: {forVisitors:true}  },
-//   { path: '/blackJack', component: require('./components/game/blackJack.vue'), meta: {forAuth:true} }
-// ];
-//
-// const router = new VueRouter({
-//   routes:routes
-// });
 
 Router.beforeEach(
   (to,from,next) => {
@@ -52,7 +39,6 @@ Router.beforeEach(
     }
   }
 )
-
 
 new Vue({
   el: '#app',

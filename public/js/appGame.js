@@ -43504,7 +43504,6 @@ __webpack_require__(15);
 
 window.Vue = __webpack_require__(14);
 
-// import VueRouter from 'vue-router';
 
 
 
@@ -43516,17 +43515,6 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_socket_io___default.a, 'http://127.0.0.1
 
 window.axios.defaults.headers.common['Accept'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken();
-
-// const routes = [
-//   { path: '/', redirect: '/blackJack' },
-//   { path: '/login', component: require('./components/authentification/login.vue'), meta: {forVisitors:true} },
-//   { path: '/regist', component: require('./components/authentification/regist.vue'), meta: {forVisitors:true}  },
-//   { path: '/blackJack', component: require('./components/game/blackJack.vue'), meta: {forAuth:true} }
-// ];
-//
-// const router = new VueRouter({
-//   routes:routes
-// });
 
 __WEBPACK_IMPORTED_MODULE_3__classes_Routes_js__["a" /* default */].beforeEach(function (to, from, next) {
   if (to.matched.some(function (record) {
@@ -43562,8 +43550,6 @@ new Vue({
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = (function (Vue) {
-  var authenticatedUser = {};
-
   Vue.auth = {
     setToken: function setToken(token, expiration) {
       localStorage.setItem('token', token);
@@ -43593,12 +43579,6 @@ new Vue({
         return true;
       }
       return false;
-    },
-    setAutenticatedUser: function setAutenticatedUser(data) {
-      authenticatedUser = data;
-    },
-    getAutentificatedUser: function getAutentificatedUser() {
-      return authenticatedUser;
     }
   };
   Object.defineProperties(Vue.prototype, {
@@ -43903,14 +43883,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['currentPlayer', 'isAuth'],
   data: function data() {
-    return {
-      showEditUser: false
-    };
+    return {};
   },
 
   methods: {
     logout: function logout() {
-      // this.isAuth = false;
       this.$emit('logout');
       this.$router.push("/login");
     }
@@ -44098,7 +44075,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
     meta: { forAuth: true }
   }, {
     path: '/profile',
-    name: 'profile',
     component: __WEBPACK_IMPORTED_MODULE_4__components_game_profile_vue___default.a,
     meta: { forAuth: true }
   }],
@@ -46821,7 +46797,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
 
 // exports
 
@@ -46901,36 +46877,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         password: ''
       }),
       cardenciaisErradas: false,
-      emailResetPassword: ''
+      emailResetPassword: '',
+      headers: { 'Content-Type': 'application/json' }
     };
   },
   methods: {
     login: function login() {
       var _this = this;
 
-      // this.navbar.isAuth = true;
-      var headers = {
-        'Content-Type': 'application/json'
-      };
       var data = {
         'email': this.form.username,
         'password': this.form.password
-
       };
-      axios.post('api/login', data, headers).then(function (response) {
-        // localStorage.setItem('token', response.data.access_token)
+      axios.post('api/login', data, this.headers).then(function (response) {
         _this.$auth.setToken(response.data.access_token, response.data.expires_in + Date.now());
         _this.$router.push("/blackJack");
         _this.$emit('login');
-        console.log('Tamos no login e vamos emitir para o pai');
       }).catch(function (error) {
         _this.cardenciaisErradas = true;
       });
     },
     forgotPassword: function forgotPassword() {
-      var headers = {
-        'Content-Type': 'application/json'
-      };
       var data = {
         'email': this.emailResetPassword
       };
@@ -47304,7 +47271,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph[data-v-321d9234] {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph[data-v-321d9234] {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
 
 // exports
 
@@ -47318,8 +47285,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_sweetalert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_sweetalert__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__classes_Form__ = __webpack_require__(6);
-//
-//
 //
 //
 //
@@ -47389,17 +47354,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       this.form.post('api/users/').then(function (response) {
-        // this.$emit('user-created');
-        // alert('Check Your Mail')
-
         __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()("Good job!", "Check Your Email to Confirmation!", "success");
         _this.$router.push("/login");
       }).catch(function (error) {
         __WEBPACK_IMPORTED_MODULE_0_sweetalert___default()(response.status.toString(), response.data.error, "error");
       });
-    },
-    cancelEdit: function cancelEdit() {
-      this.$emit('user-canceled');
     }
   }
 });
@@ -47780,7 +47739,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n#leftPanel[data-v-8152afba]{\n    background-color:#0079ac;\n    color:#fff;\n    text-align: center;\n}\n#rightPanel[data-v-8152afba]{\n    min-height:415px;\n}\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph[data-v-8152afba] {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
+exports.push([module.i, "\n#leftPanel[data-v-8152afba] {\n  background-color: #0079ac;\n  color: #fff;\n  text-align: center;\n}\n#rightPanel[data-v-8152afba] {\n  min-height: 415px;\n}\n\n/* Credit to bootsnipp.com for the css for the color graph */\n.colorgraph[data-v-8152afba] {\n  height: 5px;\n  border-top: 0;\n  background: #c4e17f;\n  border-radius: 5px;\n  background-image: -webkit-gradient(linear, left top, right top, from(#c4e17f), color-stop(12.5%, #c4e17f), color-stop(12.5%, #f7fdca), color-stop(25%, #f7fdca), color-stop(25%, #fecf71), color-stop(37.5%, #fecf71), color-stop(37.5%, #f0776c), color-stop(50%, #f0776c), color-stop(50%, #db9dbe), color-stop(62.5%, #db9dbe), color-stop(62.5%, #c49cde), color-stop(75%, #c49cde), color-stop(75%, #669ae1), color-stop(87.5%, #669ae1), color-stop(87.5%, #62c2e4), to(#62c2e4));\n  background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);\n}\n", ""]);
 
 // exports
 
@@ -47792,53 +47751,6 @@ exports.push([module.i, "\n#leftPanel[data-v-8152afba]{\n    background-color:#0
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__classes_Form__ = __webpack_require__(6);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -47905,8 +47817,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         old_password: '',
         password: '',
         password_confirmation: ''
-      }),
-      editing: true
+      })
     };
   },
   methods: {
@@ -48334,7 +48245,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48369,9 +48280,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-
 
 
 
@@ -48397,8 +48305,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.socketId = "";
         },
         lobby_changed: function lobby_changed() {
-            // For this to work, websocket server must emit a message
-            // named "lobby_changed"
             this.loadLobby();
         },
         my_active_games_changed: function my_active_games_changed() {
@@ -48406,7 +48312,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         my_active_games: function my_active_games(games) {
             this.activeGames = games;
-            //console.log(games.length);
         },
         my_lobby_games: function my_lobby_games(games) {
             this.lobbyGames = games;

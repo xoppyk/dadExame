@@ -17,6 +17,18 @@
         </head>
         <body>
         <div class="container" id="app">
+            <!-- @if(session()->has('flash'))
+              <div class="row">
+                <div class="alert alert-success">
+                    <a class="close" data-dismiss="alert" aria-label="close" >&times;</a>
+                    <strong>Notification</strong> {{ session()->get('flash')}}
+                </div>
+            @endif -->
+            @if (session('flash'))
+                        <div class="alert alert-success">
+                            {{ session('flash') }}
+                        </div>
+                    @endif
             @yield('content')
         </div>
 
