@@ -43682,7 +43682,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Space out content a bit */\nbody {\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\n/* Everything but the jumbotron gets side spacing for mobile first views */\n.header,\n.marketing,\n.footer {\n  padding-right: 15px;\n  padding-left: 15px;\n}\n\n/* Custom page header */\n.header {\n  padding-bottom: 20px;\n  border-bottom: 1px solid #e5e5e5;\n}\n\n/* Make the masthead heading the same height as the navigation */\n.header h3 {\n  margin-top: 0;\n  margin-bottom: 0;\n  line-height: 40px;\n}\n\n/* Custom page footer */\n.footer {\n  padding-top: 19px;\n  color: #777;\n  border-top: 1px solid #e5e5e5;\n}\n\n/* Customize container */\n@media (min-width: 768px) {\n.container {\n    max-width: 730px;\n}\n}\n.container-narrow>hr {\n  margin: 30px 0;\n}\n\n/* Main marketing message and sign up button */\n.jumbotron {\n  text-align: center;\n  border-bottom: 1px solid #e5e5e5;\n}\n.jumbotron .btn {\n  padding: 14px 24px;\n  font-size: 21px;\n}\n\n/* Supporting marketing content */\n.marketing {\n  margin: 40px 0;\n}\n.marketing p+h4 {\n  margin-top: 28px;\n}\n\n/* Responsive: Portrait tablets and up */\n@media screen and (min-width: 768px) {\n  /* Remove the padding we set earlier */\n.header,\n  .marketing,\n  .footer {\n    padding-right: 0;\n    padding-left: 0;\n}\n  /* Space out the masthead */\n.header {\n    margin-bottom: 30px;\n}\n  /* Remove the bottom border on the jumbotron for visual effect */\n.jumbotron {\n    border-bottom: 0;\n}\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Space out content a bit */\nbody {\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\n/* Everything but the jumbotron gets side spacing for mobile first views */\n.header,\n.marketing,\n.footer {\n  padding-right: 15px;\n  padding-left: 15px;\n}\n\n/* Custom page header */\n.header {\n  padding-bottom: 20px;\n  border-bottom: 1px solid #e5e5e5;\n}\n\n/* Make the masthead heading the same height as the navigation */\n.header h3 {\n  margin-top: 0;\n  margin-bottom: 0;\n  line-height: 40px;\n}\n\n/* Custom page footer */\n.footer {\n  padding-top: 19px;\n  color: #777;\n  border-top: 1px solid #e5e5e5;\n}\n\n/* Customize container */\n@media (min-width: 768px) {\n.container {\n    max-width: 730px;\n}\n}\n.container-narrow>hr {\n  margin: 30px 0;\n}\n\n/* Main marketing message and sign up button */\n.jumbotron {\n  text-align: center;\n  border-bottom: 1px solid #e5e5e5;\n}\n.jumbotron .btn {\n  padding: 14px 24px;\n  font-size: 21px;\n}\n\n/* Supporting marketing content */\n.marketing {\n  margin: 40px 0;\n}\n.marketing p+h4 {\n  margin-top: 28px;\n}\n\n/* Responsive: Portrait tablets and up */\n@media screen and (min-width: 768px) {\n  /* Remove the padding we set earlier */\n.header,\n  .marketing,\n  .footer {\n    padding-right: 0;\n    padding-left: 0;\n}\n  /* Space out the masthead */\n.header {\n    margin-bottom: 30px;\n}\n  /* Remove the bottom border on the jumbotron for visual effect */\n.jumbotron {\n    border-bottom: 0;\n}\n}\n", ""]);
 
 // exports
 
@@ -43731,6 +43731,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }).then(function (response) {
         _this.$auth.destroyToken();
+        _this.$router.push("/login");
       }).catch(function (error) {
         console.log(error);
       });
@@ -43749,6 +43750,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).then(function (response) {
         _this2.currentPlayer = response.data;
         _this2.isAuth = true;
+        return _this2.currentUser;
       }).catch(function (error) {
         console.log(error);
       });
@@ -44016,7 +44018,7 @@ var render = function() {
       _vm._v(" "),
       _c("router-view", {
         attrs: { currentPlayer: _vm.currentPlayer },
-        on: { login: _vm.login }
+        on: { login: _vm.login, logout: _vm.logout, getUser: _vm.getUser }
       })
     ],
     1
@@ -47822,7 +47824,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         old_password: '',
         password: '',
         password_confirmation: ''
-      })
+      }),
+      userToken: this.$auth.getToken()
     };
   },
   methods: {
@@ -47839,32 +47842,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     deleteUser: function deleteUser() {
+      var _this2 = this;
+
       swal({
         title: "Are you sure?",
-        text: "Your will delete this Account!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonClass: "btn-danger",
-        confirmButtonText: "Yes, delete it!",
-        closeOnConfirm: false
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true
+      }).then(function (willDelete) {
+        if (willDelete) {
+          _this2.$emit('logout');
+
+          axios({ url: 'api/users/deleteRequest/' + _this2.currentPlayer.id, method: 'post', headers: { Authorization: "Bearer " + _this2.userToken }
+          }).then(function (response) {
+            swal("Good job!", "Check Your Email to Delete!", "success");
+          }).catch(function (error) {
+            console.log(error);
+          });
+        }
       });
-      // function() {
-      //
-      // });
-      // this.form.delete('api/users/' + this.currentPlayer.id)
-      //   .then(response => {
-      //     this.$emit('logout');
-      //     this.$router.push("/login");
-      //     swal("Good job!", "Profile delted withSuccess!", "success")
-      //   })
-      //   .catch(error => {
-      //     // swal("Error", error.error, "error");
-      //     swal("Error", error.error, "error");
-      //   });
     },
     cancelEdit: function cancelEdit() {
       this.$router.push("/blackJack");
     }
+  },
+  mounted: function mounted() {
+    // this.form.name = this.currentPlayer.name;
+    // this.form.nickname = this.currentPlayer.nickname;
+
   }
 });
 

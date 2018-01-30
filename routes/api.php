@@ -24,6 +24,9 @@ Route::group(['middleware' => 'auth:api'], function() {
   //Block & Active
   Route::post('users/block/{id}', 'UserControllerAPI@blockUser');
   Route::post('users/active/{id}', 'UserControllerAPI@activeUser');
+
+  //Request to Delete User
+  Route::post('users/deleteRequest/{id}', 'UserControllerAPI@deleteMailRequest');
 });
 Route::get('users', 'UserControllerAPI@getUsers');
 

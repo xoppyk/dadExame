@@ -50,6 +50,14 @@ class UserControllerAPI extends Controller
         return response()->json(new UserResource($user), 201);
     }
 
+    public function deleteMailRequest($id){
+      $user = User::findOrFail($id);
+      $user->remember_token = str_random(10);
+      if ($user->notifyDeleteRequest()) {
+        $user->save();
+      }
+    }
+
     //UPDATE USER
     public function update(Request $request, $id)
     {
@@ -134,6 +142,19 @@ class UserControllerAPI extends Controller
         $user->reason_blocked = '';
         $user->save();
         return redirect('/')->with('flash', 'Account Actived With Success!');
+    }
+    //CONFIRM Deleting USER
+    public function confirmationDeleting($token)
+    {
+        if (count($token) == 0) {
+            return redirect('/')->with('error', 'Error');
+        }
+        $user = User::where('remember_token', $token)->first();
+        if(!$user) {
+            return redirect('/')->with('error', 'User dont Exist!');
+        }
+        $user->delete();
+        return redirect('/')->with('flash', 'Account Deleted With Success!');
     }
     //Abort USER
     public function abort($token)

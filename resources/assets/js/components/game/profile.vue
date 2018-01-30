@@ -71,6 +71,7 @@ export default {
         password: '',
         password_confirmation: '',
       }),
+      userToken: this.$auth.getToken()
     }
   },
   methods: {
@@ -89,30 +90,36 @@ export default {
     deleteUser: function() {
       swal({
           title: "Are you sure?",
-          text: "Your will delete this Account!",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonClass: "btn-danger",
-          confirmButtonText: "Yes, delete it!",
-          closeOnConfirm: false
+          text: "Once deleted, you will not be able to recover this imaginary file!",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
         })
-        // function() {
-        //
-        // });
-        // this.form.delete('api/users/' + this.currentPlayer.id)
-        //   .then(response => {
-        //     this.$emit('logout');
-        //     this.$router.push("/login");
-        //     swal("Good job!", "Profile delted withSuccess!", "success")
-        //   })
-        //   .catch(error => {
-        //     // swal("Error", error.error, "error");
-        //     swal("Error", error.error, "error");
-        //   });
+        .then((willDelete) => {
+          if (willDelete) {
+            this.$emit('logout');
+
+            axios({ url: 'api/users/deleteRequest/' + this.currentPlayer.id, method: 'post', headers: { Authorization: "Bearer " + this.userToken }
+              })
+              .then((response) => {
+                swal("Good job!", "Check Your Email to Delete!", "success")
+              })
+              .catch(function(error) {
+                console.log(error)
+              });
+
+          }
+        });
+
     },
     cancelEdit: function() {
       this.$router.push("/blackJack");
-    }
+    },
+  },
+  mounted() {
+    // this.form.name = this.currentPlayer.name;
+    // this.form.nickname = this.currentPlayer.nickname;
+
   }
 }
 </script>
