@@ -160,6 +160,7 @@ export default {
       this.$socket.emit('remove_game', {
         gameID: game.gameID
       });
+      this.$emit('get-user');
     },
     check(game) {
       this.$socket.emit('check', {

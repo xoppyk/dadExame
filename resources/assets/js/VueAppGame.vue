@@ -1,7 +1,7 @@
 <template>
 <div id="app">
   <navbar :currentPlayer="currentPlayer" :isAuth="isAuth" @logout="logout"></navbar>
-  <router-view :currentPlayer="currentPlayer" @login="login" @logout="logout" @getUser="getUser"></router-view>
+  <router-view :currentPlayer="currentPlayer" @login="login" @logout="logout" @get-user="getUser"></router-view>
 </div>
 </template>
 
@@ -64,9 +64,8 @@ export default {
   },
   mounted() {
     if (this.$auth.isAuthenticated()) {
-      this.getUser();
+      this.currentPlayer = this.$auth.getAuthentifiedUser();
     }
-    // this.currentPlayer = this.$auth.getAuthentifiedUser();
   }
 }
 </script>
