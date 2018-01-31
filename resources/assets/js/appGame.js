@@ -14,8 +14,8 @@ import VueAppGame from './VueAppGame.vue';
 import Router from './classes/Routes.js'
 
 Vue.use(Auth);
-//Vue.use(VueSocketio, 'http://127.0.0.1:8080');
-Vue.use(VueSocketio, 'http://192.168.10.10:8080');
+Vue.use(VueSocketio, 'http://127.0.0.1:8080');
+// Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 
 window.axios.defaults.headers.common['Accept'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + Vue.auth.getToken();

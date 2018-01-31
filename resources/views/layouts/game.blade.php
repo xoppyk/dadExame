@@ -18,8 +18,7 @@
         <body>
           @if(session()->has('flash'))
             <script type="text/javascript">
-              // swal("Something Wrong!", '{{ session('flash') }}', "warning");
-              swal({ title: "Sweet!", text: '{{ session('flash') }}', imageUrl: 'thumbs-up.jpg' });
+              swal("Successfull", '{{ session('flash') }}', "success");
             </script>
           @endif
           @if(session()->has('error'))

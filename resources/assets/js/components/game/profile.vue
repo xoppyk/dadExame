@@ -90,7 +90,7 @@ export default {
     deleteUser: function() {
       swal({
           title: "Are you sure?",
-          text: "Once deleted, you will not be able to recover this imaginary file!",
+          text: "Want delete this Accout?!",
           icon: "warning",
           buttons: true,
           dangerMode: true,
@@ -98,16 +98,14 @@ export default {
         .then((willDelete) => {
           if (willDelete) {
             this.$emit('logout');
-
             axios({ url: 'api/users/deleteRequest/' + this.currentPlayer.id, method: 'post', headers: { Authorization: "Bearer " + this.userToken }
               })
               .then((response) => {
                 swal("Good job!", "Check Your Email to Delete!", "success")
               })
               .catch(function(error) {
-                console.log(error)
+                swal("Error!", error.error, "warning")
               });
-
           }
         });
 
@@ -116,10 +114,7 @@ export default {
       this.$router.push("/blackJack");
     },
   },
-  mounted() {
-    // this.form.name = this.currentPlayer.name;
-    // this.form.nickname = this.currentPlayer.nickname;
-
+  created() {
   }
 }
 </script>

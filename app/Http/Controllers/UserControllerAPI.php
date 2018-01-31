@@ -44,18 +44,17 @@ class UserControllerAPI extends Controller
         $user->blocked = 1;
         $user->reason_blocked = 'Email Not Confirmed';
         $user->remember_token = str_random(10);
-        if ($user->notifyConfirmation()) {
-          $user->save();
-        }
+        $user->notifyConfirmation();
+        $user->save();
         return response()->json(new UserResource($user), 201);
     }
 
     public function deleteMailRequest($id){
       $user = User::findOrFail($id);
       $user->remember_token = str_random(10);
-      if ($user->notifyDeleteRequest()) {
-        $user->save();
-      }
+      $user->notifyDeleteRequest();
+      $user->save();
+      return redirect('/')->with('flash', 'Deleting Mail Send!');
     }
 
     //UPDATE USER
@@ -132,7 +131,7 @@ class UserControllerAPI extends Controller
         }
         $user = User::where('remember_token', $token)->first();
         if(!$user) {
-            return redirect('/')->with('error', 'User dont Exist!');
+            return redirect('/')->with('error', 'User dont Exist or be Actived!');
         }
         if($user->remember_token == '') {
             return redirect('/')->with('flash', 'Accout been Actived!');
@@ -143,6 +142,7 @@ class UserControllerAPI extends Controller
         $user->save();
         return redirect('/')->with('flash', 'Account Actived With Success!');
     }
+
     //CONFIRM Deleting USER
     public function confirmationDeleting($token)
     {

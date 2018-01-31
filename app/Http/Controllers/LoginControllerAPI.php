@@ -9,20 +9,17 @@ use App\User;
 define('YOUR_SERVER_URL', 'http://dadExame.test/');
 // Check "oauth_clients" table for next 2 values:
 define('CLIENT_ID', '2');
-<<<<<<< HEAD
-define('CLIENT_SECRET','mraeqNoCQh2yAgEi22hzP8AYY4AGEPqY6CjFCMDt');
-=======
+
 define('CLIENT_SECRET','sEb3HPOsNK0fbdDGV8pHxPe6C88b9j2Fdw2d9HKx');
->>>>>>> master
 
 class LoginControllerAPI extends Controller
 {
     public function login(Request $request) {
       $username = $request->email;
-if (!strpos($request->email,'@')) {
-    $user = User::where('nickname', $request->email)->first();
-    $username = $user->email;
-}
+      if (!strpos($request->email,'@')) {
+          $user = User::where('nickname', $request->email)->first();
+          $username = $user->email;
+      }
     $http = new \GuzzleHttp\Client;
     $response = $http->post(YOUR_SERVER_URL.'/oauth/token', [
             'form_params' => [
