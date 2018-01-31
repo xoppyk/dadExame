@@ -4,30 +4,36 @@
             <h2 class="text-center">Game {{ game.gameID }}</h2>
             <br>
         </div>
-        <div class="game-zone-content">       
+        <div class="game-zone-content">
             <div class="alert" :class="alerttype">
                 <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
                     <button class="btn btn-xs btn-primary" v-on:click.prevent="closeGame">Close Game</button>
-                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.playersFull[0][0] == currentPlayer.name && !game.gameStarted && game.playersFull.length > 1">Start</button>
-                    <label v-if="!game.gameEnded">Time: {{ game.tempo }}</label>
+                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.players[0][0] == currentPlayer.id && !game.gameStarted && game.players.length > 1">Start</button>
+                    <label v-if="!game.gameEnded && game.gameStarted">Time: {{ game.time }}  {{ (game.jogadas == 1) ? 'First' : 'Last'}} Round </label>
                 </strong>
             </div>
             <div v-if="game.gameStarted">
-                <div v-for="(player, key) of game.playersFull">
-                    {{ player[0] }}
-                    <div v-for="(card, key) of player[1]" style="display: inline-block;">
-                        <img v-bind:src="cardImageURL(card, key, player[0])" width="70px">    
+                <div class="row" v-for="(player, key) of game.players">
+                    <div class="col-sm-2 col-lg-2">
+                        {{ player[1] }}
                     </div>
-                    <div style="display: inline-block;" v-if="player[0] == currentPlayer.name">
-                        Points: {{ player[5] }}
-                        <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-if="game.playerTurn == currentPlayer.name && game.gameStarted && !game.gameEnded && !player[4]">Give me card</button>
-                        <button class="btn btn-xs btn-danger" v-on:click.prevent="skip(game)" v-if="game.gameStarted && game.playersFull.length > 1 && game.playerTurn == currentPlayer.name && !game.gameEnded && !player[4]">Skip</button>
+                    <div class="col-sm-6 col-lg-6">
+                        <div v-for="(card, key) of player[2]" style="display: inline-block;">
+                            <img v-bind:src="cardImageURL(card, key, player[1], game.gameEnded)" width="70px">
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-lg-2">
+                        <label v-if="player[0] == currentPlayer.id || game.gameEnded">Points: {{ player[5] }}</label>
+                    </div>
+                    <div class="col-sm-2 col-lg-2">
+                        <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-if="canPlay(game, player)">Give me card</button>
+                        <button class="btn btn-xs btn-danger" v-on:click.prevent="skip(game)" v-if="canPlay(game, player)">Skip</button>
                     </div>
                 </div>
                 <hr>
             </div>
-        </div>  
-    </div>          
+        </div>
+    </div>
 </template>
 
 <script type="text/javascript">
@@ -35,37 +41,28 @@
         props: ['game', 'currentPlayer'],
         data: function(){
             return {
-
+                tckcount: 20,
             }
         },
         computed: {
-            message(){
-                // return Message to show
-                if(!this.game.gameStarted){
-                    return "Game has not started yet";
-                }else if(this.game.gameEnded){
-                    if(this.game.winner == this.currentPlayer.name){
-                        return "Game has ended. YOU WIN !!!";
-                    }else if(this.game.winner == 0){
-                        return "Game has ended. It's a tie";
-                    }
-                    return "Game has ended and "+this.game.winner+"'s has won. YOU HAVE LOST !!!";
-                }else{
-                    if(this.game.playerTurn == this.currentPlayer.name){
-                        for(var i=0;i<this.game.playersFull.length;i++){
-                            if(this.game.playersFull[i][0] == this.game.playerTurn){
-                                if(this.game.playersFull[i][4]){
-                                    return "To many points. YOU HAVE LOST !!!";
-                                }
-                            }
-                        }
-                        return "It's your turn";
-                    }else{
-                        return "It's "+this.game.playerTurn+"'s turn";
-                    }              
-                }
-                return "Game is inconsistent";
-            },
+          message(){
+              // return Message to show
+              if(!this.game.gameStarted){
+                  return "Game has not started yet";
+              }else if(this.game.gameEnded){
+                  if(this.game.winner == this.currentPlayer.name){
+                      return "Game has ended. YOU WIN !!!";
+                  }else if(this.game.winner == 0){
+                      return "Game has ended. It's a tie";
+                  }else if(this.game.winner == -1){
+                      return "Game has ended. ALL PLAYERS LOST !!!";
+                  }
+                  return "Game has ended and "+this.game.winner+"'s has won. YOU HAVE LOST !!!";
+              }else{
+                  return "Game is running."
+              }
+              return "Game is inconsistent";
+          },
             alerttype(){
                 if(!this.game.gameStarted){
                     return "alert-warning";
@@ -77,18 +74,7 @@
                     }
                     return "alert-danger";
                 }else{
-                    for(var i=0;i<this.game.playersFull.length;i++){
-                        if(this.game.playersFull[i][0] == this.game.playerTurn){
-                            if(this.game.playersFull[i][4]){
-                                 return "alert-danger";
-                            }
-                        }
-                    }
-                   if(this.game.playerTurn == this.currentPlayer.name){
-                        return "alert-success";
-                    }else{
-                        return "alert-info";
-                    }
+                    return "alert-info";
                 }
             },
             adversaryName(){
@@ -113,6 +99,7 @@
         methods: {
             start(game) {
                 this.$parent.start(this.game);
+                this.tikcount();
             },
             skip(game) {
                 this.$parent.skip(this.game);
@@ -125,8 +112,11 @@
                 // Click to close game
                 this.$parent.giveCard(this.game);
             },
-            cardImageURL: function(card, key, playerName) {
+            cardImageURL: function(card, key, playerName, gameEnded) {
                 if(card != 'undefined'){
+                    if(gameEnded){
+                        return 'img/' + String(card.path);
+                    }
                     var imgSrc;
                     if(this.currentPlayer.name == playerName){
                         imgSrc = String(card.path);
@@ -137,6 +127,23 @@
                     }
                     return 'img/' + imgSrc;
                 }
+            },
+            canPlay(game, player){
+                return game.gameStarted && game.players.length > 1 && !game.gameEnded && player[0] == this.currentPlayer.id && !player[3] && player[5] < 21;
+            },
+            tikcount() {
+                if(!this.game.gameEnded) {
+                    if(this.tckcount>0) {
+                        setTimeout(()=> {
+                            this.tckcount--;
+                            this.$parent.check(this.game);
+                            this.tikcount();
+                        }, 1000);
+                    } else {
+                        (this.tckcount)? this.tckcount-- : this.tckcount=20;
+                        this.tikcount();
+                    }
+                }
             }
         },
         mounted(){
@@ -145,7 +152,7 @@
     }
 </script>
 
-<style scoped>  
+<style scoped>
 .gameseparator{
     border-style: solid;
     border-width: 2px 0 0 0;

@@ -172,4 +172,21 @@ class UserControllerAPI extends Controller
         $user->delete();
         return redirect('/')->with('flash', 'Account Aborted With Success!');
     }
+
+    public function addPoints(Request $request, $id)
+    {
+        $request->validate([
+                    'points' => 'required',
+                ]);
+        $user = User::findOrFail($id);
+        $user->total_points += $request->points;
+        $user->save();
+    }
+
+    public function addGamePlayed($id)
+    {
+        $user = User::findOrFail($id);
+        $user->total_games_played++;
+        $user->save();
+    }
 }

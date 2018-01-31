@@ -43,7 +43,7 @@ io.on('connection', function (socket) {
               timeout: 1000,
               headers: {
                     'content-type': 'application/json',
-                    'Authorization': 'Bearer ' + data.tokenPlayer,
+                    'Authorization': 'Bearer ' + data.playerId, data.playerName,
                 }
             });
         instance.get('http://dadexame.test/api/user')
@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
             }).catch(error => {
                 console.log(error);
             });*/
-        let game = games.createGame(data.tokenPlayer, socket.id);
+        let game = games.createGame(data.playerId, data.playerName, socket.id);
         socket.join(game.gameID);
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
@@ -64,7 +64,7 @@ io.on('connection', function (socket) {
 
     socket.on('give_card', function (data){
     	let game = games.gameByID(data.gameID);
-		game.giveCard(data.tokenPlayer);
+		game.giveCard(data.playerId, data.playerName);
 		//console.log('aqui1' + data.playerName);
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
@@ -77,7 +77,7 @@ io.on('connection', function (socket) {
 			socket.emit('invalid_play', {'type': 'Invalid_Game', 'game': null});
 			return;
 		}
-		game.start(data.tokenPlayer)
+		game.start(data.playerId, data.playerName)
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.to(game.gameID).emit('game_changed', game);
@@ -90,7 +90,7 @@ io.on('connection', function (socket) {
 			socket.emit('invalid_play', {'type': 'Invalid_Game', 'game': null});
 			return;
 		}
-		game.skip(data.tokenPlayer)
+		game.skip(data.playerId, data.playerName)
 		// Notifications to the client
 		socket.emit('my_active_games_changed');
 		io.to(game.gameID).emit('game_changed', game);
@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join_game', function (data){
-			let game = games.joinGame(data.gameID, data.tokenPlayer, socket.id);
+			let game = games.joinGame(data.gameID, data.playerId, data.playerName, socket.id);
 			socket.join(game.gameID);
 			io.to(game.gameID).emit('my_active_games_changed');
 			io.emit('lobby_changed');

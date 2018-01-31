@@ -1,160 +1,181 @@
 <template>
-  <div class="container">
+<div class="container">
+  <div>
     <div>
-        <div>
-            <h3>{{currentPlayer.name}}</h3>
-              <div v-if="!currentPlayer.blocked">
-                <p>Pontos : {{currentPlayer.total_points}}</p>
-                <p>Jogos Jogados : {{currentPlayer.total_games_played}}</p>
-                <hr>
-                <h3 class="text-center">Lobby</h3>
-                <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
-                <hr>
-                <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
-                <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
-                <template v-for="activeGame in activeGames">
-                    <game :game="activeGame" :currentPlayer="currentPlayer"></game>
-                </template>
-              </div>
-            <div v-else>
-              <hr>
-              <h4>You Are Bloked</h4>
-              <hr>
-              <h4>Reason:</h4>
-              <p v-text="currentPlayer.reason_blocked"></p>
-            </div>
-        </div>
+      <h3>{{currentPlayer == null ? '' : currentPlayer.name}}</h3>
+        <p>Pontos : {{currentPlayer == null ? '' : currentPlayer.total_points}}</p>
+        <p>Jogos Jogados : {{currentPlayer == null ? '' : currentPlayer.total_games_played}}</p>
+        <hr>
+        <h3 class="text-center">Lobby</h3>
+        <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
+        <hr>
+        <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
+        <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
+        <template v-for="activeGame in activeGames">
+          <game :game="activeGame" :currentPlayer="currentPlayer"></game>
+        </template>
+      </div>
     </div>
   </div>
+</div>
 </template>
 <script type="text/javascript">
-    import Lobby from './lobby.vue';
-    import Game from './game.vue';
+import Lobby from './lobby.vue';
+import Game from './game.vue';
 
-    export default {
-        props: ['currentPlayer'],
-        data: function(){
-            return {
-                title: 'BlackJack',
-                lobbyGames: [],
-                activeGames: [],
-                socketId: "",
-            }
-        },
-        sockets:{
-            connect(){
-                console.log('socket connected');
-                this.socketId = this.$socket.id;
-            },
-            discconnect(){
-                console.log('socket disconnected');
-                this.socketId = "";
-            },
-            lobby_changed(){
-                // For this to work, websocket server must emit a message
-                // named "lobby_changed"
-                this.loadLobby();
-            },
-            my_active_games_changed(){
-                this.loadActiveGames();
-            },
-            my_active_games(games){
-                this.activeGames = games;
-                //console.log(games.length);
-            },
-            my_lobby_games(games){
-                this.lobbyGames = games;
-            },
-            game_changed(game){
-                for(var lobbyGame of this.lobbyGames){
-                    if(game.gameID == lobbyGame.gameID){
-                        Object.assign(lobbyGame, game);
-                        break;
-                    }
-                }
-                for(var activeGame of this.activeGames){
-                    if(game.gameID == activeGame.gameID){
-                        Object.assign(activeGame, game);
-                        break;
-                    }
-                }
-
-            },
-            invalid_play(errorObject){
-                if(errorObject.type == 'Invalid_Game'){
-                    alert('ERROR: Game does not exist on server');
-                }else if(errorObject.type == 'Invalid_Player'){
-                    alert('ERROR: Player not valid for this game');
-                }else if(errorObject.type == 'Invalid_Play'){
-                    alert('ERROR: Move not valid or not your turn');
-                }else{
-                    alert('ERROR: '+errorObject.type);
-                }
-            }
-        },
-        methods: {
-            loadLobby(){
-                /// send message to server to load the list of games on the lobby
-                this.$socket.emit('get_my_lobby_games', {currentPlayer: this.currentPlayer.name});
-            },
-            loadActiveGames(){
-                /// send message to server to load the list of games that player is playing
-                this.$socket.emit('get_my_activegames');
-            },
-            createGame(){
-                // For this to work, server must handle (on event) the "create_game" message
-                if (this.currentPlayer.name == '') {
-                    alert('Current Player is Empty - Cannot Create a Game');
-                    return;
-                }
-                else {
-                    this.$socket.emit('create_game', {tokenPlayer: this.$auth.getToken()});
-                }
-            },
-            join(game){
-                // Click to join game
-                if(this.currentPlayer.name == ''){
-                    alert('Current Player is Empty - Cannot Create a Game');
-                    return;
-                }
-                this.$socket.emit('join_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
-            },
-            start(game){
-                // play a game - click on piece on specified index
-                this.$socket.emit('start_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
-            },
-            skip(game){
-                // play a game - click on piece on specified index
-                this.$socket.emit('skip', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
-            },
-            giveCard(game){
-                // to close a game
-                this.$socket.emit('give_card', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
-            },
-            play(game, index){
-                // play a game - click on piece on specified index
-                this.$socket.emit('play', {gameID: game.gameID, index: index});
-            },
-            close(game){
-                // to close a game
-                this.$socket.emit('remove_game', {gameID: game.gameID});
-            },
-            
-            check(game){
-                this.$socket.emit('check', {gameID: game.gameID });   
-            }
-        },
-        components: {
-            'lobby': Lobby,
-            'game': Game,
-        },
-        mounted() {
-          this.loadLobby();
-        },
-
+export default {
+  props: ['currentPlayer'],
+  data: function() {
+    return {
+      title: 'BlackJack',
+      lobbyGames: [],
+      activeGames: [],
+      socketId: "",
+      // currentPlayer: {},
     }
+  },
+  sockets: {
+    connect() {
+      console.log('socket connected');
+      this.socketId = this.$socket.id;
+    },
+    discconnect() {
+      console.log('socket disconnected');
+      this.socketId = "";
+    },
+    lobby_changed() {
+      // For this to work, websocket server must emit a message
+      // named "lobby_changed"
+      this.loadLobby();
+    },
+    my_active_games_changed() {
+      this.loadActiveGames();
+    },
+    my_active_games(games) {
+      this.activeGames = games;
+    },
+    my_lobby_games(games) {
+      this.lobbyGames = games;
+    },
+    game_changed(game) {
+      for (var lobbyGame of this.lobbyGames) {
+        if (game.gameID == lobbyGame.gameID) {
+          Object.assign(lobbyGame, game);
+          break;
+        }
+      }
+      for (var activeGame of this.activeGames) {
+        if (game.gameID == activeGame.gameID) {
+          Object.assign(activeGame, game);
+          break;
+        }
+      }
+
+    },
+    invalid_play(errorObject) {
+      if (errorObject.type == 'Invalid_Game') {
+        alert('ERROR: Game does not exist on server');
+      } else if (errorObject.type == 'Invalid_Player') {
+        alert('ERROR: Player not valid for this game');
+      } else if (errorObject.type == 'Invalid_Play') {
+        alert('ERROR: Move not valid or not your turn');
+      } else {
+        alert('ERROR: ' + errorObject.type);
+      }
+    }
+  },
+  methods: {
+    loadLobby() {
+      /// send message to server to load the list of games on the lobby
+      this.$socket.emit('get_my_lobby_games', {
+        currentPlayer: this.currentPlayer.name
+      });
+    },
+    loadActiveGames() {
+      /// send message to server to load the list of games that player is playing
+      this.$socket.emit('get_my_activegames');
+    },
+    createGame() {
+      // For this to work, server must handle (on event) the "create_game" message
+      if (this.currentPlayer.name == '') {
+        alert('Current Player is Empty - Cannot Create a Game');
+        return;
+      } else {
+        //this.$socket.emit('create_game', {tokenPlayer: this.$auth.getToken()});
+        this.$socket.emit('create_game', {
+          playerId: this.currentPlayer.id,
+          playerName: this.currentPlayer.name
+        });
+      }
+    },
+    join(game) {
+      // Click to join game
+      if (this.currentPlayer.name == '') {
+        alert('Current Player is Empty - Cannot Create a Game');
+        return;
+      }
+      //this.$socket.emit('join_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('join_game', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    start(game) {
+      // play a game - click on piece on specified index
+      //this.$socket.emit('start_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('start_game', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    skip(game) {
+      // play a game - click on piece on specified index
+      //this.$socket.emit('skip', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('skip', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    giveCard(game) {
+      // to close a game
+      //this.$socket.emit('give_card', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('give_card', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    play(game, index) {
+      // play a game - click on piece on specified index
+      this.$socket.emit('play', {
+        gameID: game.gameID,
+        index: index
+      });
+    },
+    close(game) {
+      // to close a game
+      this.$socket.emit('remove_game', {
+        gameID: game.gameID
+      });
+    },
+    check(game) {
+      this.$socket.emit('check', {
+        gameID: game.gameID
+      });
+    }
+  },
+  components: {
+    'lobby': Lobby,
+    'game': Game,
+  },
+  mounted() {
+    // this.currentPlayer = this.$auth.getAuthentifiedUser();
+    this.loadLobby();
+  },
+}
 </script>
-
 <style>
-
 </style>

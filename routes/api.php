@@ -14,6 +14,15 @@ Route::group(['middleware' => 'auth:api'], function() {
 Route::get('users', 'UserControllerAPI@getUsers');
 Route::put('users/{id}', 'UserControllerAPI@update');
 
+//Games
+Route::post('gameuser/register', 'GameUserControllerAPI@registerGameUser');
+Route::post('games/start', 'GameControllerAPI@start');
+Route::put('games/{id}/update', 'GameControllerAPI@update');
+
+//User Games
+Route::post('users/{id}/addGamePlayed', 'UserControllerAPI@addGamePlayed');
+Route::post('users/{id}/addPoints', 'UserControllerAPI@addPoints');
+
 //Statistics
 Route::get('statistics', 'StatisticsControllerAPI@getAllStatistics');
 Route::get('statistics/byUser/{id}', 'StatisticsControllerAPI@getStatisticsAuthUser');

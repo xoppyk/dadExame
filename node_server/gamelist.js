@@ -13,42 +13,42 @@ class GameList {
     	return game;
     }
 
-    createGame(tokenPlayer, socketID) {
+    createGame(playerId, playerName, socketID) {
     	this.contadorID = this.contadorID+1;
-    	var game = new BlackJackGame(this.contadorID, tokenPlayer);
+    	var game = new BlackJackGame(this.contadorID, playerId, playerName);
         game.playerSocketID = new Array();
     	game.playerSocketID[0] = socketID;
     	this.games.set(game.gameID, game);
     	return game;
     }
 
-    startGame(gameID, tokenPlayer) {
+    startGame(gameID, playerId, playerName) {
         let game = this.gameByID(gameID);
         if (game===null) {
             return null;
         }
-        game.start(tokenPlayer);
+        game.start(playerId, playerName);
         game.playerSocketID[0] = socketID;
         this.games.set(game.gameID, game);
         return game;
     }
 
-    joinGame(gameID, tokenPlayer, socketID) {
+    joinGame(gameID, playerId, playerName, socketID) {
     	let game = this.gameByID(gameID);
     	if (game===null) {
     		return null;
     	}
-    	game.join(tokenPlayer);
+    	game.join(playerId, playerName);
     	game.playerSocketID[game.playerSocketID.length] = socketID;
     	return game;
     }
 
-    giveCard(gameID, tokenPlayer) {
+    giveCard(gameID, playerId, playerName) {
         let game = this.gameByID(gameID);
         if (game===null) {
             return null;
         }
-        game.giveCard(tokenPlayer);
+        game.giveCard(playerId, playerName);
         return game;
     }
 
@@ -61,7 +61,7 @@ class GameList {
     		game.playerSocketID[0] = "";
     	} else if (game.playerSocketID[1] == socketID) {
     		game.playerSocketID[1] = "";
-    	} 
+    	}
     	if ((game.playerSocketID[0] === "") && (game.playerSocketID[1] === "")) {
     		this.games.delete(gameID);
     	}
@@ -71,7 +71,7 @@ class GameList {
     getConnectedGamesOf(socketID) {
     	let games = [];
     	for (var [key, value] of this.games) {
-    		if ((value.playerSocketID[0] == socketID) || (value.playerSocketID[1] == socketID) || 
+    		if ((value.playerSocketID[0] == socketID) || (value.playerSocketID[1] == socketID) ||
                 (value.playerSocketID[2] == socketID) || (value.playerSocketID[3] == socketID)) {
     			games.push(value);
     		}

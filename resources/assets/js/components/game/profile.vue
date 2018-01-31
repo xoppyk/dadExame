@@ -114,7 +114,13 @@ export default {
       this.$router.push("/blackJack");
     },
   },
-  created() {
+  mounted() {
+    if (this.$auth.isAuthenticated()) {
+      let user = this.$auth.getAuthentifiedUser();
+      this.form.name = user.name;
+      this.form.email = user.email;
+      this.form.nickname = user.nickname;
+    }
   }
 }
 </script>

@@ -43576,12 +43576,28 @@ new Vue({
     destroyToken: function destroyToken() {
       localStorage.removeItem('token');
       localStorage.removeItem('expiration');
+      localStorage.removeItem('player');
     },
     isAuthenticated: function isAuthenticated() {
       if (this.getToken()) {
         return true;
       }
       return false;
+    },
+    setAuthentifiedUser: function setAuthentifiedUser(currentPlayer) {
+      var user = {
+        'id': currentPlayer.id,
+        'name': currentPlayer.name,
+        'nickname': currentPlayer.nickname,
+        'email': currentPlayer.email,
+        'total_points': currentPlayer.total_points,
+        'total_games_played': currentPlayer.total_games_played
+      };
+      localStorage.setItem('player', JSON.stringify(user));
+    },
+    getAuthentifiedUser: function getAuthentifiedUser() {
+      var user = localStorage.getItem('player');
+      return JSON.parse(user);
     }
   };
   Object.defineProperties(Vue.prototype, {
@@ -43685,7 +43701,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Space out content a bit */\nbody {\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\n/* Everything but the jumbotron gets side spacing for mobile first views */\n.header,\n.marketing,\n.footer {\n  padding-right: 15px;\n  padding-left: 15px;\n}\n\n/* Custom page header */\n.header {\n  padding-bottom: 20px;\n  border-bottom: 1px solid #e5e5e5;\n}\n\n/* Make the masthead heading the same height as the navigation */\n.header h3 {\n  margin-top: 0;\n  margin-bottom: 0;\n  line-height: 40px;\n}\n\n/* Custom page footer */\n.footer {\n  padding-top: 19px;\n  color: #777;\n  border-top: 1px solid #e5e5e5;\n}\n\n/* Customize container */\n@media (min-width: 768px) {\n.container {\n    max-width: 730px;\n}\n}\n.container-narrow>hr {\n  margin: 30px 0;\n}\n\n/* Main marketing message and sign up button */\n.jumbotron {\n  text-align: center;\n  border-bottom: 1px solid #e5e5e5;\n}\n.jumbotron .btn {\n  padding: 14px 24px;\n  font-size: 21px;\n}\n\n/* Supporting marketing content */\n.marketing {\n  margin: 40px 0;\n}\n.marketing p+h4 {\n  margin-top: 28px;\n}\n\n/* Responsive: Portrait tablets and up */\n@media screen and (min-width: 768px) {\n  /* Remove the padding we set earlier */\n.header,\n  .marketing,\n  .footer {\n    padding-right: 0;\n    padding-left: 0;\n}\n  /* Space out the masthead */\n.header {\n    margin-bottom: 30px;\n}\n  /* Remove the bottom border on the jumbotron for visual effect */\n.jumbotron {\n    border-bottom: 0;\n}\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Space out content a bit */\nbody {\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\n/* Everything but the jumbotron gets side spacing for mobile first views */\n.header,\n.marketing,\n.footer {\n  padding-right: 15px;\n  padding-left: 15px;\n}\n\n/* Custom page header */\n.header {\n  padding-bottom: 20px;\n  border-bottom: 1px solid #e5e5e5;\n}\n\n/* Make the masthead heading the same height as the navigation */\n.header h3 {\n  margin-top: 0;\n  margin-bottom: 0;\n  line-height: 40px;\n}\n\n/* Custom page footer */\n.footer {\n  padding-top: 19px;\n  color: #777;\n  border-top: 1px solid #e5e5e5;\n}\n\n/* Customize container */\n@media (min-width: 768px) {\n.container {\n    max-width: 730px;\n}\n}\n.container-narrow>hr {\n  margin: 30px 0;\n}\n\n/* Main marketing message and sign up button */\n.jumbotron {\n  text-align: center;\n  border-bottom: 1px solid #e5e5e5;\n}\n.jumbotron .btn {\n  padding: 14px 24px;\n  font-size: 21px;\n}\n\n/* Supporting marketing content */\n.marketing {\n  margin: 40px 0;\n}\n.marketing p+h4 {\n  margin-top: 28px;\n}\n\n/* Responsive: Portrait tablets and up */\n@media screen and (min-width: 768px) {\n  /* Remove the padding we set earlier */\n.header,\n  .marketing,\n  .footer {\n    padding-right: 0;\n    padding-left: 0;\n}\n  /* Space out the masthead */\n.header {\n    margin-bottom: 30px;\n}\n  /* Remove the bottom border on the jumbotron for visual effect */\n.jumbotron {\n    border-bottom: 0;\n}\n}\n", ""]);
 
 // exports
 
@@ -43711,7 +43727,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      currentPlayer: {},
+      currentPlayer: { 'id': '', 'name': '' },
       isAuth: this.$auth.isAuthenticated()
     };
   },
@@ -43751,9 +43767,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           Authorization: "Bearer " + this.$auth.getToken()
         }
       }).then(function (response) {
+        if (response.data.blocked) {
+          _this2.logout();
+          swal("You are Bloked!", response.data.reason_blocked == null ? '' : response.data.reason_blocked, "warning");
+        }
         _this2.currentPlayer = response.data;
         _this2.isAuth = true;
-        return _this2.currentUser;
+        _this2.$auth.setAuthentifiedUser(response.data);
       }).catch(function (error) {
         console.log(error);
       });
@@ -43763,6 +43783,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     if (this.$auth.isAuthenticated()) {
       this.getUser();
     }
+    // this.currentPlayer = this.$auth.getAuthentifiedUser();
   }
 });
 
@@ -47877,7 +47898,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$router.push("/blackJack");
     }
   },
-  created: function created() {}
+  mounted: function mounted() {
+    if (this.$auth.isAuthenticated()) {
+      var user = this.$auth.getAuthentifiedUser();
+      this.form.name = user.name;
+      this.form.email = user.email;
+      this.form.nickname = user.nickname;
+    }
+  }
 });
 
 /***/ }),
@@ -48308,7 +48336,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48344,178 +48372,204 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['currentPlayer'],
-    data: function data() {
-        return {
-            title: 'BlackJack',
-            lobbyGames: [],
-            activeGames: [],
-            socketId: ""
-        };
+  props: ['currentPlayer'],
+  data: function data() {
+    return {
+      title: 'BlackJack',
+      lobbyGames: [],
+      activeGames: [],
+      socketId: ""
+      // currentPlayer: {},
+    };
+  },
+  sockets: {
+    connect: function connect() {
+      console.log('socket connected');
+      this.socketId = this.$socket.id;
     },
-    sockets: {
-        connect: function connect() {
-            console.log('socket connected');
-            this.socketId = this.$socket.id;
-        },
-        discconnect: function discconnect() {
-            console.log('socket disconnected');
-            this.socketId = "";
-        },
-        lobby_changed: function lobby_changed() {
-            // For this to work, websocket server must emit a message
-            // named "lobby_changed"
-            this.loadLobby();
-        },
-        my_active_games_changed: function my_active_games_changed() {
-            this.loadActiveGames();
-        },
-        my_active_games: function my_active_games(games) {
-            this.activeGames = games;
-            //console.log(games.length);
-        },
-        my_lobby_games: function my_lobby_games(games) {
-            this.lobbyGames = games;
-        },
-        game_changed: function game_changed(game) {
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
+    discconnect: function discconnect() {
+      console.log('socket disconnected');
+      this.socketId = "";
+    },
+    lobby_changed: function lobby_changed() {
+      // For this to work, websocket server must emit a message
+      // named "lobby_changed"
+      this.loadLobby();
+    },
+    my_active_games_changed: function my_active_games_changed() {
+      this.loadActiveGames();
+    },
+    my_active_games: function my_active_games(games) {
+      this.activeGames = games;
+    },
+    my_lobby_games: function my_lobby_games(games) {
+      this.lobbyGames = games;
+    },
+    game_changed: function game_changed(game) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
 
-            try {
-                for (var _iterator = this.lobbyGames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var lobbyGame = _step.value;
+      try {
+        for (var _iterator = this.lobbyGames[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var lobbyGame = _step.value;
 
-                    if (game.gameID == lobbyGame.gameID) {
-                        Object.assign(lobbyGame, game);
-                        break;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-                for (var _iterator2 = this.activeGames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                    var activeGame = _step2.value;
-
-                    if (game.gameID == activeGame.gameID) {
-                        Object.assign(activeGame, game);
-                        break;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError2 = true;
-                _iteratorError2 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                        _iterator2.return();
-                    }
-                } finally {
-                    if (_didIteratorError2) {
-                        throw _iteratorError2;
-                    }
-                }
-            }
-        },
-        invalid_play: function invalid_play(errorObject) {
-            if (errorObject.type == 'Invalid_Game') {
-                alert('ERROR: Game does not exist on server');
-            } else if (errorObject.type == 'Invalid_Player') {
-                alert('ERROR: Player not valid for this game');
-            } else if (errorObject.type == 'Invalid_Play') {
-                alert('ERROR: Move not valid or not your turn');
-            } else {
-                alert('ERROR: ' + errorObject.type);
-            }
+          if (game.gameID == lobbyGame.gameID) {
+            Object.assign(lobbyGame, game);
+            break;
+          }
         }
-    },
-    methods: {
-        loadLobby: function loadLobby() {
-            /// send message to server to load the list of games on the lobby
-            this.$socket.emit('get_my_lobby_games', { currentPlayer: this.currentPlayer.name });
-        },
-        loadActiveGames: function loadActiveGames() {
-            /// send message to server to load the list of games that player is playing
-            this.$socket.emit('get_my_activegames');
-        },
-        createGame: function createGame() {
-            // For this to work, server must handle (on event) the "create_game" message
-            if (this.currentPlayer.name == '') {
-                alert('Current Player is Empty - Cannot Create a Game');
-                return;
-            } else {
-                this.$socket.emit('create_game', { tokenPlayer: this.$auth.getToken() });
-            }
-        },
-        join: function join(game) {
-            // Click to join game
-            if (this.currentPlayer.name == '') {
-                alert('Current Player is Empty - Cannot Create a Game');
-                return;
-            }
-            this.$socket.emit('join_game', { gameID: game.gameID, tokenPlayer: this.$auth.getToken() });
-        },
-        start: function start(game) {
-            // play a game - click on piece on specified index
-            this.$socket.emit('start_game', { gameID: game.gameID, tokenPlayer: this.$auth.getToken() });
-        },
-        skip: function skip(game) {
-            // play a game - click on piece on specified index
-            this.$socket.emit('skip', { gameID: game.gameID, tokenPlayer: this.$auth.getToken() });
-        },
-        giveCard: function giveCard(game) {
-            // to close a game
-            this.$socket.emit('give_card', { gameID: game.gameID, tokenPlayer: this.$auth.getToken() });
-        },
-        play: function play(game, index) {
-            // play a game - click on piece on specified index
-            this.$socket.emit('play', { gameID: game.gameID, index: index });
-        },
-        close: function close(game) {
-            // to close a game
-            this.$socket.emit('remove_game', { gameID: game.gameID });
-        },
-        check: function check(game) {
-            this.$socket.emit('check', { gameID: game.gameID });
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
         }
+      }
+
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.activeGames[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var activeGame = _step2.value;
+
+          if (game.gameID == activeGame.gameID) {
+            Object.assign(activeGame, game);
+            break;
+          }
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
     },
-    components: {
-        'lobby': __WEBPACK_IMPORTED_MODULE_0__lobby_vue___default.a,
-        'game': __WEBPACK_IMPORTED_MODULE_1__game_vue___default.a
-    },
-    mounted: function mounted() {
-        this.loadLobby();
+    invalid_play: function invalid_play(errorObject) {
+      if (errorObject.type == 'Invalid_Game') {
+        alert('ERROR: Game does not exist on server');
+      } else if (errorObject.type == 'Invalid_Player') {
+        alert('ERROR: Player not valid for this game');
+      } else if (errorObject.type == 'Invalid_Play') {
+        alert('ERROR: Move not valid or not your turn');
+      } else {
+        alert('ERROR: ' + errorObject.type);
+      }
     }
+  },
+  methods: {
+    loadLobby: function loadLobby() {
+      /// send message to server to load the list of games on the lobby
+      this.$socket.emit('get_my_lobby_games', {
+        currentPlayer: this.currentPlayer.name
+      });
+    },
+    loadActiveGames: function loadActiveGames() {
+      /// send message to server to load the list of games that player is playing
+      this.$socket.emit('get_my_activegames');
+    },
+    createGame: function createGame() {
+      // For this to work, server must handle (on event) the "create_game" message
+      if (this.currentPlayer.name == '') {
+        alert('Current Player is Empty - Cannot Create a Game');
+        return;
+      } else {
+        //this.$socket.emit('create_game', {tokenPlayer: this.$auth.getToken()});
+        this.$socket.emit('create_game', {
+          playerId: this.currentPlayer.id,
+          playerName: this.currentPlayer.name
+        });
+      }
+    },
+    join: function join(game) {
+      // Click to join game
+      if (this.currentPlayer.name == '') {
+        alert('Current Player is Empty - Cannot Create a Game');
+        return;
+      }
+      //this.$socket.emit('join_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('join_game', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    start: function start(game) {
+      // play a game - click on piece on specified index
+      //this.$socket.emit('start_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('start_game', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    skip: function skip(game) {
+      // play a game - click on piece on specified index
+      //this.$socket.emit('skip', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('skip', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    giveCard: function giveCard(game) {
+      // to close a game
+      //this.$socket.emit('give_card', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
+      this.$socket.emit('give_card', {
+        gameID: game.gameID,
+        playerId: this.currentPlayer.id,
+        playerName: this.currentPlayer.name
+      });
+    },
+    play: function play(game, index) {
+      // play a game - click on piece on specified index
+      this.$socket.emit('play', {
+        gameID: game.gameID,
+        index: index
+      });
+    },
+    close: function close(game) {
+      // to close a game
+      this.$socket.emit('remove_game', {
+        gameID: game.gameID
+      });
+    },
+    check: function check(game) {
+      this.$socket.emit('check', {
+        gameID: game.gameID
+      });
+    }
+  },
+  components: {
+    'lobby': __WEBPACK_IMPORTED_MODULE_0__lobby_vue___default.a,
+    'game': __WEBPACK_IMPORTED_MODULE_1__game_vue___default.a
+  },
+  mounted: function mounted() {
+    // this.currentPlayer = this.$auth.getAuthentifiedUser();
+    this.loadLobby();
+  }
 });
 
 /***/ }),
@@ -48604,7 +48658,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48640,19 +48694,14 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 //
 //
 //
-//
-//
-//
-//
 
-// Component code (not registered)
 module.exports = {
-    props: ['games'],
-    methods: {
-        join: function join(game) {
-            this.$emit('join-click', game);
-        }
+  props: ['games'],
+  methods: {
+    join: function join(game) {
+      this.$emit('join-click', game);
     }
+  }
 };
 
 /***/ }),
@@ -48677,8 +48726,8 @@ var render = function() {
             _vm._v(" "),
             _vm._l(4, function(n, index) {
               return _c("td", [
-                game.playersFull[index] != "undefined"
-                  ? _c("label", [_vm._v(_vm._s(game.playersFull[index]))])
+                game.players[index] != undefined
+                  ? _c("label", [_vm._v(_vm._s(game.players[index][1]))])
                   : _c("label")
               ])
             }),
@@ -48865,11 +48914,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game', 'currentPlayer'],
     data: function data() {
-        return {};
+        return {
+            tckcount: 20
+        };
     },
     computed: {
         message: function message() {
@@ -48881,21 +48938,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     return "Game has ended. YOU WIN !!!";
                 } else if (this.game.winner == 0) {
                     return "Game has ended. It's a tie";
+                } else if (this.game.winner == -1) {
+                    return "Game has ended. ALL PLAYERS LOST !!!";
                 }
                 return "Game has ended and " + this.game.winner + "'s has won. YOU HAVE LOST !!!";
             } else {
-                if (this.game.playerTurn == this.currentPlayer.name) {
-                    for (var i = 0; i < this.game.playersFull.length; i++) {
-                        if (this.game.playersFull[i][0] == this.game.playerTurn) {
-                            if (this.game.playersFull[i][4]) {
-                                return "To many points. YOU HAVE LOST !!!";
-                            }
-                        }
-                    }
-                    return "It's your turn";
-                } else {
-                    return "It's " + this.game.playerTurn + "'s turn";
-                }
+                return "Game is running.";
             }
             return "Game is inconsistent";
         },
@@ -48910,18 +48958,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
                 return "alert-danger";
             } else {
-                for (var i = 0; i < this.game.playersFull.length; i++) {
-                    if (this.game.playersFull[i][0] == this.game.playerTurn) {
-                        if (this.game.playersFull[i][4]) {
-                            return "alert-danger";
-                        }
-                    }
-                }
-                if (this.game.playerTurn == this.currentPlayer.name) {
-                    return "alert-success";
-                } else {
-                    return "alert-info";
-                }
+                return "alert-info";
             }
         },
         adversaryName: function adversaryName() {
@@ -48946,6 +48983,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         start: function start(game) {
             this.$parent.start(this.game);
+            this.tikcount();
         },
         skip: function skip(game) {
             this.$parent.skip(this.game);
@@ -48959,8 +48997,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$parent.giveCard(this.game);
         },
 
-        cardImageURL: function cardImageURL(card, key, playerName) {
+        cardImageURL: function cardImageURL(card, key, playerName, gameEnded) {
             if (card != 'undefined') {
+                if (gameEnded) {
+                    return 'img/' + String(card.path);
+                }
                 var imgSrc;
                 if (this.currentPlayer.name == playerName) {
                     imgSrc = String(card.path);
@@ -48970,6 +49011,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     imgSrc = String(this.game.semFace);
                 }
                 return 'img/' + imgSrc;
+            }
+        },
+        canPlay: function canPlay(game, player) {
+            return game.gameStarted && game.players.length > 1 && !game.gameEnded && player[0] == this.currentPlayer.id && !player[3] && player[5] < 21;
+        },
+        tikcount: function tikcount() {
+            var _this = this;
+
+            if (!this.game.gameEnded) {
+                if (this.tckcount > 0) {
+                    setTimeout(function () {
+                        _this.tckcount--;
+                        _this.$parent.check(_this.game);
+                        _this.tikcount();
+                    }, 1000);
+                } else {
+                    this.tckcount ? this.tckcount-- : this.tckcount = 20;
+                    this.tikcount();
+                }
             }
         }
     },
@@ -49013,9 +49073,9 @@ var render = function() {
             [_vm._v("Close Game")]
           ),
           _vm._v(" "),
-          _vm.game.playersFull[0][0] == _vm.currentPlayer.name &&
+          _vm.game.players[0][0] == _vm.currentPlayer.id &&
           !_vm.game.gameStarted &&
-          _vm.game.playersFull.length > 1
+          _vm.game.players.length > 1
             ? _c(
                 "button",
                 {
@@ -49031,8 +49091,16 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          !_vm.game.gameEnded
-            ? _c("label", [_vm._v("Time: " + _vm._s(_vm.game.tempo))])
+          !_vm.game.gameEnded && _vm.game.gameStarted
+            ? _c("label", [
+                _vm._v(
+                  "Time: " +
+                    _vm._s(_vm.game.time) +
+                    "  " +
+                    _vm._s(_vm.game.jogadas == 1 ? "First" : "Last") +
+                    " Round "
+                )
+              ])
             : _vm._e()
         ])
       ]),
@@ -49041,84 +49109,80 @@ var render = function() {
         ? _c(
             "div",
             [
-              _vm._l(_vm.game.playersFull, function(player, key) {
-                return _c(
-                  "div",
-                  [
+              _vm._l(_vm.game.players, function(player, key) {
+                return _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-sm-2 col-lg-2" }, [
                     _vm._v(
-                      "\n                " +
-                        _vm._s(player[0]) +
+                      "\n                    " +
+                        _vm._s(player[1]) +
                         "\n                "
-                    ),
-                    _vm._l(player[1], function(card, key) {
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "col-sm-6 col-lg-6" },
+                    _vm._l(player[2], function(card, key) {
                       return _c(
                         "div",
                         { staticStyle: { display: "inline-block" } },
                         [
                           _c("img", {
                             attrs: {
-                              src: _vm.cardImageURL(card, key, player[0]),
+                              src: _vm.cardImageURL(
+                                card,
+                                key,
+                                player[1],
+                                _vm.game.gameEnded
+                              ),
                               width: "70px"
                             }
                           })
                         ]
                       )
-                    }),
-                    _vm._v(" "),
-                    player[0] == _vm.currentPlayer.name
+                    })
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-2 col-lg-2" }, [
+                    player[0] == _vm.currentPlayer.id || _vm.game.gameEnded
+                      ? _c("label", [_vm._v("Points: " + _vm._s(player[5]))])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-2 col-lg-2" }, [
+                    _vm.canPlay(_vm.game, player)
                       ? _c(
-                          "div",
-                          { staticStyle: { display: "inline-block" } },
-                          [
-                            _vm._v(
-                              "\n                    Points: " +
-                                _vm._s(player[5]) +
-                                "\n                    "
-                            ),
-                            _vm.game.playerTurn == _vm.currentPlayer.name &&
-                            _vm.game.gameStarted &&
-                            !_vm.game.gameEnded &&
-                            !player[4]
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-xs btn-success",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        _vm.giveCard($event)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Give me card")]
-                                )
-                              : _vm._e(),
-                            _vm._v(" "),
-                            _vm.game.gameStarted &&
-                            _vm.game.playersFull.length > 1 &&
-                            _vm.game.playerTurn == _vm.currentPlayer.name &&
-                            !_vm.game.gameEnded &&
-                            !player[4]
-                              ? _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-xs btn-danger",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        _vm.skip(_vm.game)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Skip")]
-                                )
-                              : _vm._e()
-                          ]
+                          "button",
+                          {
+                            staticClass: "btn btn-xs btn-success",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.giveCard($event)
+                              }
+                            }
+                          },
+                          [_vm._v("Give me card")]
+                        )
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm.canPlay(_vm.game, player)
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-xs btn-danger",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                _vm.skip(_vm.game)
+                              }
+                            }
+                          },
+                          [_vm._v("Skip")]
                         )
                       : _vm._e()
-                  ],
-                  2
-                )
+                  ])
+                ])
               }),
               _vm._v(" "),
               _c("hr")
@@ -49149,97 +49213,91 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", [
-      _c("div", [
-        _c("h3", [_vm._v(_vm._s(_vm.currentPlayer.name))]),
-        _vm._v(" "),
-        !_vm.currentPlayer.blocked
-          ? _c(
-              "div",
-              [
-                _c("p", [
-                  _vm._v("Pontos : " + _vm._s(_vm.currentPlayer.total_points))
-                ]),
-                _vm._v(" "),
-                _c("p", [
-                  _vm._v(
-                    "Jogos Jogados : " +
-                      _vm._s(_vm.currentPlayer.total_games_played)
-                  )
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _c("h3", { staticClass: "text-center" }, [_vm._v("Lobby")]),
-                _vm._v(" "),
-                _c("p", [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-xs btn-success",
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.createGame($event)
-                        }
-                      }
-                    },
-                    [_vm._v("Create a New Game")]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _c("h4", [
-                  _vm._v("Pending games ("),
-                  _c(
-                    "a",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.loadLobby($event)
-                        }
-                      }
-                    },
-                    [_vm._v("Refresh")]
-                  ),
-                  _vm._v(")")
-                ]),
-                _vm._v(" "),
-                _c("lobby", {
-                  attrs: { games: _vm.lobbyGames },
-                  on: { "join-click": _vm.join, "start-click": _vm.start }
-                }),
-                _vm._v(" "),
-                _vm._l(_vm.activeGames, function(activeGame) {
-                  return [
-                    _c("game", {
-                      attrs: {
-                        game: activeGame,
-                        currentPlayer: _vm.currentPlayer
-                      }
-                    })
-                  ]
-                })
-              ],
-              2
+      _c(
+        "div",
+        [
+          _c("h3", [
+            _vm._v(
+              _vm._s(_vm.currentPlayer == null ? "" : _vm.currentPlayer.name)
             )
-          : _c("div", [
-              _c("hr"),
-              _vm._v(" "),
-              _c("h4", [_vm._v("You Are Bloked")]),
-              _vm._v(" "),
-              _c("hr"),
-              _vm._v(" "),
-              _c("h4", [_vm._v("Reason:")]),
-              _vm._v(" "),
-              _c("p", {
-                domProps: {
-                  textContent: _vm._s(_vm.currentPlayer.reason_blocked)
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "Pontos : " +
+                _vm._s(
+                  _vm.currentPlayer == null
+                    ? ""
+                    : _vm.currentPlayer.total_points
+                )
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "Jogos Jogados : " +
+                _vm._s(
+                  _vm.currentPlayer == null
+                    ? ""
+                    : _vm.currentPlayer.total_games_played
+                )
+            )
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("h3", { staticClass: "text-center" }, [_vm._v("Lobby")]),
+          _vm._v(" "),
+          _c("p", [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-xs btn-success",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.createGame($event)
+                  }
                 }
+              },
+              [_vm._v("Create a New Game")]
+            )
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c("h4", [
+            _vm._v("Pending games ("),
+            _c(
+              "a",
+              {
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    _vm.loadLobby($event)
+                  }
+                }
+              },
+              [_vm._v("Refresh")]
+            ),
+            _vm._v(")")
+          ]),
+          _vm._v(" "),
+          _c("lobby", {
+            attrs: { games: _vm.lobbyGames },
+            on: { "join-click": _vm.join, "start-click": _vm.start }
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.activeGames, function(activeGame) {
+            return [
+              _c("game", {
+                attrs: { game: activeGame, currentPlayer: _vm.currentPlayer }
               })
-            ])
-      ])
+            ]
+          })
+        ],
+        2
+      )
     ])
   ])
 }
@@ -49339,7 +49397,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49398,9 +49456,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['currentPlayer'],
   data: function data() {
     return {
       statistics: {},
@@ -49413,15 +49482,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       axios.get('api/statistics').then(function (response) {
-        // Object.assign(this.statistics, response.data);
         _this.statistics = response.data;
-        // console.log(response.data);
       });
     },
     getMyStatistics: function getMyStatistics() {
-      axios({ url: 'statistics/byUser/' + 6, method: 'get', headers: { Authorization: "Bearer " + this.$auth.getToken() }
+      var _this2 = this;
+
+      axios({
+        url: 'api/statistics/byUser/' + this.$auth.getAuthentifiedUser().id,
+        method: 'get',
+        headers: {
+          Authorization: "Bearer " + this.$auth.getToken()
+        }
       }).then(function (response) {
-        console.log(response);
+        _this2.myStatistics = response.data;
       }).catch(function (error) {
         swal("Error!", error.error, "warning");
       });
@@ -49429,7 +49503,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   mounted: function mounted() {
     this.getAllStatistics();
-    if (this.isAuth) {
+
+    if (this.$auth.isAuthenticated()) {
+      var user = this.$auth.getAuthentifiedUser();
+      this.userID = user.id;
       this.getMyStatistics();
     }
   }
@@ -49454,114 +49531,147 @@ var render = function() {
             _c("div", { staticClass: "col-sm-4 col-lg-3" }, [
               _c("h5", [
                 _vm._v(
-                  "Total of Games : " + _vm._s(_vm.statistics.total_of_games)
+                  "Total of Games : " +
+                    _vm._s(_vm.myStatistics.total_games_played)
                 )
               ]),
               _vm._v(" "),
               _c("h5", [
                 _vm._v(
-                  "Total of Users : " + _vm._s(_vm.statistics.total_of_users)
+                  "Total of Points : " + _vm._s(_vm.myStatistics.total_poins)
                 )
+              ]),
+              _vm._v(" "),
+              _c("h5", [
+                _vm._v(
+                  "Total of Winns : " + _vm._s(_vm.myStatistics.total_wins)
+                )
+              ]),
+              _vm._v(" "),
+              _c("h5", [
+                _vm._v("Total of Ties : " + _vm._s(_vm.myStatistics.total_ties))
+              ]),
+              _vm._v(" "),
+              _c("h5", [
+                _vm._v(
+                  "Total of Losese : " + _vm._s(_vm.myStatistics.total_loses)
+                )
+              ]),
+              _vm._v(" "),
+              _c("h5", [
+                _vm._v("Total of AVARAGE : " + _vm._s(_vm.myStatistics.avg))
               ])
             ])
           ])
         ])
-      : _c("div", [
-          _c("h3", [_vm._v("Statistics")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-sm-1 col-lg-3" }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-4 col-lg-3" }, [
-              _c("h5", [
-                _vm._v(
-                  "Total of Games : " + _vm._s(_vm.statistics.total_of_games)
-                )
-              ]),
-              _vm._v(" "),
-              _c("h5", [
-                _vm._v(
-                  "Total of Users : " + _vm._s(_vm.statistics.total_of_users)
-                )
-              ])
-            ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c("div", [
+      _c("h3", [_vm._v("All Statistics")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-sm-1 col-lg-3" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-4 col-lg-3" }, [
+          _c("h5", [
+            _vm._v("Total of Games : " + _vm._s(_vm.statistics.total_of_games))
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-sm-4 col-lg-3" },
-              [
-                _c("h4", [_vm._v("More Points :")]),
-                _vm._v(" "),
-                _vm._l(_vm.statistics.best_of_users_with_more_points, function(
-                  item,
-                  index
-                ) {
-                  return _c("div", [
-                    _c("p", [
-                      _vm._v(
-                        _vm._s(item.total_points) + " - " + _vm._s(item.name)
-                      )
-                    ])
-                  ])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-4 col-lg-3" },
-              [
-                _c("h4", [_vm._v("More Games:")]),
-                _vm._v(" "),
-                _vm._l(_vm.statistics.best_of_users_with_more_games, function(
-                  item,
-                  index
-                ) {
-                  return _c("div", [
-                    _c("p", [
-                      _vm._v(
-                        _vm._s(item.total_games_played) +
-                          " - " +
-                          _vm._s(item.name)
-                      )
-                    ])
-                  ])
-                })
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-sm-4 col-lg-3" },
-              [
-                _c("h4", [_vm._v("Best Avg :")]),
-                _vm._v(" "),
-                _vm._l(_vm.statistics.best_of_users_with_best_avg, function(
-                  item,
-                  index
-                ) {
-                  return _c("div", [
-                    _c("p", [
-                      _vm._v(
-                        "Points: " +
-                          _vm._s(item.total_points) +
-                          " - Games: " +
-                          _vm._s(item.total_games_played) +
-                          " -> " +
-                          _vm._s(item.name)
-                      )
-                    ])
-                  ])
-                })
-              ],
-              2
-            )
+          _c("h5", [
+            _vm._v("Total of Users : " + _vm._s(_vm.statistics.total_of_users))
           ])
         ])
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-sm-6 col-lg-3" },
+          [
+            _c("h4", [_vm._v("More Points :")]),
+            _vm._v(" "),
+            _vm._l(_vm.statistics.best_of_users_with_more_points, function(
+              item,
+              index
+            ) {
+              return _c("div", [
+                _c("p", [
+                  _vm._v(
+                    _vm._s(item.total_points) +
+                      " -> " +
+                      _vm._s(item.name) +
+                      " (" +
+                      _vm._s(item.nickname) +
+                      ")"
+                  )
+                ])
+              ])
+            })
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-sm-6 col-lg-3" },
+          [
+            _c("h4", [_vm._v("More Games:")]),
+            _vm._v(" "),
+            _vm._l(_vm.statistics.best_of_users_with_more_games, function(
+              item,
+              index
+            ) {
+              return _c("div", [
+                _c("p", [
+                  _vm._v(
+                    _vm._s(item.total_games_played) +
+                      " -> " +
+                      _vm._s(item.name) +
+                      " (" +
+                      _vm._s(item.nickname) +
+                      ")"
+                  )
+                ])
+              ])
+            })
+          ],
+          2
+        )
+      ]),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-sm-12 col-lg-3" },
+          [
+            _c("h4", [_vm._v("Best Avg :")]),
+            _vm._v(" "),
+            _vm._l(_vm.statistics.best_of_users_with_best_avg, function(
+              item,
+              index
+            ) {
+              return _c("div", [
+                _c("p", [
+                  _vm._v(
+                    "Avg: " +
+                      _vm._s(item.avg) +
+                      " -> " +
+                      _vm._s(item.name) +
+                      " (" +
+                      _vm._s(item.nickname)
+                  )
+                ])
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []

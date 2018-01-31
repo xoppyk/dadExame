@@ -11,7 +11,7 @@ import Navbar from './components/Navbar.vue'
 export default {
   data() {
     return {
-      currentPlayer: {},
+      currentPlayer: {'id': '','name' :''},
       isAuth: this.$auth.isAuthenticated(),
     }
   },
@@ -49,9 +49,13 @@ export default {
           }
         })
         .then((response) => {
+          if (response.data.blocked) {
+            this.logout();
+            swal("You are Bloked!", response.data.reason_blocked == null ? '' : response.data.reason_blocked, "warning");
+          }
           this.currentPlayer = response.data;
           this.isAuth = true;
-          return this.currentUser;
+          this.$auth.setAuthentifiedUser(response.data);
         })
         .catch(function(error) {
           console.log(error)
@@ -62,6 +66,7 @@ export default {
     if (this.$auth.isAuthenticated()) {
       this.getUser();
     }
+    // this.currentPlayer = this.$auth.getAuthentifiedUser();
   }
 }
 </script>
