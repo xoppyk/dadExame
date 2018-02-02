@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "delay": "^2.0.0",
+    "forever-monitor": "^1.7.1",
     "socket.io": "^2.0.4"
   }
 }

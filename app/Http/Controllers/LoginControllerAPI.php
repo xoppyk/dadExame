@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use Auth;
 use App\User;
 
-define('YOUR_SERVER_URL', 'http://dadExame.test/');
+define('YOUR_SERVER_URL', 'http://35.164.189.15/');
 // Check "oauth_clients" table for next 2 values:
 define('CLIENT_ID', '2');
 
-define('CLIENT_SECRET','sEb3HPOsNK0fbdDGV8pHxPe6C88b9j2Fdw2d9HKx');
+define('CLIENT_SECRET','ehqW63eiJHTytB3EIaJRgWY38OsJ4BM8NtzvzRUD');
 
 class LoginControllerAPI extends Controller
 {

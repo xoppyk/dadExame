@@ -29,22 +29,6 @@
                         placeholder="Nick Name"/>
                     <p class="content help is-danger is-large" v-if="form.errors.has('nickname')" v-text="form.errors.get('nickname')"></p>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input
-                        type="password" class="form-control" v-model="form.password"
-                        name="password" id="password"
-                        placeholder="Password"/>
-                    <p class="help is-danger" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></p>
-                </div>
-                <div class="form-group">
-                    <label for="passwordConfirmation">Confirmation Password</label>
-                    <input
-                        type="password" class="form-control" v-model="form.password_confirmation"
-                        name="password_confirmation" id="password_confirmation"
-                        placeholder="Password Confirmation"/>
-                    <p class="help is-danger" v-if="form.errors.has('password')" v-text="form.errors.get('password')"></p>
-                </div>
                 <div class="control">
                     <a class="btn btn-default" v-on:click.prevent="saveUser">Save</a>
                     <a class="btn btn-default" v-on:click.prevent="cancelEdit()">Cancel</a>
@@ -63,8 +47,6 @@
                     name: this.user.name,
                     email: this.user.email,
                     nickname: this.user.nickName,
-                    password: '',
-                    password_confirmation: '',
                 })
             }
         },
@@ -77,16 +59,10 @@
                     .catch(error => console.log('Whoops'));
             },
             cancelEdit: function(){
-                axios.get('api/users/'+this.user.id)
-                    .then(response=>{
-                        // Copy object properties from response.data.data to this.user
-                        // without creating a new reference
-                        Object.assign(this.user, response.data.data);
-                        this.$emit('user-canceled', this.user);
-                    });
+                  this.$emit('user-canceled');
+              }
             }
         }
-    }
 </script>
 
 <style scoped>

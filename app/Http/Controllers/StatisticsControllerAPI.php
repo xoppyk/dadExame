@@ -69,4 +69,41 @@ class StatisticsControllerAPI extends Controller
       ];
       return response($data, 201);
     }
+
+    public function getStatisticsForAdmin(){
+      $users = User::all();
+      $i=0;
+
+      foreach ($users as $key => $value) {
+          $data[$i] = ['id_user' => 0, 'name_user' => '', 'vitories' => 0, 'defeats' => 0, 'ties' => 0];
+          $games = DB::table('game_user')->where('user_id', '=', $users[$key]->id)->get();
+          $vitories = 0;
+          $defeats = 0;
+          $ties = 0;
+          $total = 0;
+
+          foreach ($games as $game) {
+              if($game->winner == 1){
+                  $vitories++;
+              } else if ($game->winner  == 0) {
+                $ties++;
+              }else{
+                $defeats++;
+              }
+              $total++;
+          }
+
+          $data[$i] = ['id_user' => $users[$key]->id,
+              'name_user' => $users[$key]->name,
+              'vitories' => $vitories,
+              'total' => $total,
+              'ties' => $ties,
+              'defeats' => $defeats
+          ];
+          $i++;
+      }
+
+      return response()->json($data);
+    }
+
 }

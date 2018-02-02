@@ -18,7 +18,9 @@ Route::get('abort/{token}', 'UserControllerAPI@abort')->name('abort');
 Route::get('/', function () {
     return view('game/index');
 });
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', function () {
+    return view('game/index');
+});
 
 //ADMIN
 Route::get('/admin', 'AdminController@index')->name('admin.index');

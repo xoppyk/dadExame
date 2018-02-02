@@ -1,22 +1,20 @@
 <template>
 <div class="container">
-  <div>
-    <div>
-      <h3>{{currentPlayer == null ? '' : currentPlayer.name}}</h3>
-        <p>Pontos : {{currentPlayer == null ? '' : currentPlayer.total_points}}</p>
-        <p>Jogos Jogados : {{currentPlayer == null ? '' : currentPlayer.total_games_played}}</p>
-        <hr>
-        <h3 class="text-center">Lobby</h3>
-        <p><button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
-        <hr>
-        <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
-        <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
-        <template v-for="activeGame in activeGames">
-          <game :game="activeGame" :currentPlayer="currentPlayer"></game>
-        </template>
-      </div>
-    </div>
-  </div>
+    <h3>
+      <p>{{currentPlayer == null ? '' : currentPlayer.name}} ({{currentPlayer == null ? '' : currentPlayer.nickname}})</p>
+    </h3>
+    <p>Pontos : {{currentPlayer == null ? '' : currentPlayer.total_points}}</p>
+    <p>Jogos Jogados : {{currentPlayer == null ? '' : currentPlayer.total_games_played}}</p>
+    <hr>
+    <h3 class="text-center">Lobby</h3>
+    <p>
+        <button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button></p>
+    <hr>
+    <h4>Pending games (<a @click.prevent="loadLobby" href="">Refresh</a>)</h4>
+    <lobby :games="lobbyGames" @join-click="join" @start-click="start"></lobby>
+    <template v-for="activeGame in activeGames">
+        <game :game="activeGame" :currentPlayer="currentPlayer"></game>
+    </template>
 </div>
 </template>
 <script type="text/javascript">
@@ -30,8 +28,7 @@ export default {
       title: 'BlackJack',
       lobbyGames: [],
       activeGames: [],
-      socketId: "",
-      // currentPlayer: {},
+      socketId: ""
     }
   },
   sockets: {
@@ -44,8 +41,10 @@ export default {
       this.socketId = "";
     },
     lobby_changed() {
-      // For this to work, websocket server must emit a message
-      // named "lobby_changed"
+      this.loadLobby();
+    },
+    my_active_game_closed(){
+      this.$emit('get-user');
       this.loadLobby();
     },
     my_active_games_changed() {
@@ -53,9 +52,11 @@ export default {
     },
     my_active_games(games) {
       this.activeGames = games;
+      this.loadActiveGames();
     },
     my_lobby_games(games) {
       this.lobbyGames = games;
+      this.loadLobby();
     },
     game_changed(game) {
       for (var lobbyGame of this.lobbyGames) {
@@ -86,81 +87,55 @@ export default {
   },
   methods: {
     loadLobby() {
-      /// send message to server to load the list of games on the lobby
-      this.$socket.emit('get_my_lobby_games', {
-        currentPlayer: this.currentPlayer.name
-      });
+      this.$socket.emit('get_my_lobby_games');
     },
     loadActiveGames() {
-      /// send message to server to load the list of games that player is playing
       this.$socket.emit('get_my_activegames');
     },
     createGame() {
-      // For this to work, server must handle (on event) the "create_game" message
       if (this.currentPlayer.name == '') {
         alert('Current Player is Empty - Cannot Create a Game');
         return;
       } else {
-        //this.$socket.emit('create_game', {tokenPlayer: this.$auth.getToken()});
-        this.$socket.emit('create_game', {
-          playerId: this.currentPlayer.id,
-          playerName: this.currentPlayer.name
-        });
+        this.$socket.emit('create_game', { playerToken: this.$auth.getToken() });
       }
     },
     join(game) {
-      // Click to join game
       if (this.currentPlayer.name == '') {
         alert('Current Player is Empty - Cannot Create a Game');
         return;
       }
-      //this.$socket.emit('join_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
-      this.$socket.emit('join_game', {
-        gameID: game.gameID,
-        playerId: this.currentPlayer.id,
-        playerName: this.currentPlayer.name
-      });
+      this.$socket.emit('join_game', {gameID: game.gameID, playerToken: this.$auth.getToken()});
     },
     start(game) {
-      // play a game - click on piece on specified index
-      //this.$socket.emit('start_game', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
       this.$socket.emit('start_game', {
         gameID: game.gameID,
-        playerId: this.currentPlayer.id,
-        playerName: this.currentPlayer.name
+        playerToken: this.$auth.getToken()
       });
     },
     skip(game) {
-      // play a game - click on piece on specified index
-      //this.$socket.emit('skip', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
       this.$socket.emit('skip', {
         gameID: game.gameID,
-        playerId: this.currentPlayer.id,
-        playerName: this.currentPlayer.name
+        playerToken: this.$auth.getToken()
       });
     },
     giveCard(game) {
-      // to close a game
-      //this.$socket.emit('give_card', {gameID: game.gameID, tokenPlayer: this.$auth.getToken()});
       this.$socket.emit('give_card', {
         gameID: game.gameID,
-        playerId: this.currentPlayer.id,
-        playerName: this.currentPlayer.name
+        playerToken: this.$auth.getToken()
       });
     },
     play(game, index) {
-      // play a game - click on piece on specified index
       this.$socket.emit('play', {
         gameID: game.gameID,
         index: index
       });
     },
-    close(game) {
-      // to close a game
+    close(game, owner) {
       this.$socket.emit('remove_game', {
-        gameID: game.gameID
+        gameID: game.gameID,
+        owner: owner
       });
-      this.$emit('get-user');
     },
     check(game) {
       this.$socket.emit('check', {
@@ -173,7 +148,6 @@ export default {
     'game': Game,
   },
   mounted() {
-    // this.currentPlayer = this.$auth.getAuthentifiedUser();
     this.loadLobby();
   },
 }

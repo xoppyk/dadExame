@@ -12,8 +12,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body>
     <div id="app">
@@ -71,18 +72,6 @@
                 </div>
             </div>
         </nav>
-    <!-- <nav class="navbar is-dark">
-      <div class="navbar-menu container">
-        <div class="navbar-start" class="is-flex is-centered">
-            <a class="navbar-item" href="{{ url('/admin') }}">
-                Home
-            </a>
-            <a class="navbar-item">
-                Utilizadores
-            </a>
-        </div>
-      </div>
-    </nav> -->
         @yield('content')
     </div>
 

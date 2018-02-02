@@ -93,7 +93,7 @@ export default {
       var data = {
         'email': this.emailResetPassword,
       }
-      axios.post('password/email', data, headers)
+      axios.post('password/email', data, this.headers)
         .then((response) => {
           swal("Request Send!", "Check Your Email!", "success")
         })

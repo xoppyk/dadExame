@@ -14,9 +14,16 @@
         <div class="tabs is-large">
             <ul>
                 <li v-bind:class="{'is-active': showSection === 'list'}"><a v-on:click="changeSection('list')" v-bind:disable="showSection === 'list'">List Users</a></li>
+                <li v-bind:class="{'is-active': showSection === 'statistics'}"><a v-on:click="changeSection('statistics')" v-bind:disable="showSection === 'statistics'">Statistics</a></li>
+                <li v-bind:class="{'is-active': showSection === 'decks'}"><a v-on:click="changeSection('decks')" v-bind:disable="showSection === 'statistics'">Decks</a></li>
                 <li v-bind:class="'is-active'" v-show="showSection === 'edit'"><a>Edit User</a></li>
                 <li v-bind:class="'is-active'" v-show="showSection === 'show'"><a>Show User</a></li>
             </ul>
+        </div>
+
+        <!-- Statistics -->
+        <div v-show="showSection === 'statistics'">
+            <admin-statistics></admin-statistics>
         </div>
 
         <!-- LIST OF USERS -->
@@ -34,6 +41,12 @@
             <user-show :user="currentUser" @want-edit="editUser" @want-delete="deleteUser" @user-canceled="cancelEdit" v-if="currentUser"></user-show>
         </div>
 
+        <!-- Decks -->
+        <div v-show="showSection === 'decks'">
+            <decks></decks>
+        </div>
+
+
     </div>
 </template>
 
@@ -42,6 +55,9 @@
     import UserList from './userList.vue';
     import UserEdit from './userEdit.vue';
     import UserShow from './userShow.vue';
+    import Decks from '../decks/decks.vue';
+    import AdminStatistics from './adminStatistics.vue';
+
     export default {
         data: function(){
             return {
@@ -110,6 +126,8 @@
             'user-list': UserList,
             'user-edit': UserEdit,
             'user-show': UserShow,
+            'admin-statistics': AdminStatistics,
+            'decks': Decks,
         },
         mounted() {
             this.getUsers();

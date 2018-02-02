@@ -6,28 +6,31 @@
         </div>
         <div class="game-zone-content">
             <div class="alert" :class="alerttype">
-                <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
-                    <button class="btn btn-xs btn-primary" v-on:click.prevent="closeGame">Close Game</button>
-                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)" v-if="game.players[0][0] == currentPlayer.id && !game.gameStarted && game.players.length > 1">Start</button>
+                <strong>
+                    {{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
+                    <button v-if="(game.gameEnded  || !game.gameStarted) && (game.players[0].token == this.$auth.getToken())" class="btn btn-xs btn-primary" v-on:click.prevent="closeGame">Close Game</button>
+                    <button class="btn btn-xs btn-primary" v-on:click.prevent="start(game)"
+                            v-if="game.players[0].token == this.$auth.getToken() && !game.gameStarted
+                            && game.players.length > 1">Start</button>
                     <label v-if="!game.gameEnded && game.gameStarted">Time: {{ game.time }}  {{ (game.jogadas == 1) ? 'First' : 'Last'}} Round </label>
                 </strong>
             </div>
             <div v-if="game.gameStarted">
                 <div class="row" v-for="(player, key) of game.players">
                     <div class="col-sm-2 col-lg-2">
-                        {{ player[1] }}
+                        {{ player.nickname }}
                     </div>
                     <div class="col-sm-6 col-lg-6">
-                        <div v-for="(card, key) of player[2]" style="display: inline-block;">
-                            <img v-bind:src="cardImageURL(card, key, player[1], game.gameEnded)" width="70px">
+                        <div v-for="(card, key) of player.cards" style="display: inline-block;">
+                            <img v-bind:src="cardImageURL(card, key, player.nickname, game.gameEnded)" width="70px">
                         </div>
                     </div>
                     <div class="col-sm-2 col-lg-2">
-                        <label v-if="player[0] == currentPlayer.id || game.gameEnded">Points: {{ player[5] }}</label>
+                        <label v-if="player.id == currentPlayer.id || game.gameEnded">Points: {{ player.points }}</label>
                     </div>
                     <div class="col-sm-2 col-lg-2">
-                        <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-if="canPlay(game, player)">Give me card</button>
-                        <button class="btn btn-xs btn-danger" v-on:click.prevent="skip(game)" v-if="canPlay(game, player)">Skip</button>
+                        <button class="btn btn-xs btn-success" v-on:click.prevent="giveCard" v-show="canPlay(game, player)">Give me card</button>
+                        <button class="btn btn-xs btn-danger" v-on:click.prevent="skip(game)" v-show="canPlay(game, player)">Skip</button>
                     </div>
                 </div>
                 <hr>
@@ -41,16 +44,15 @@
         props: ['game', 'currentPlayer'],
         data: function(){
             return {
-                tckcount: 20,
+                tckcount: 20
             }
         },
         computed: {
           message(){
-              // return Message to show
               if(!this.game.gameStarted){
                   return "Game has not started yet";
               }else if(this.game.gameEnded){
-                  if(this.game.winner == this.currentPlayer.name){
+                  if(this.game.winner == this.currentPlayer.nickname){
                       return "Game has ended. YOU WIN !!!";
                   }else if(this.game.winner == 0){
                       return "Game has ended. It's a tie";
@@ -67,7 +69,7 @@
                 if(!this.game.gameStarted){
                     return "alert-warning";
                 }else if(this.game.gameEnded){
-                    if(this.game.winner == this.currentPlayer.name){
+                    if(this.game.winner == this.currentPlayer.nickname){
                         return "alert-success";
                     }else if(this.game.winner == 0){
                         return "alert-info";
@@ -105,31 +107,30 @@
                 this.$parent.skip(this.game);
             },
             closeGame(){
-                // Click to close game
-                this.$parent.close(this.game);
+                this.$parent.close(this.game, (this.game.players[0].token == this.$auth.getToken()));
             },
             giveCard(){
-                // Click to close game
                 this.$parent.giveCard(this.game);
             },
-            cardImageURL: function(card, key, playerName, gameEnded) {
+            cardImageURL: function(card, key, userNickname, gameEnded) {
                 if(card != 'undefined'){
                     if(gameEnded){
                         return 'img/' + String(card.path);
                     }
                     var imgSrc;
-                    if(this.currentPlayer.name == playerName){
+                    if(this.currentPlayer.nickname == userNickname){
                         imgSrc = String(card.path);
-                    }else if(this.currentPlayer.name != playerName && key == 0){
+                    }else if((this.currentPlayer.nickname != userNickname) && (key == 0)){
                         imgSrc = String(card.path);
                     }else{
-                        imgSrc = String(this.game.semFace);
+                        imgSrc = String(this.game.hiddenFace);
                     }
                     return 'img/' + imgSrc;
                 }
             },
             canPlay(game, player){
-                return game.gameStarted && game.players.length > 1 && !game.gameEnded && player[0] == this.currentPlayer.id && !player[3] && player[5] < 21;
+                return (game.gameStarted && (game.players.length > 1) && !game.gameEnded
+                && player.id == this.currentPlayer.id && !player.played && player.canPlay && (player.points < 21));
             },
             tikcount() {
                 if(!this.game.gameEnded) {
@@ -147,7 +148,6 @@
             }
         },
         mounted(){
-            //console.log(this.currentPlayer);
         }
     }
 </script>

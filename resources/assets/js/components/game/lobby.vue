@@ -14,7 +14,7 @@
     <tr v-for="game in games" :key="game.gameID">
       <td>{{ game.gameID }}</td>
       <td v-for="(n, index) in 4">
-        <label v-if="game.players[index] != undefined">{{ game.players[index][1] }}</label>
+        <label v-if="game.players[index] != undefined">{{ game.players[index].nickname }}</label>
         <label v-else></label>
       </td>
       <td>

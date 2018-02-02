@@ -46,7 +46,7 @@
             </div>
             <hr>
             <div class="row">
-              <div class="col-xs-12 col-md-6"><a href="#" class="btn btn-danger btn-block btn-lg" v-on:click.prevent="deleteUser()">Delete</a></div>
+              <div class="col-xs-12 col-md-12"><a href="#" class="btn btn-danger btn-block btn-lg" v-on:click.prevent="deleteUser()">Delete</a></div>
             </div>
           </form>
         </div>
@@ -79,6 +79,7 @@ export default {
       this.form.put('api/users/' + this.currentPlayer.id)
         .then(response => {
           Object.assign(this.currentPlayer, response.data);
+          this.$auth.setAuthentifiedUser(this.currentPlayer);
           swal("Good job!", "Profile Edited with Success!", "success")
           this.$router.push("/blackJack");
         })

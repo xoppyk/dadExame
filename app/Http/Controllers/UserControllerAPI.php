@@ -126,9 +126,6 @@ class UserControllerAPI extends Controller
     //CONFIRM USER
     public function confirmation($token)
     {
-        if (count($token) == 0) {
-            return redirect('/')->with('error', 'Error');
-        }
         $user = User::where('remember_token', $token)->first();
         if(!$user) {
             return redirect('/')->with('error', 'User dont Exist or be Actived!');
@@ -146,9 +143,6 @@ class UserControllerAPI extends Controller
     //CONFIRM Deleting USER
     public function confirmationDeleting($token)
     {
-        if (count($token) == 0) {
-            return redirect('/')->with('error', 'Error');
-        }
         $user = User::where('remember_token', $token)->first();
         if(!$user) {
             return redirect('/')->with('error', 'User dont Exist!');
@@ -159,9 +153,6 @@ class UserControllerAPI extends Controller
     //Abort USER
     public function abort($token)
     {
-        if (count($token) == 0) {
-            return redirect('/')->with('error', 'Error');
-        }
         $user = User::where('remember_token', $token)->first();
         if(!$user) {
             return redirect('/')->with('error', 'User dont Exist!');

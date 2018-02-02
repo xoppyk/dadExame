@@ -1,171 +1,170 @@
 /*jshint esversion: 6 */
 
 var axios = require('axios');
+const URL = "http://35.164.189.15";
 
 class BlackJackGame {
-    constructor(gameID, playerId, playerName) {
+    constructor(gameID, playerToken) {
         this.gameID = gameID;
-        this.cartas = new Array();
-        this.semFace = '';
+        this.cards = new Array();
+        this.hiddenFace = '';
         this.gameEnded = false;
         this.gameStarted = false;
         this.winner = -1;
         this.time = 20;
-        this.deck_nr = -1;
-        this.jogadas = 1;
-        //id, name, board, played, canPlay, points
+        this.deckID = -1;
+        this.turns = 1;
         this.players = new Array();
-        //this.getUser(tokenUser);
-        this.players[0] = [playerId, playerName, ['undefined', 'undefined'], false, true, 0];
+        this.players[0] = new Player(playerToken);
         this.getCards();
-        //console.log(this.players[0]);
     }
 
     getCards(){
-        axios.get('http://dadexame.test/api/decks/random')
+        axios.get(URL + '/api/decks/random')
             .then(response => {
-                this.deck_nr = response.data.data.id;
-                this.semFace = response.data.data.hidden_face_image_path;
-                axios.get('http://dadexame.test/api/cards/deck/' + this.deck_nr)
+                this.deckID = response.data.data.id;
+                this.hiddenFace = response.data.data.hidden_face_image_path;
+                axios.get(URL + '/api/cards/deck/' + this.deckID)
                     .then(response => {
-                        this.cartas = response.data.data;
-                        console.log('game ' + this.gameID + ' -> creatd');
+                        this.cards = response.data.data;
+                        if (this.cards == null) {
+                            console.log("ERROR: gamemodel.js -> getCards() -> this.cards -> null");
+                        }
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.log("ERROR: gamemodel.js -> getCards() -> /api/cards/deck/");
                     });
+            })
+            .catch(error => {
+                console.log("ERROR: gamemodel.js -> getCards() -> /api/cards/decks/random");
             });
     }
 
-    getUser(tokenUser){
-        //var user;
-        axios({
-            url: 'http://dadexame.test/api/user',
-            method: 'get',
-            headers: {
-            Authorization: "Bearer " + tokenUser
-            }
-        })
-        .then((response) => {
-            console.log(response.data);
-            return response.data;
-        })
-        .catch(function(error) {
-            console.log(error)
-        });
-    }
-
-    join(playerId, playerName){
-        for(var i = 0; i < this.players.length; i++){
-            if(this.players[i][0] == playerId){
+    join(playerToken) {
+        for(var i = 0; i < this.players.length; i++) {
+            if(this.players[i].token == playerToken) {
                 return;
             }
         }
 
-        if(this.players.length < 5){
-            this.players[this.players.length] = [playerId, playerName, ['undefined', 'undefined'], false, true, 0];
-            console.log('game ' + this.gameID + ' -> join player ' + [this.players.length - 1][1]);
+        if(this.players.length < 5) {
+            this.players[this.players.length] = new Player(playerToken);
         }
     }
 
-    check() {
-        if(this.gameEnded) {
+    checkGameEnded() {
+        console.log("someCanPlay() -> " + this.someoneCanPlay());
+        if (this.someoneCanPlay()) {
+            console.log("this.turns > 2 -> " + (this.turns > 2));
+            if (this.turns > 2) {
+                return true;
+            }
             return false;
         }
+
         return true;
     }
 
     getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    start(playerId){
+    start(tokenPlayer){
         var indexCard;
-        if(this.players[0][0] == playerId && !this.gameStarted){
-            for(var i = 0; i < this.players.length;i++){
-                for(var ii = 0; ii < 2;ii++){
-                    do{
-                        indexCard = this.getRandomInt(0, this.cartas.length-1);
-                        console.log(indexCard);
-                    }while(this.jaEscolhida(this.cartas[indexCard]));
-                    this.players[i][2][ii] = this.cartas[indexCard];
+        if((this.players[0].token == tokenPlayer) && !this.gameStarted){
+            for(var i = 0; i < 2; i++) {
+                for(var j = (this.players.length - 1); j >= 0; j--){
+                    do {
+                        indexCard = this.getRandomInt(0, this.cards.length-1);
+                    } while(this.checkCardExist(this.cards[indexCard].id));
+
+                    this.players[j].cards[i] = this.cards[indexCard];
+
+                    if(i == 1) {
+                        this.players[j].points = this.pointsPerBoard(this.players[j].cards);
+                        if(this.players[j].points >= 21){
+                            this.players[j].canPlay = false;
+                            this.players[j].played = true;
+                        }
+                    }
                 }
             }
             this.gameStarted = true;
-            for(var i = 0; i < this.players.length;i++){
-                this.players[i][5] = this.pointsPerBoard(this.players[i][2]);
-                if(this.players[i][5] >= 21){
-                    this.players[i][4] = false;
-                }
-            }
-
             this.tik();
-
-            axios.post('http://dadexame.test/api/games/start', {status: 'active', total_players: this.players.length, created_by: this.players[0][0], deck_used: this.deck_nr})
-                .then(response => {
-                    console.log('game ' + this.gameID + ' -> start');
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+            this.setGameStarted();
         }
     }
 
-    getIndexPlayerByToken(playerId){
-        switch (playerId) {
-            case this.players[0][0]:
+    setGameEnded() {
+        axios.put(URL + '/api/games/' + this.gameID + '/update', {status: 'terminated'})
+            .then(response => {
+                   console.log('Ended Game: ' + this.gameID);
+            })
+            .catch(error => {
+                   console.log("ERROR: gamemodel.js -> setGameEnded() -> /api/games/{gameID}/update");
+            });
+    }
+
+    setGameStarted() {
+        axios.post(URL + '/api/games/start', {status: 'active', total_players: this.players.length,
+                    created_by: this.players[0].id, deck_used: this.deckID})
+             .then(response => {
+                    console.log('Started Game: ' + this.gameID);
+             })
+             .catch(error => {
+                    console.log("ERROR: gamemodel.js -> setGameStarted() -> /api/games/start");
+             });
+    }
+
+    getIndexPlayerByToken(playerToken){
+        switch (playerToken) {
+            case this.players[0].token:
                 return 0;
-            case this.players[1][0]:
+            case this.players[1].token:
                 return 1;
-            case this.players[2][0]:
+            case this.players[2].token:
                 return 2;
-            case this.players[3][0]:
+            case this.players[3].token:
                 return 3;
             default:
                 return -1;
         }
     }
 
-    skip(playerId, playerName){
-        var indexPlayer = this.getIndexPlayerByToken(playerId);
+    skip(playerToken){
+        var indexPlayer = this.getIndexPlayerByToken(playerToken);
 
         if(indexPlayer != -1){
-            console.log('game ' + this.gameID + ' -> skip ' + playerName);
-            this.players[indexPlayer][3] = true;
-            this.players[indexPlayer][4] = false;
+            this.players[indexPlayer].played = true;
+            this.players[indexPlayer].canPlay = false;
+            this.checkTurnPass();
+        }
+    }
 
-            this.status();
-            if(!this.canPlay()){
-                this.jogadas++;
+    giveCard(playerToken){
+        var indexPlayer = this.getIndexPlayerByToken(playerToken);
+
+        if (indexPlayer != -1) {
+            var indexCard;
+            do {
+                indexCard = this.getRandomInt(0, (this.cards.length - 1));
+            } while(this.checkCardExist(this.cards[indexCard].id));
+
+            this.players[indexPlayer].cards[this.players[indexPlayer].cards.length] = this.cards[indexCard];
+            this.players[indexPlayer].points = this.pointsPerBoard(this.players[indexPlayer].cards);
+            console.log("CARTAS -> " + this.players[indexPlayer].cards.length)
+            if (this.players[indexPlayer].points >= 21 || this.players[indexPlayer].cards.length >= 4) {
+                this.players[indexPlayer].canPlay = false;
             }
+            this.players[indexPlayer].played = true;
+
+            this.checkTurnPass();
         }
     }
 
-    giveCard(playerId, playerName){
-        var indexPlayer = this.getIndexPlayerByToken(playerId);
-
-        var indexCard;
-        do{
-            indexCard = this.getRandomInt(0, this.cartas.length-1);
-        }while(this.jaEscolhida(this.cartas[indexCard]));
-
-        if(this.players[indexPlayer][3] || this.players[indexPlayer][2].length >= 4 || this.players[indexPlayer][5] > 21){
-            return;
-        }
-        this.players[indexPlayer][2][this.players[indexPlayer][2].length] = this.cartas[indexCard];
-        this.players[indexPlayer][5] = this.pointsPerBoard(this.players[indexPlayer][2]);
-        this.players[indexPlayer][3] = true;
-        if(this.players[indexPlayer][5] >= 21){
-            this.players[indexPlayer][4] = false;
-        }
-        this.status();
-
-        console.log('game ' + this.gameID + ' -> giveCard ' + this.players[indexPlayer][1]);
-    }
-
-    pointsPerBoard(array){
+    pointsPerBoard(cards){
         var total = 0;
-        array.forEach(function(card){
+        cards.forEach(function(card) {
             if(card == 'undefined')
                 total = total;
 
@@ -180,137 +179,136 @@ class BlackJackGame {
         return total;
     }
 
-    status(){
+    checkTurnPass(){
         if(this.allPlayed()){
             this.time = 0;
         }
     }
 
-    canPlay(){
-        var canPlay = true;
+    someoneCanPlay(){
+        var canPlay = false;
         for(var i = 0; i < this.players.length; i++){
-            canPlay = canPlay && this.players[i][4];
+            canPlay = canPlay || this.players[i].canPlay;
         }
         return canPlay;
     }
 
     allPlayed(){
-        console.log('allPlayed');
-        var jaJogaram = true;
+        var played = true;
 
-        for(var i = 0; i < this.players.length; i++){
-            if(this.players[i][4]){
-                jaJogaram = jaJogaram && this.players[i][3];
-                this.players[i][3] = false;
-            }
+        for(var i = 0; i < this.players.length; i++) {
+            played = played && this.players[i].played;
         }
-        return jaJogaram;
+        return played;
     }
 
-    jaEscolhida(card){
+    checkCardExist(cardID){
         for(var i = 0; i < this.players.length; i++){
-            this.players[i][2].forEach(function(c) {
-                if(card.id == c.id)
-                    return true;
-            });
+            if(this.players[i].cards.id == cardID) {
+                return true;
+            }
         }
         return false;
     }
 
-    vencedor(){
-        if(!this.gameEnded && (this.jogadas <= 2)){
-            return;
-        }
-
+    checkWinner(){
         var pontuacaoMaxima = 0;
         var indexWinner = -1;
         var draw = false;
 
-        for(var i = 0 ; i < this.players.length;i++){
-            this.players[i][5] = this.pointsPerBoard(this.players[i][2]);
-            if(this.players[i][5] <= 21){
-                if(this.players[i][5] > pontuacaoMaxima){
-                    pontuacaoMaxima = this.players[i][5];
+        for(var i = 0; i < this.players.length; i++) {
+            this.players[i].points = this.pointsPerBoard(this.players[i].cards);
+
+            if(this.players[i].points <= 21) {
+                if(this.players[i].points > pontuacaoMaxima){
+                    pontuacaoMaxima = this.players[i].points;
                     indexWinner = i;
                     draw = false;
-                }else if (this.players[i][5] == pontuacaoMaxima) {
+                } else if (this.players[i].points == pontuacaoMaxima) {
                     draw = true;
                 }
             }
-            this.addGameUser(this.players[i][0], this.players[i][1]);
+
+            this.addGameUser(this.players[i].id, this.players[i].nickname);
         }
 
         //se ha vencedores, vou procurar os nomes
         if(draw){
-            for(i = 0 ; i < this.players.length;i++){
-                if(this.players[i][5] == pontuacaoMaxima){
-                    //caso de empate o utilizador recebe 50
-                    this.addPointsUser(this.players[i][0], this.players[i][1], 50);
-                    this.register(this.gameID, this.players[i][0], 0);
+            for(i = 0 ; i < this.players.length; i++){
+                if(this.players[i].points == pontuacaoMaxima){
+                    this.addPointsUser(this.players[i].id, this.players[i].nickname, 50);
+                    this.register(this.players[i].id, 0);
+                    this.winner = 0;
                 }else{
-                    this.register(this.gameID, this.players[i][0], -1);
+                    this.register(this.players[i].id, -1);
                 }
             }
-            this.winner = 0;
-        }else if(indexWinner > -1){
-            this.winner = this.players[indexWinner][1];
+        } else if(indexWinner > -1){
             //caso de vitoria o utilizador recebe 100
-            var poi = 100;
-            if(this.players[indexWinner][5] == 21){
+            var points = 100;
+            if(this.players[indexWinner].points == 21) {
                 //caso de vitoria com os pontos igual a 21, o utilizador recebe bonus de 50
-                poi = poi + 50;
+                points = points + 50;
             }
-            this.addPointsUser(this.players[indexWinner][0], this.players[indexWinner][1], poi);
-            this.register(this.gameID, this.players[indexWinner][0], 1);
+            this.winner = this.players[indexWinner].nickname;
+
+            this.addPointsUser(this.players[indexWinner].id, this.players[indexWinner].nickname, points);
+            this.register(this.players[indexWinner].id, 1);
 
             for(i = 0 ; i < this.players.length;i++){
                 if(i != indexWinner){
-                    this.register(this.gameID, this.players[i][0], -1);
+                    this.register(this.players[indexWinner].id, -1);
                 }
             }
         }
 
+        this.setGameEnded();
+    }
 
-
-        this.gameEnded = true;
-
-        axios.put('http://dadexame.test/api/games/' + this.gameID + '/update', {status: 'terminated'})
+    register(userID, winner){
+        axios.post(URL + '/api/gameuser/register', {game_id: this.gameID, user_id: userID, winner: winner})
             .then(response => {
-                console.log('game ' + this.gameID + ' -> ended -> winner -> ' + this.winner);
+                console.log('Registed Game: ' + this.gameID);
             })
             .catch(error => {
-                console.log(error);
+                console.log("ERROR: gamemodel.js -> register() -> /api/gameuser/register");
             });
     }
 
-    register(game_id, user_id, winner){
-        axios.post('http://dadexame.test/api/gameuser/register', {game_id: game_id, user_id: user_id, winner: winner})
+    addPointsUser(userID, userNickname, points){
+        axios.post(URL + '/api/users/' + userID + '/addPoints', {points: points})
             .then(response => {
-                console.log('game ' + this.gameID + ' -> register');
+                console.log('Added Points ' + points + ' : -> ' + userNickname);
             })
             .catch(error => {
-                console.log(error);
+                console.log("ERROR: gamemodel.js -> addPointsUser() -> /api/users/{userID}/addPoints");
             });
     }
 
-    addPointsUser(idPlayer, namePlayer, p){
-        axios.post('http://dadexame.test/api/users/' + idPlayer + '/addPoints', {points: p})
+    addGameUser(userID, userNickname){
+        axios.post(URL + '/api/users/' + userID + '/addGamePlayed')
             .then(response => {
-                console.log('game ' + this.gameID + ' -> add points to ' + namePlayer + ': ' + p);
+                console.log('Added Game ' + this.gameID + ' : -> ' + userNickname);
             })
             .catch(error => {
-                console.log(error);
+                console.log("ERROR: gamemodel.js -> addGameUser() -> /api/users/{userID}/addGamePlayed");
             });
     }
 
-    addGameUser(idPlayer, namePlayer){
-        axios.post('http://dadexame.test/api/users/' + idPlayer + '/addGamePlayed')
-            .then(response => {
-                console.log('game ' + this.gameID + ' -> add game to ' + namePlayer);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+    setAllPlayed() {
+        for(var i = 0; i < this.players.length; i++){
+            if(this.players[i].played == false){
+                this.players[i].canPlay = false;
+                this.players[i].played = true;
+            }
+        }
+    }
+    resetPlayed() {
+        for(var i = 0; i < this.players.length; i++){
+            if(this.players[i].canPlay){
+                this.players[i].played = false;
+            }
+        }
     }
 
     tik() {
@@ -318,22 +316,50 @@ class BlackJackGame {
         intv = setInterval(()=> {
             if(this.gameStarted && !this.gameEnded) {
                 if(this.time <= 0){
-                    for(var i = 0; i < this.players.length; i++){
-                        if(this.players[i][3] == false){
-                            this.players[i][4] = false;
-                        } else {
-                            this.players[i][4] = true;
-                        }
-                    }
-                    this.jogadas++;
-                    this.vencedor();
+                    this.setAllPlayed();
+                    this.resetPlayed();
+                    this.turns++;
                     this.time = 20;
+                    if(this.checkGameEnded()) {
+                        this.gameEnded = true;
+                        this.checkWinner();
+                    }
                 }
                 this.time--;
             }
         },1000);
     }
+}
 
+class Player {
+    constructor(playerToken) {
+        this.token = playerToken;
+        this.id = 0;
+        this.nickname = "";
+        this.cards = new Array();
+        this.cards = ['undefined', 'undefined'];
+        this.played = false;
+        this.canPlay = true;
+        this.points = 0;
+        this.populateIdNickname(playerToken);
+    }
+
+    populateIdNickname(playerToken) {
+        axios({
+                  url: URL + '/api/user',
+                  method: 'get',
+                  headers: {
+                    Authorization: "Bearer " + playerToken
+                  }
+              })
+              .then((response) => {
+                    this.id = response.data.id;
+                    this.nickname = response.data.nickname;
+              })
+              .catch(function(error) {
+                return console.log("ERROR: gamemodel.js -> populateIdNickname(playerToken)");
+              });
+    }
 }
 
 module.exports = BlackJackGame;
